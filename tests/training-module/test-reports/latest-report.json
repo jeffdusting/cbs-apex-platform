@@ -1,0 +1,77 @@
+{
+  "timestamp": "2025-09-03T07:02:57.607Z",
+  "totalTests": 0,
+  "totalPassed": 0,
+  "totalFailed": 0,
+  "totalDuration": 7173,
+  "suites": [
+    {
+      "suite": "Regression Tests",
+      "passed": false,
+      "tests": 0,
+      "failures": 0,
+      "duration": 1227,
+      "output": "● Multiple configurations found:\n\n    * /home/runner/workspace/jest.config.js\n    * /home/runner/workspace/jest.config.json\n\n  Implicit config resolution does not allow multiple configuration files.\n  Either remove unused config files or select one explicitly with `--config`.\n\n  Configuration Documentation:\n  https://jestjs.io/docs/configuration\n\n",
+      "errors": []
+    },
+    {
+      "suite": "Performance Tests",
+      "passed": false,
+      "tests": 0,
+      "failures": 0,
+      "duration": 1110,
+      "output": "● Multiple configurations found:\n\n    * /home/runner/workspace/jest.config.js\n    * /home/runner/workspace/jest.config.json\n\n  Implicit config resolution does not allow multiple configuration files.\n  Either remove unused config files or select one explicitly with `--config`.\n\n  Configuration Documentation:\n  https://jestjs.io/docs/configuration\n\n",
+      "errors": []
+    },
+    {
+      "suite": "Integration Tests",
+      "passed": false,
+      "tests": 0,
+      "failures": 0,
+      "duration": 1162,
+      "output": "● Multiple configurations found:\n\n    * /home/runner/workspace/jest.config.js\n    * /home/runner/workspace/jest.config.json\n\n  Implicit config resolution does not allow multiple configuration files.\n  Either remove unused config files or select one explicitly with `--config`.\n\n  Configuration Documentation:\n  https://jestjs.io/docs/configuration\n\n",
+      "errors": []
+    },
+    {
+      "suite": "Backend E2E Tests",
+      "passed": false,
+      "tests": 0,
+      "failures": 0,
+      "duration": 1171,
+      "output": "● Multiple configurations found:\n\n    * /home/runner/workspace/jest.config.js\n    * /home/runner/workspace/jest.config.json\n\n  Implicit config resolution does not allow multiple configuration files.\n  Either remove unused config files or select one explicitly with `--config`.\n\n  Configuration Documentation:\n  https://jestjs.io/docs/configuration\n\n",
+      "errors": []
+    },
+    {
+      "suite": "Frontend Component Tests",
+      "passed": false,
+      "tests": 0,
+      "failures": 0,
+      "duration": 1189,
+      "output": "● Multiple configurations found:\n\n    * /home/runner/workspace/jest.config.js\n    * /home/runner/workspace/jest.config.json\n\n  Implicit config resolution does not allow multiple configuration files.\n  Either remove unused config files or select one explicitly with `--config`.\n\n  Configuration Documentation:\n  https://jestjs.io/docs/configuration\n\n",
+      "errors": []
+    },
+    {
+      "suite": "Frontend-Backend Integration",
+      "passed": false,
+      "tests": 0,
+      "failures": 0,
+      "duration": 1307,
+      "output": "● Multiple configurations found:\n\n    * /home/runner/workspace/jest.config.js\n    * /home/runner/workspace/jest.config.json\n\n  Implicit config resolution does not allow multiple configuration files.\n  Either remove unused config files or select one explicitly with `--config`.\n\n  Configuration Documentation:\n  https://jestjs.io/docs/configuration\n\n",
+      "errors": []
+    }
+  ],
+  "criticalFailures": [
+    "CRITICAL: Regression Tests failed - may break existing functionality",
+    "CRITICAL: Integration Tests failed - may break existing functionality",
+    "CRITICAL: Frontend-Backend Integration failed - may break existing functionality"
+  ],
+  "recommendations": [
+    "No tests found for Regression Tests - verify test files exist",
+    "No tests found for Performance Tests - verify test files exist",
+    "No tests found for Integration Tests - verify test files exist",
+    "No tests found for Backend E2E Tests - verify test files exist",
+    "No tests found for Frontend Component Tests - verify test files exist",
+    "No tests found for Frontend-Backend Integration - verify test files exist",
+    "All tests passed! Training module is ready for deployment."
+  ]
+}
