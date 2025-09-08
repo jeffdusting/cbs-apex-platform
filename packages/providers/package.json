@@ -1,0 +1,34 @@
+{
+  "name": "@cbs-apex/providers",
+  "version": "2.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src/",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:integration": "jest --testPathPattern=integration"
+  },
+  "dependencies": {
+    "openai": "^5.16.0",
+    "@anthropic-ai/sdk": "^0.37.0",
+    "@google/genai": "^1.16.0",
+    "tiktoken": "^1.0.22",
+    "zod": "^3.24.2",
+    "@cbs-apex/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "typescript": "^5.1.6",
+    "eslint": "^8.47.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "jest": "^30.1.3",
+    "@types/jest": "^30.0.0",
+    "nock": "^13.3.0"
+  }
+}
+
