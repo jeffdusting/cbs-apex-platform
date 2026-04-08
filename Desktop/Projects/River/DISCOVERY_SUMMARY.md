@@ -414,23 +414,105 @@ skills/{skill-name}/
 
 ## Docker Image
 
-**NOT TESTED** — Docker is not installed on this machine (`command not found: docker`).
+**Image:** `ghcr.io/paperclipai/paperclip:latest`
+**Digest:** `ghcr.io/paperclipai/paperclip@sha256:791f3493d101154cb8a991a3895160297fae979f50cba657032ae4ce18132bff`
+**Size:** 2.84 GB
+**Base:** `node:lts-trixie-slim` (Debian)
+**Server version:** `@paperclipai/server@0.3.1`
+**CLI version:** `2026.403.0` (via npx)
 
-**Paperclip version:** `2026.403.0` (via `npx paperclipai --version`)
+### Bundled CLIs — CONFIRMED
+| CLI | Path | Version |
+|---|---|---|
+| Claude Code | `/usr/local/bin/claude` | 2.1.94 |
+| Codex | `/usr/local/bin/codex` | 0.118.0 |
 
-**Deployment method:** Currently running via `npx paperclipai` (Node.js), not Docker.
+**No custom Dockerfile needed** — both Claude Code and Codex are pre-installed.
 
-**For production Docker deployment, these are needed:**
-- Docker image: `paperclipai/paperclip:2026.403.0` (pin to this version)
-- Verify Claude Code CLI is bundled in image
-- Check for docker-compose quickstart
+### Bundled System Tools
+`git`, `curl`, `wget`, `ripgrep`, `python3`, `gh` (GitHub CLI), `corepack`
 
-**ACTION REQUIRED:** Install Docker Desktop, then run:
-```bash
-docker pull paperclipai/paperclip:2026.403.0
-docker run --rm paperclipai/paperclip:2026.403.0 which claude
-docker run --rm paperclipai/paperclip:2026.403.0 which codex
+### Adapters in Image
+`claude-local`, `codex-local`, `cursor-local`, `gemini-local`, `openclaw-gateway`, `opencode-local`, `pi-local`
+
+### Docker Compose Files (in `/app/docker/`)
+| File | Purpose |
+|---|---|
+| `docker-compose.yml` | Full stack: PostgreSQL 17 + Paperclip server |
+| `docker-compose.quickstart.yml` | Minimal: Paperclip only (bring your own DB) |
+| `docker-compose.untrusted-review.yml` | Untrusted code review mode |
+
+### docker-compose.yml (production template)
+```yaml
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: paperclip
+      POSTGRES_PASSWORD: paperclip
+      POSTGRES_DB: paperclip
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperclip -d paperclip"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "3100:3100"
+    environment:
+      DATABASE_URL: postgres://paperclip:paperclip@db:5432/paperclip
+      PORT: "3100"
+      SERVE_UI: "true"
+      PAPERCLIP_DEPLOYMENT_MODE: "authenticated"
+      PAPERCLIP_DEPLOYMENT_EXPOSURE: "private"
+      PAPERCLIP_PUBLIC_URL: "${PAPERCLIP_PUBLIC_URL:-http://localhost:3100}"
+      BETTER_AUTH_SECRET: "${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET must be set}"
+    volumes:
+      - paperclip-data:/paperclip
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  paperclip-data:
 ```
+
+### docker-compose.quickstart.yml (minimal)
+```yaml
+services:
+  paperclip:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "${PAPERCLIP_PORT:-3100}:3100"
+    environment:
+      HOST: "0.0.0.0"
+      PAPERCLIP_HOME: "/paperclip"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      PAPERCLIP_DEPLOYMENT_MODE: "authenticated"
+      PAPERCLIP_DEPLOYMENT_EXPOSURE: "private"
+      PAPERCLIP_PUBLIC_URL: "${PAPERCLIP_PUBLIC_URL:-http://localhost:3100}"
+      BETTER_AUTH_SECRET: "${BETTER_AUTH_SECRET:?BETTER_AUTH_SECRET must be set}"
+    volumes:
+      - "${PAPERCLIP_DATA_DIR:-../data/docker-paperclip}:/paperclip"
+```
+
+### Key Observations for River Production Deployment
+1. **BETTER_AUTH_SECRET** is required (not in the `paperclipai env` output — Docker-specific)
+2. **PAPERCLIP_DEPLOYMENT_MODE** should be `"authenticated"` for production
+3. **PAPERCLIP_DEPLOYMENT_EXPOSURE** should be `"private"` with `PAPERCLIP_PUBLIC_URL` set
+4. **PAPERCLIP_HOME** maps to `/paperclip` inside the container
+5. **ANTHROPIC_API_KEY** is passed via env (needed for Claude Code heartbeats)
+6. For Railway: use the pre-built image `ghcr.io/paperclipai/paperclip:latest` instead of building from Dockerfile, pin to the digest above
 
 ---
 
@@ -448,7 +530,9 @@ Complete list from `paperclipai env`:
 | Variable | Description |
 |---|---|
 | `PAPERCLIP_PUBLIC_URL` | Canonical public URL (e.g. `https://org.cbslab.app`) |
+| `BETTER_AUTH_SECRET` | Auth signing secret (required by Docker compose) |
 | `BETTER_AUTH_TRUSTED_ORIGINS` | Comma-separated auth origin allowlist |
+| `ANTHROPIC_API_KEY` | Required for Claude Code agent heartbeats |
 
 ### Optional
 | Variable | Default | Description |
@@ -599,7 +683,7 @@ POST /api/routines/{routineId}/triggers
 
 11. **Skills must be explicitly synced to agents.** Skills are company-level resources that must be assigned to agents via `POST /api/agents/{id}/skills/sync`. They are not automatically available to all agents.
 
-12. **Docker not installed.** Docker Desktop needs to be installed before Docker image inspection (Task 12) can be completed.
+12. **Docker image confirmed — no custom Dockerfile needed.** `ghcr.io/paperclipai/paperclip:latest` bundles Claude Code 2.1.94 and Codex 0.118.0. Pin to digest `sha256:791f3493d101...` for production.
 
 13. **Node.js version mismatch.** Current Node.js is v23.11.0 but Paperclip recommends v20 or v22. Engine warnings are present but non-blocking for PoC.
 
@@ -609,12 +693,14 @@ POST /api/routines/{routineId}/triggers
 
 16. **Issue checkout returns 409** if the issue has an active `executionRunId` (even from a heartbeat invoke). The plan's task assignment flow should handle this gracefully.
 
+17. **BETTER_AUTH_SECRET is required for Docker/production.** Not shown in `paperclipai env` but required by both docker-compose files. Must be generated and set.
+
+18. **ANTHROPIC_API_KEY must be passed to the container.** The Docker quickstart includes it as an env var. Without it, Claude Code agents cannot authenticate with the Anthropic API during heartbeats.
+
 ### Information Gaps (Still Unknown)
 
-17. **Docker image contents** — Claude Code CLI bundled? Codex bundled? Docker Compose quickstart? → Requires Docker installation.
+19. **Session persistence across heartbeats** — `sessionIdBefore`/`sessionIdAfter` fields exist but live test not completed.
 
-18. **Session persistence across heartbeats** — `sessionIdBefore`/`sessionIdAfter` fields exist but live test not completed.
+20. **Budget auto-pause enforcement** — Referenced in skill docs but not tested at threshold.
 
-19. **Budget auto-pause enforcement** — Referenced in skill docs but not tested at threshold.
-
-20. **`allowedTools` enforcement** — Field accepted in adapterConfig but unclear if the claude_local adapter enforces it during heartbeat execution.
+21. **`allowedTools` enforcement** — Field accepted in adapterConfig but unclear if the claude_local adapter enforces it during heartbeat execution.
