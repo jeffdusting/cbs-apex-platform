@@ -1,6 +1,7 @@
 # Project River — Discovery Summary
 
 ## Generated: 2026-04-08T00:35Z (Paperclip v2026.403.0)
+## Updated: 2026-04-08T01:30Z — UI screenshots integrated (14 screenshots from board operator)
 
 ---
 
@@ -96,20 +97,21 @@ When an agent is created, Paperclip auto-generates an instructions directory:
 
 ### 3. WEB SEARCH — RESOLVED
 
-**Mechanism:** No dedicated search field on the agent. Web search is a Claude Code CLI capability.
+**Mechanism:** No dedicated search field on the agent. Web search is a Claude Code CLI capability enabled by default.
 
 **Findings:**
+- **No web search toggle exists in the UI** — confirmed from Configuration tab screenshots
 - No `search`, `webSearch`, or `tools` field exists on the agent schema
-- `adapterConfig.allowedTools` can be set (accepted by PATCH) — stores an array like `["WebSearch", "WebFetch"]`. Whether the adapter enforces this list is TBD (requires heartbeat execution test)
-- `runtimeConfig` accepts arbitrary keys — `runtimeConfig.webSearch: true` was accepted and stored
-- Claude Code has web search enabled by default via `WebSearch` and `WebFetch` tools
+- The only capability toggle in the UI is **"Enable Chrome"** (off by default) — this likely enables browser/MCP tools
+- `adapterConfig.allowedTools` can be set via API (accepted by PATCH) — stores an array like `["WebSearch", "WebFetch"]`
+- `dangerouslySkipPermissions: true` gives the agent full tool access including web search
+- The run details view shows the Claude CLI command includes `--dangerously-skip-permissions` which grants access to all tools
 
 **Practical approach for River:**
-- Web search is likely **on by default** for `claude_local` agents (Claude Code has these tools)
-- To explicitly control it, use `adapterConfig.allowedTools` or `adapterConfig.disallowedTools` (if supported by adapter)
-- The `dangerouslySkipPermissions: true` flag in adapterConfig gives the agent full tool access including web search
-
-**NEEDS LIVE TEST:** Run a heartbeat on an agent with a web search task to confirm default behavior.
+- Web search is **on by default** for `claude_local` agents with `dangerouslySkipPermissions: true`
+- No per-agent toggle needed — all agents get web search automatically
+- To restrict tools for specific agents, use `adapterConfig.allowedTools` via API (not available in UI)
+- The "Extra args" field in the UI could pass additional CLI flags if needed
 
 ---
 
@@ -655,7 +657,154 @@ POST /api/routines/{routineId}/triggers
 
 ---
 
-## Findings That Affect the Implementation Plan
+## UI Discovery (from Board Operator Screenshots)
+
+### Agent Page Tabs
+`Dashboard` | `Instructions` | `Skills` | `Configuration` | `Runs` | `Budget`
+
+Top-right actions: `+ Assign Task` | `Run Heartbeat` | `Pause` | status badge (idle/running)
+
+### Dashboard Tab
+- **Latest Run** card: status badge (succeeded/failed), run ID, trigger type (Assignment), timestamp, summary text
+- **Charts** (last 14 days): Run Activity, Issues by Priority, Issues by Status, Success Rate
+- **Recent Issues**: shows identifier (TES-1), title, status badge
+- **Costs**: Input tokens, Output tokens, Cached tokens, Total cost ($). Per-run breakdown table (Date, Run, Input, Output, Cost)
+
+### Instructions Tab
+- File manager sidebar: list of markdown files with sizes
+- `AGENTS.md` marked as `ENTRY` (the entry file loaded by the adapter)
+- `+` button to add new files, `Delete` button per file
+- Content area: full markdown editor for the selected file
+- **CEO template creates 4 files:** AGENTS.md, HEARTBEAT.md (3005B), SOUL.md (2590B), TOOLS.md (86B)
+
+### Skills Tab
+- "View company skills library" link
+- "Required by Paperclip" section lists bundled skills with checkmarks
+- Each skill: name + "Will be mounted into the ephemeral Claude skill directory on the next run"
+- Bottom: Adapter type, "Skills applied: Applied when the agent runs", "Selected skills: 4"
+
+### Configuration Tab — Full Field Inventory
+
+**Identity Section:**
+| UI Field | API Field | Type |
+|---|---|---|
+| Name | `name` | text input |
+| Title | `title` | text input (placeholder: "e.g. VP of Engineering") |
+| Reports to | `reportsTo` | agent picker ("Choose manager...") |
+| Capabilities | `capabilities` | textarea |
+
+**Adapter Section:**
+| UI Field | API Field | Type |
+|---|---|---|
+| Adapter type | `adapterType` | dropdown (see adapter list below) |
+| Test environment | — | button |
+
+**Permissions & Configuration Section (claude_local adapter):**
+| UI Field | API Field | Type | Default |
+|---|---|---|---|
+| Command | `adapterConfig.command` | text | `claude` |
+| Model | `adapterConfig.model` | dropdown | `Default` |
+| Thinking effort | `adapterConfig.thinkingEffort` | dropdown | `Auto` |
+| Enable Chrome | `adapterConfig.enableChrome` | toggle | OFF |
+| Skip permissions | `adapterConfig.dangerouslySkipPermissions` | toggle | OFF (ON for CEO) |
+| Max turns per run | `adapterConfig.maxTurnsPerRun` | number | 1000 |
+| Extra args (comma-separated) | `adapterConfig.extraArgs` | text | (empty, placeholder: "--verbose, --foo=bar") |
+| Environment variables | `adapterConfig.env` | KEY / Plain\|Secret / value + Seal button | note: "PAPERCLIP_* variables are injected automatically at runtime" |
+| Timeout (sec) | `adapterConfig.timeoutSec` | number | 0 |
+| Interrupt grace period (sec) | `adapterConfig.graceSec` | number | 15 |
+
+**Run Policy Section:**
+| UI Field | API Field | Type | Default |
+|---|---|---|---|
+| Heartbeat on interval | `runtimeConfig.heartbeat.enabled` | toggle | ON (for CEO) |
+| Run heartbeat every ___ sec | `runtimeConfig.heartbeat.intervalSec` | number spinner | 3600 |
+| Wake on demand | `runtimeConfig.heartbeat.wakeOnDemand` | toggle (under Advanced) | ON |
+| Cooldown (sec) | `runtimeConfig.heartbeat.cooldownSec` | number (under Advanced) | 10 |
+| Max concurrent runs | `runtimeConfig.heartbeat.maxConcurrentRuns` | number (under Advanced) | 1 |
+
+**Permissions Section:**
+| UI Field | API Field | Type | Default |
+|---|---|---|---|
+| Can create new agents | `permissions.canCreateAgents` | toggle | OFF (ON for CEO) |
+| Can assign tasks | `permissions.canAssignTasks` | toggle | auto-enabled for CEO |
+
+**API Keys Section:**
+- Per-agent API key creation with custom name
+- "API keys allow this agent to authenticate calls to the Paperclip server"
+- Configuration Revisions counter at bottom
+
+### Budget Tab
+- Shows: OBSERVED (current spend in USD), BUDGET (Disabled when $0, or amount), status (HEALTHY)
+- "Soft alert at 80%" — confirms 80% warning is built-in
+- Remaining bar: shows Unlimited when no cap set
+- BUDGET (USD) input field + "Set budget" button
+- Budget is displayed in **dollars** in UI but stored as **cents** in API
+
+### Adapter Type Dropdown (All Available)
+| Adapter | Status |
+|---|---|
+| Process | Coming soon |
+| HTTP | Coming soon |
+| **Claude (local)** | Available (River's adapter) |
+| Codex (local) | Available |
+| Gemini CLI (local) | Available |
+| OpenCode (local) | Available |
+| pi_local | Available |
+| Cursor (local) | Available |
+| OpenClaw Gateway | Coming soon |
+| Hermes Agent | Available |
+
+### Run Details View
+- Breadcrumb: Agents > CEO > Runs > Run {id}
+- Status badge, timestamps (start → end), duration
+- Token counts: Input, Output, Cached, Cost
+- Session section (collapsible)
+- Issues Touched list with identifiers
+- **Invocation details:** Adapter (claude_local), Working dir, full Command line
+- Command shows: `/opt/homebrew/bin/claude --print --output-format stream-json --verbose --dangerously-skip-permissions --max-turns 1000 --append-system ...`
+- Shows injected instructions path and prompt
+
+### Instance Settings
+Sidebar: `General` | `Heartbeats` | `Experimental` | `Plugins`
+
+**Heartbeats page:**
+- "Scheduler Heartbeats" — overview of ALL agents across ALL companies
+- Shows: agent name, status (On/Off), role/title, interval (sec), last run time
+- Per-agent "Disable Timer Heartbeat" button
+- "Disable All" button at top
+- Confirms Discovery-Agent-1 shows 1800s interval (our API PATCH worked)
+
+**Experimental page:**
+- "Enable Isolated Workspaces" (OFF) — execution workspace controls for project configuration
+- "Auto-Restart Dev Server When Idle" (OFF) — auto-restart when backend changes detected
+
+**Plugins page:**
+- "Plugins are alpha" warning
+- No bundled examples in this checkout
+- No plugins installed
+- `+ Install Plugin` button
+
+### Key UI Observations for River
+
+1. **No web search toggle in UI.** There is no visible checkbox or toggle for web search in the Configuration tab. Web search is controlled by Claude Code's default tool set, not by a Paperclip setting. The `Enable Chrome` toggle is the closest capability toggle visible.
+
+2. **Model dropdown exists** but shows "Default" — the API `adapterConfig.model` field maps to this dropdown. Specific model selection (e.g., `claude-sonnet-4-20250514`) is available.
+
+3. **Thinking effort dropdown** is a new finding — `Auto` is default. This maps to `adapterConfig.thinkingEffort` and can be set per-agent.
+
+4. **Extra args field** allows passing additional CLI flags to Claude Code (e.g., `--verbose`). This could be used to pass `--allowedTools` or similar flags if needed.
+
+5. **"Seal" button** on env vars converts a plain value to a sealed/encrypted secret reference. Important for credential management.
+
+6. **Onboard created "Test Co"** with CEO (3600s heartbeat) and CTO (3600s heartbeat, "Chief Technology Officer" title). The CTO has never run a heartbeat yet.
+
+7. **Budget UI confirms soft alert at 80%** — this is automatic and does not require configuration.
+
+8. **Configuration Revisions** tracks config changes — useful for audit trail.
+
+---
+
+
 
 ### Must-Change Items
 
@@ -697,10 +846,30 @@ POST /api/routines/{routineId}/triggers
 
 18. **ANTHROPIC_API_KEY must be passed to the container.** The Docker quickstart includes it as an env var. Without it, Claude Code agents cannot authenticate with the Anthropic API during heartbeats.
 
+### UI-Derived Findings
+
+19. **Thinking effort is configurable per-agent.** `adapterConfig.thinkingEffort` with options including `Auto`. This was not visible in the API discovery — only found in UI. Could be used to reduce costs for simpler agents.
+
+20. **Enable Chrome toggle exists.** `adapterConfig.enableChrome` — likely enables browser/MCP tools. Could be relevant for agents that need to interact with web UIs (e.g., tender portals).
+
+21. **Extra args field** allows passing arbitrary CLI flags to Claude Code. Placeholder shows `--verbose, --foo=bar`. This provides an escape hatch for any adapter config not exposed as a dedicated field.
+
+22. **"Seal" button on env vars** — converts plain text to encrypted secret references. The plan should use this for all credential values (Supabase keys, Graph API secrets, Xero tokens).
+
+23. **Budget soft alert at 80% is automatic** — confirmed in Budget UI: "Soft alert at 80%". No configuration needed. When budget is $0.00 it shows "Disabled" / "No cap configured" / "Unlimited".
+
+24. **Onboard creates CEO + CTO by default.** The "Test Co" onboard created both agents with 3600s heartbeats and `canCreateAgents: true` for CEO. River's onboard will similarly create a CEO agent — the implementation plan should account for this starter agent.
+
+25. **Configuration Revisions** are tracked — provides built-in audit trail for config changes without needing external tracking.
+
 ### Information Gaps (Still Unknown)
 
-19. **Session persistence across heartbeats** — `sessionIdBefore`/`sessionIdAfter` fields exist but live test not completed.
+26. **Session persistence across heartbeats** — `sessionIdBefore`/`sessionIdAfter` fields exist but live test not completed.
 
-20. **Budget auto-pause enforcement** — Referenced in skill docs but not tested at threshold.
+27. **Budget auto-pause enforcement at 100%** — 80% soft alert confirmed in UI, but 100% hard pause not tested at threshold.
 
-21. **`allowedTools` enforcement** — Field accepted in adapterConfig but unclear if the claude_local adapter enforces it during heartbeat execution.
+28. **`allowedTools` enforcement** — Field accepted in adapterConfig but unclear if the claude_local adapter enforces it during heartbeat execution.
+
+29. **Model dropdown options** — UI shows "Default" but specific model list not captured. Need to confirm which Claude models are available (Opus, Sonnet, Haiku).
+
+30. **Enable Chrome behavior** — Toggle exists but exact capability set it enables is undocumented in our discovery.
