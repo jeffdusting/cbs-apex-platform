@@ -1,0 +1,5 @@
+supabase
+voyageai
+requests
+msal
+xero-python

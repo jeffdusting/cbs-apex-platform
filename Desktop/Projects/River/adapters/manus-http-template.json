@@ -1,0 +1,83 @@
+{
+  "_meta": {
+    "name": "Manus HTTP Adapter Template",
+    "version": "1.0",
+    "status": "Sprint 2+ — not available in current Paperclip version",
+    "description": "HTTP adapter configuration template for Manus agent integration. Paperclip's HTTP adapter is listed as 'Coming soon' in v2026.403.0. This template is prepared for activation when the adapter ships.",
+    "created": "2026-04-08",
+    "project": "River"
+  },
+  "adapterType": "http",
+  "adapterConfig": {
+    "baseUrl": "https://manus.example.com/api/v1",
+    "authType": "bearer",
+    "authToken": "${MANUS_API_KEY}",
+    "model": "manus-default",
+    "timeout": 300,
+    "maxRetries": 3,
+    "headers": {
+      "Content-Type": "application/json",
+      "X-River-Agent": "${AGENT_ID}",
+      "X-River-Company": "${COMPANY_ID}"
+    },
+    "endpoints": {
+      "chat": "/chat/completions",
+      "status": "/health",
+      "cancel": "/chat/cancel"
+    },
+    "requestMapping": {
+      "promptField": "messages",
+      "modelField": "model",
+      "maxTokensField": "max_tokens",
+      "temperatureField": "temperature"
+    },
+    "responseMapping": {
+      "contentPath": "choices[0].message.content",
+      "usagePath": "usage",
+      "finishReasonPath": "choices[0].finish_reason"
+    },
+    "env": {
+      "MANUS_API_KEY": {
+        "type": "secret",
+        "value": "manus-api-key-secret-ref"
+      },
+      "SUPABASE_URL": {
+        "type": "plain",
+        "value": "${SUPABASE_URL}"
+      },
+      "SUPABASE_SERVICE_ROLE_KEY": {
+        "type": "secret",
+        "value": "supabase-service-role-key-secret-ref"
+      }
+    },
+    "dangerouslySkipPermissions": false,
+    "maxTurnsPerRun": 50
+  },
+  "runtimeConfig": {
+    "heartbeat": {
+      "enabled": true,
+      "intervalSec": 86400,
+      "cooldownSec": 60,
+      "wakeOnDemand": true,
+      "maxConcurrentRuns": 1
+    }
+  },
+  "budgetMonthlyCents": 3000,
+  "agentTemplate": {
+    "name": "manus-research",
+    "role": "researcher",
+    "title": "Manus Research Agent",
+    "reportsTo": "${CBS_EXECUTIVE_AGENT_ID}",
+    "capabilities": "Long-running web research, autonomous investigation, multi-step information gathering"
+  },
+  "activationChecklist": [
+    "Verify Paperclip HTTP adapter is available (check adapter list in dashboard)",
+    "Obtain Manus API key and configure as a Paperclip secret",
+    "Create the agent using this template via POST /api/companies/{companyId}/agents",
+    "Write instruction files to the agent's instructionsRootPath",
+    "Sync skills: paperclip, supabase-query",
+    "Trigger a test heartbeat and verify successful completion",
+    "Monitor the first 3 heartbeat cycles for correct behaviour",
+    "Set a low initial budget (3000 cents = $30/month) until usage patterns are established"
+  ]
+}

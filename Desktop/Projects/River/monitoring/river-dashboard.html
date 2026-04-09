@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project River — Monitoring Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <style>
+        .pulse-green { animation: pulse-green 2s infinite; }
+        .pulse-amber { animation: pulse-amber 2s infinite; }
+        .pulse-red { animation: pulse-red 1s infinite; }
+        @keyframes pulse-green { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        @keyframes pulse-amber { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes pulse-red { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+<!-- ============================================================ -->
+<!-- CONFIGURATION — Update these values for your deployment       -->
+<!-- ============================================================ -->
+<script>
+const CONFIG = {
+    PAPERCLIP_URL: "https://org.cbslab.app",   // Update to your Paperclip URL
+    API_KEY: "",                                 // Set via the input field below
+    POLL_INTERVAL_MS: 60000,                     // Poll every 60 seconds
+    ANOMALY_THRESHOLD: 0.20,                     // 20% of monthly budget per heartbeat
+};
+</script>
+
+<div id="app" class="max-w-7xl mx-auto px-4 py-6">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-white">Project River</h1>
+            <p class="text-gray-400 text-sm mt-1">Multi-Entity Organisation Monitoring Dashboard</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <span id="last-updated" class="text-gray-500 text-sm"></span>
+            <button onclick="refreshAll()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- API Key Input (session only, not stored) -->
+    <div id="auth-bar" class="bg-gray-900 rounded-lg p-4 mb-6 border border-gray-800">
+        <div class="flex items-center gap-4">
+            <label class="text-sm text-gray-400 whitespace-nowrap">API Key:</label>
+            <input type="password" id="api-key-input" placeholder="Paste your Paperclip API key"
+                   class="flex-1 bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                   onchange="CONFIG.API_KEY = this.value">
+            <button onclick="CONFIG.API_KEY = document.getElementById('api-key-input').value; refreshAll();"
+                    class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm transition">
+                Connect
+            </button>
+        </div>
+    </div>
+
+    <!-- Anomaly Alerts -->
+    <div id="anomaly-alerts" class="mb-6 hidden">
+        <div class="bg-red-900/30 border border-red-700 rounded-lg p-4">
+            <h3 class="text-red-400 font-semibold mb-2">Anomaly Alerts</h3>
+            <div id="anomaly-list" class="space-y-1 text-sm"></div>
+        </div>
+    </div>
+
+    <!-- Company Overview Cards -->
+    <div id="company-overview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-800 animate-pulse">
+            <div class="h-4 bg-gray-800 rounded w-3/4 mb-2"></div>
+            <div class="h-8 bg-gray-800 rounded w-1/2"></div>
+        </div>
+    </div>
+
+    <!-- Budget Chart -->
+    <div class="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-8">
+        <h2 class="text-lg font-semibold mb-4">Budget Utilisation by Agent</h2>
+        <div class="h-64">
+            <canvas id="budget-chart"></canvas>
+        </div>
+    </div>
+
+    <!-- Agent Cards -->
+    <h2 class="text-lg font-semibold mb-4">Agent Status</h2>
+    <div id="agent-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-800 animate-pulse">
+            <div class="h-4 bg-gray-800 rounded w-3/4 mb-2"></div>
+            <div class="h-4 bg-gray-800 rounded w-1/2"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ============================================================
+// State
+// ============================================================
+let companies = [];
+let agentsByCompany = {};
+let costsByCompany = {};
+let previousCosts = {};
+let budgetChart = null;
+let pollTimer = null;
+
+// ============================================================
+// API Helpers
+// ============================================================
+async function apiFetch(path) {
+    if (!CONFIG.API_KEY) return null;
+    try {
+        const resp = await fetch(`${CONFIG.PAPERCLIP_URL}${path}`, {
+            headers: {
+                "Authorization": `Bearer ${CONFIG.API_KEY}`,
+                "Content-Type": "application/json",
+            },
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        return await resp.json();
+    } catch (e) {
+        console.error(`API error for ${path}:`, e);
+        return null;
+    }
+}
+
+// ============================================================
+// Data Fetching
+// ============================================================
+async function fetchCompanies() {
+    const data = await apiFetch("/api/companies");
+    if (!data) return;
+    companies = Array.isArray(data) ? data : (data.companies || data.data || []);
+}
+
+async function fetchAgents(companyId) {
+    const data = await apiFetch(`/api/companies/${companyId}/agents`);
+    if (!data) return [];
+    return Array.isArray(data) ? data : (data.agents || data.data || []);
+}
+
+async function fetchCosts(companyId) {
+    const data = await apiFetch(`/api/companies/${companyId}/costs/by-agent`);
+    return data;
+}
+
+// ============================================================
+// Anomaly Detection
+// ============================================================
+function checkAnomalies() {
+    const anomalies = [];
+
+    for (const [companyId, agents] of Object.entries(agentsByCompany)) {
+        const costs = costsByCompany[companyId] || {};
+        const prevCosts = previousCosts[companyId] || {};
+
+        for (const agent of agents) {
+            const agentId = agent.id || agent.agentId;
+            const budget = agent.budgetMonthlyCents || 0;
+            if (budget === 0) continue;
+
+            // Check current spent vs budget
+            const currentSpent = getCostForAgent(costs, agentId);
+            const prevSpent = getCostForAgent(prevCosts, agentId);
+            const delta = currentSpent - prevSpent;
+
+            // Flag if single-heartbeat delta exceeds threshold
+            if (delta > 0 && delta > budget * CONFIG.ANOMALY_THRESHOLD) {
+                anomalies.push({
+                    agent: agent.name || agentId,
+                    company: companies.find(c => c.id === companyId)?.name || companyId,
+                    delta: delta,
+                    budget: budget,
+                    pct: ((delta / budget) * 100).toFixed(1),
+                });
+            }
+        }
+    }
+
+    const alertsDiv = document.getElementById("anomaly-alerts");
+    const listDiv = document.getElementById("anomaly-list");
+
+    if (anomalies.length > 0) {
+        alertsDiv.classList.remove("hidden");
+        listDiv.innerHTML = anomalies.map(a =>
+            `<p class="text-red-300">&#9888; <strong>${a.agent}</strong> (${a.company}): ` +
+            `$${(a.delta / 100).toFixed(2)} spent in last interval (${a.pct}% of $${(a.budget / 100).toFixed(2)} monthly budget)</p>`
+        ).join("");
+    } else {
+        alertsDiv.classList.add("hidden");
+    }
+}
+
+function getCostForAgent(costsData, agentId) {
+    if (!costsData) return 0;
+    // Handle various response formats
+    if (Array.isArray(costsData)) {
+        const entry = costsData.find(c => c.agentId === agentId || c.agent_id === agentId);
+        return entry ? (entry.spentMonthlyCents || entry.spent || 0) : 0;
+    }
+    if (costsData[agentId]) {
+        return costsData[agentId].spentMonthlyCents || costsData[agentId].spent || 0;
+    }
+    return 0;
+}
+
+// ============================================================
+// Rendering
+// ============================================================
+function budgetColour(spent, budget) {
+    if (budget === 0) return { bg: "bg-gray-700", text: "text-gray-400", dot: "bg-gray-500" };
+    const pct = spent / budget;
+    if (pct >= 1.0) return { bg: "bg-red-900/30", text: "text-red-400", dot: "bg-red-500 pulse-red" };
+    if (pct >= 0.8) return { bg: "bg-amber-900/30", text: "text-amber-400", dot: "bg-amber-500 pulse-amber" };
+    return { bg: "bg-green-900/30", text: "text-green-400", dot: "bg-green-500 pulse-green" };
+}
+
+function renderCompanyOverview() {
+    const container = document.getElementById("company-overview");
+    if (companies.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 col-span-4">No companies loaded. Enter your API key and click Connect.</p>';
+        return;
+    }
+
+    container.innerHTML = companies.map(c => {
+        const agents = agentsByCompany[c.id] || [];
+        const activeAgents = agents.filter(a => {
+            const hb = (a.runtimeConfig || {}).heartbeat || {};
+            return hb.enabled || hb.wakeOnDemand;
+        });
+        const status = c.status || "active";
+        const isArchived = status === "archived";
+
+        return `
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-800 ${isArchived ? 'opacity-50' : ''}">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="font-semibold text-white">${c.name || 'Unknown'}</h3>
+                <span class="text-xs px-2 py-0.5 rounded ${isArchived ? 'bg-gray-700 text-gray-400' : 'bg-green-900/50 text-green-400'}">
+                    ${status}
+                </span>
+            </div>
+            <p class="text-2xl font-bold text-white">${agents.length}</p>
+            <p class="text-xs text-gray-500">${activeAgents.length} active agents</p>
+        </div>`;
+    }).join("");
+}
+
+function renderAgentCards() {
+    const container = document.getElementById("agent-grid");
+    const allAgents = [];
+
+    for (const [companyId, agents] of Object.entries(agentsByCompany)) {
+        const company = companies.find(c => c.id === companyId);
+        const costs = costsByCompany[companyId] || {};
+        for (const agent of agents) {
+            allAgents.push({ ...agent, companyName: company?.name || companyId, costs });
+        }
+    }
+
+    if (allAgents.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 col-span-3">No agents loaded.</p>';
+        return;
+    }
+
+    container.innerHTML = allAgents.map(agent => {
+        const agentId = agent.id || agent.agentId;
+        const budget = agent.budgetMonthlyCents || 0;
+        const spent = getCostForAgent(agent.costs, agentId);
+        const pct = budget > 0 ? ((spent / budget) * 100).toFixed(0) : 0;
+        const colours = budgetColour(spent, budget);
+        const hb = (agent.runtimeConfig || {}).heartbeat || {};
+        const hbText = hb.enabled ? `${hb.intervalSec}s` : (hb.wakeOnDemand ? "on-demand" : "disabled");
+        const model = (agent.adapterConfig || {}).model || "unknown";
+        const lastActive = agent.lastActiveAt || agent.lastHeartbeatAt || null;
+        const lastActiveText = lastActive ? new Date(lastActive).toLocaleString() : "never";
+
+        return `
+        <div class="bg-gray-900 rounded-lg p-5 border border-gray-800">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-full ${colours.dot}"></div>
+                    <h3 class="font-semibold text-white text-sm">${agent.name || agentId}</h3>
+                </div>
+                <span class="text-xs text-gray-500">${agent.companyName}</span>
+            </div>
+            <div class="space-y-2 text-xs">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Role</span>
+                    <span class="text-gray-300">${agent.role || 'N/A'} (${agent.title || ''})</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Model</span>
+                    <span class="text-gray-300">${model.replace('claude-', '').replace('-20250514', '').replace('-20251001', '')}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Heartbeat</span>
+                    <span class="text-gray-300">${hbText}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Last Active</span>
+                    <span class="text-gray-300">${lastActiveText}</span>
+                </div>
+                <!-- Budget bar -->
+                <div class="mt-2">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-gray-500">Budget</span>
+                        <span class="${colours.text}">$${(spent / 100).toFixed(2)} / $${(budget / 100).toFixed(2)} (${pct}%)</span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1.5">
+                        <div class="${colours.bg.replace('/30', '')} h-1.5 rounded-full transition-all" style="width: ${Math.min(pct, 100)}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+function renderBudgetChart() {
+    const canvas = document.getElementById("budget-chart");
+    const allAgents = [];
+    for (const [companyId, agents] of Object.entries(agentsByCompany)) {
+        const costs = costsByCompany[companyId] || {};
+        for (const agent of agents) {
+            allAgents.push({ ...agent, costs });
+        }
+    }
+
+    const labels = allAgents.map(a => a.name || a.id);
+    const budgets = allAgents.map(a => (a.budgetMonthlyCents || 0) / 100);
+    const spents = allAgents.map(a => getCostForAgent(a.costs, a.id || a.agentId) / 100);
+
+    if (budgetChart) budgetChart.destroy();
+
+    budgetChart = new Chart(canvas, {
+        type: "bar",
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: "Budget ($)",
+                    data: budgets,
+                    backgroundColor: "rgba(59, 130, 246, 0.3)",
+                    borderColor: "rgba(59, 130, 246, 0.8)",
+                    borderWidth: 1,
+                },
+                {
+                    label: "Spent ($)",
+                    data: spents,
+                    backgroundColor: spents.map((s, i) => {
+                        const pct = budgets[i] > 0 ? s / budgets[i] : 0;
+                        if (pct >= 1) return "rgba(239, 68, 68, 0.6)";
+                        if (pct >= 0.8) return "rgba(245, 158, 11, 0.6)";
+                        return "rgba(34, 197, 94, 0.6)";
+                    }),
+                    borderColor: spents.map((s, i) => {
+                        const pct = budgets[i] > 0 ? s / budgets[i] : 0;
+                        if (pct >= 1) return "rgba(239, 68, 68, 0.9)";
+                        if (pct >= 0.8) return "rgba(245, 158, 11, 0.9)";
+                        return "rgba(34, 197, 94, 0.9)";
+                    }),
+                    borderWidth: 1,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: "#9ca3af" } },
+            },
+            scales: {
+                x: { ticks: { color: "#6b7280", maxRotation: 45 }, grid: { color: "#1f2937" } },
+                y: { ticks: { color: "#6b7280", callback: v => `$${v}` }, grid: { color: "#1f2937" } },
+            },
+        },
+    });
+}
+
+// ============================================================
+// Main Refresh Loop
+// ============================================================
+async function refreshAll() {
+    if (!CONFIG.API_KEY) {
+        document.getElementById("last-updated").textContent = "Enter API key to connect";
+        return;
+    }
+
+    document.getElementById("last-updated").textContent = "Updating...";
+
+    // Save previous costs for anomaly detection
+    previousCosts = JSON.parse(JSON.stringify(costsByCompany));
+
+    await fetchCompanies();
+
+    for (const company of companies) {
+        if (company.status === "archived") continue;
+        agentsByCompany[company.id] = await fetchAgents(company.id);
+        costsByCompany[company.id] = await fetchCosts(company.id);
+    }
+
+    renderCompanyOverview();
+    renderAgentCards();
+    renderBudgetChart();
+    checkAnomalies();
+
+    const now = new Date().toLocaleTimeString();
+    document.getElementById("last-updated").textContent = `Updated: ${now}`;
+}
+
+// Start polling
+function startPolling() {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(refreshAll, CONFIG.POLL_INTERVAL_MS);
+}
+
+// Initial load
+document.addEventListener("DOMContentLoaded", () => {
+    startPolling();
+    // If API key is pre-configured, auto-refresh
+    if (CONFIG.API_KEY) refreshAll();
+});
+</script>
+
+</body>
+</html>

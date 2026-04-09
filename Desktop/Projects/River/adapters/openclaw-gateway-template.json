@@ -1,0 +1,107 @@
+{
+  "_meta": {
+    "name": "OpenClaw Gateway Adapter Template",
+    "version": "1.0",
+    "status": "Sprint 2+ — not available in current Paperclip version",
+    "description": "OpenClaw gateway adapter configuration template for controlled external API access. Paperclip's openclaw-gateway adapter is listed in the Docker image but not yet documented as production-ready. This template is prepared for activation when gateway support is confirmed stable.",
+    "created": "2026-04-08",
+    "project": "River"
+  },
+  "adapterType": "openclaw-gateway",
+  "adapterConfig": {
+    "gatewayUrl": "https://gateway.openclaw.example.com",
+    "authType": "api_key",
+    "authKey": "${OPENCLAW_API_KEY}",
+    "model": "claude-sonnet-4-20250514",
+    "routingPolicy": "cost_optimised",
+    "allowedOrigins": [
+      "api.tenders.gov.au",
+      "data.gov.au",
+      "graph.microsoft.com",
+      "api.xero.com",
+      "identity.xero.com"
+    ],
+    "blockedOrigins": [
+      "*.social-media.com",
+      "*.email-service.com"
+    ],
+    "rateLimits": {
+      "requestsPerMinute": 30,
+      "requestsPerHour": 500,
+      "tokensPerMinute": 100000
+    },
+    "headers": {
+      "X-River-Agent": "${AGENT_ID}",
+      "X-River-Company": "${COMPANY_ID}",
+      "X-Gateway-Policy": "river-sprint1"
+    },
+    "env": {
+      "OPENCLAW_API_KEY": {
+        "type": "secret",
+        "value": "openclaw-api-key-secret-ref"
+      },
+      "SUPABASE_URL": {
+        "type": "plain",
+        "value": "${SUPABASE_URL}"
+      },
+      "SUPABASE_SERVICE_ROLE_KEY": {
+        "type": "secret",
+        "value": "supabase-service-role-key-secret-ref"
+      }
+    },
+    "dangerouslySkipPermissions": false,
+    "maxTurnsPerRun": 30,
+    "timeoutSec": 600,
+    "graceSec": 30
+  },
+  "runtimeConfig": {
+    "heartbeat": {
+      "enabled": true,
+      "intervalSec": 14400,
+      "cooldownSec": 30,
+      "wakeOnDemand": true,
+      "maxConcurrentRuns": 1
+    }
+  },
+  "budgetMonthlyCents": 2000,
+  "agentTemplate": {
+    "name": "gateway-tender-intel",
+    "role": "researcher",
+    "title": "Gateway-Enabled Tender Intelligence",
+    "reportsTo": "${CBS_EXECUTIVE_AGENT_ID}",
+    "capabilities": "Controlled external API access for tender portal monitoring, government data retrieval, and market intelligence gathering via OpenClaw gateway"
+  },
+  "gatewayPolicies": {
+    "dataClassification": {
+      "description": "Controls what data can be sent through the gateway to external APIs",
+      "rules": [
+        "No client-confidential data may be sent to external APIs",
+        "No financial data from Xero may be forwarded externally",
+        "Tender search queries may include sector keywords only, not internal capability details",
+        "Graph API calls are limited to SharePoint file operations and Teams notifications"
+      ]
+    },
+    "auditRequirements": {
+      "description": "Logging requirements for gateway traffic",
+      "rules": [
+        "All gateway requests must be logged with timestamp, destination, and response code",
+        "Request and response bodies are logged for audit (exclude auth headers)",
+        "Logs are retained for 90 days minimum",
+        "Weekly gateway usage summary is generated automatically"
+      ]
+    }
+  },
+  "activationChecklist": [
+    "Verify Paperclip openclaw-gateway adapter is production-ready (check release notes)",
+    "Set up OpenClaw gateway instance with the River routing policy",
+    "Configure allowed origins to match River's integration endpoints only",
+    "Obtain OpenClaw API key and configure as a Paperclip secret",
+    "Create the agent using this template via POST /api/companies/{companyId}/agents",
+    "Write instruction files to the agent's instructionsRootPath",
+    "Sync skills: paperclip, supabase-query, tender-portal-query",
+    "Test gateway connectivity to each allowed origin",
+    "Trigger a test heartbeat and verify gateway routing works correctly",
+    "Monitor gateway logs for the first week to validate policy enforcement",
+    "Set a low initial budget (2000 cents = $20/month) until usage patterns are established"
+  ]
+}

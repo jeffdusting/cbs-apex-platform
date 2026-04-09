@@ -1,0 +1,51 @@
+# Project River — Production Docker Compose (Reference Only)
+#
+# Railway deployment uses the Docker image directly with Railway-managed PostgreSQL.
+# This compose file is for local reference and testing. Railway environment variables
+# are configured in the Railway dashboard, not via this file.
+#
+# To run locally: docker compose up -d
+# Requires: PostgreSQL 17 accessible at DATABASE_URL
+
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: paperclip
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-paperclip_dev}
+      POSTGRES_DB: paperclip
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperclip"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  paperclip:
+    image: ghcr.io/paperclipai/paperclip@sha256:791f3493d101154cb8a991a3895160297fae979f50cba657032ae4ce18132bff
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3100:3100"
+    environment:
+      DATABASE_URL: postgresql://paperclip:${POSTGRES_PASSWORD:-paperclip_dev}@db:5432/paperclip
+      PAPERCLIP_PUBLIC_URL: ${PAPERCLIP_PUBLIC_URL:-http://localhost:3100}
+      PAPERCLIP_DEPLOYMENT_MODE: authenticated
+      PAPERCLIP_DEPLOYMENT_EXPOSURE: public
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_TRUSTED_ORIGINS: ${BETTER_AUTH_TRUSTED_ORIGINS:-http://localhost:3100}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      HOST: 0.0.0.0
+      PORT: "3100"
+      SERVE_UI: "true"
+      HEARTBEAT_SCHEDULER_ENABLED: "true"
+      HEARTBEAT_SCHEDULER_INTERVAL_MS: "30000"
+
+volumes:
+  pgdata:
