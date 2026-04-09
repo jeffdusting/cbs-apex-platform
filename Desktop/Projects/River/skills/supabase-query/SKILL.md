@@ -72,17 +72,16 @@ Each result contains:
 
 ```json
 {
-  "id": "uuid",
+  "id": 123,
+  "entity": "cbs-group",
+  "title": "Capital Methodology Part01",
   "content": "Document chunk text...",
-  "metadata": {
-    "source": "cbs-group-capital-methodology.md",
-    "entity": "cbs-group",
-    "category": "methodology",
-    "chunk_index": 3
-  },
-  "similarity": 0.87
+  "source_file": "cbs-group-capital-methodology-part01.md",
+  "similarity": 0.57
 }
 ```
+
+**Note:** `entity` and `category` are top-level TEXT columns, not inside `metadata` JSONB. Use PostgREST filtering with `entity=eq.cbs-group` and `category=eq.tender`, not `metadata->>entity`.
 
 ## Full-Text Search — Fallback
 
@@ -107,7 +106,7 @@ def fulltext_search(query: str, entity: str = None, limit: int = 10) -> list[dic
         "order": "created_at.desc",
     }
     if entity:
-        params["metadata->>entity"] = f"eq.{entity}"
+        params["entity"] = f"eq.{entity}"
 
     response = httpx.get(
         f"{SUPABASE_URL}/rest/v1/documents",
@@ -134,7 +133,7 @@ def get_documents_by_filter(entity: str, category: str, limit: int = 20) -> list
     """
     params = {
         "metadata->>entity": f"eq.{entity}",
-        "metadata->>category": f"eq.{category}",
+        "category": f"eq.{category}",
         "limit": limit,
         "order": "created_at.desc",
     }
