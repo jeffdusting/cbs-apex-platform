@@ -1,5 +1,56 @@
 # Project River — Task Log
 
+## Day 2 — Ingestion, Agent Configuration, Validation
+
+**Date:** 9 April 2026
+**Status:** PARTIAL — scripts written, infrastructure tasks pending env vars
+**Git Tag:** (pending full completion)
+
+---
+
+### Phase 5: Day 2 Validation — IN PROGRESS
+
+| # | Task | Status |
+|---|------|--------|
+| 5.1 | Install dependencies and ingest KB | PENDING — requires VOYAGE_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY |
+| 5.2 | Write and run retrieval quality evaluation | DONE (script) — `scripts/test-semantic-search.py` written, compiles clean. Execution pending env vars |
+| 5.3 | Insert governance templates | DONE (script) — `scripts/insert-governance-templates.py` written, compiles clean. Execution pending env vars |
+| 5.4 | Create CBS Group agents | PENDING — requires PAPERCLIP_URL and env vars. Script exists: `scripts/paperclip-hire-cbs-agents.py` |
+| 5.5 | Create CBS projects and routines | PENDING — requires PAPERCLIP_URL. Script exists: `scripts/paperclip-create-projects-routines.py` |
+| 5.6 | Run validation checks | PENDING — requires live infrastructure |
+| 5.7 | Prepare Day 3 test tender brief | DONE — `day3-test-tender/test-brief.md` (TfNSW AMSS RFP WS5364262133) |
+
+### Files Created
+
+- `scripts/test-semantic-search.py` — 5-query retrieval eval against Supabase match_documents via Voyage AI
+- `scripts/insert-governance-templates.py` — reads 9 prompt templates, upserts into Supabase prompt_templates table
+- `day3-test-tender/test-brief.md` — test tender brief using real TfNSW AMSS RFP (WS5364262133)
+
+### Blocker: Environment Variables Not Set
+
+The following env vars are required before Tasks 5.1–5.6 can execute:
+
+- `VOYAGE_API_KEY` — Voyage AI API key for embedding generation
+- `SUPABASE_URL` — Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role key
+- `PAPERCLIP_URL` — Paperclip instance URL (Railway deployment)
+- `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET` — M365 Graph API
+- `XERO_CLIENT_ID`, `XERO_CLIENT_SECRET` — Xero OAuth
+
+**To resume:** Set env vars (e.g. `source scripts/env-setup.sh` after populating values), then re-run this phase. Tasks 5.1–5.6 execute in order.
+
+### Next Steps (once env vars are set)
+
+1. `pip install -r scripts/requirements.txt --break-system-packages`
+2. `python scripts/ingest-knowledge-base.py`
+3. `python scripts/test-semantic-search.py`
+4. `python scripts/insert-governance-templates.py`
+5. `python scripts/paperclip-hire-cbs-agents.py`
+6. `python scripts/paperclip-create-projects-routines.py --entity cbs`
+7. `python scripts/paperclip-validate.py --check companies --check agents-cbs --check kb-count`
+
+---
+
 ## Day 1 — Knowledge Base Structuring
 
 **Date:** 9 April 2026
