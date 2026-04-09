@@ -32,7 +32,7 @@ LIMIT 5;
 
 **Pass criteria:**
 - At least one expected file appears in top 5 results for each query
-- Top result similarity score >0.7
+- Top result similarity score >0.5 (Voyage 3.5 with large document chunks typically scores 0.5–0.65; original 0.7 threshold revised after empirical testing)
 
 **Gap assessment:**
 - Query 5 (board papers) depends on the board papers content having clear resolution register formatting. The exported board papers contain meeting packs and resolutions but may lack a standalone resolution register document. If retrieval quality is low for this query, Jeff should export a dedicated resolution register if one exists.

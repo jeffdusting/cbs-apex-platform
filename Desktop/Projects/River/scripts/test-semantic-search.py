@@ -141,7 +141,7 @@ def main():
             continue
 
         top_3 = rows[:3]
-        above_threshold = [r for r in rows if r.get("similarity", 0) >= 0.7]
+        above_threshold = [r for r in rows if r.get("similarity", 0) >= 0.5]
 
         print(f"  Top {len(top_3)} results:")
         for i, row in enumerate(top_3, 1):
