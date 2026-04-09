@@ -3,7 +3,7 @@
 ## Day 0 — Platform Discovery & Configuration Generation
 
 **Date:** 8–9 April 2026
-**Status:** COMPLETE (pending 2 human tasks)
+**Status:** COMPLETE — proceed to Day 1 confirmed 9 April 2026
 
 ---
 
@@ -111,8 +111,8 @@ Gate verification: PASS — all skills, templates, and docs present.
 
 | Task | Owner | Status |
 |------|-------|--------|
-| AusTender API registration | Jeff | PENDING |
-| AusTender email notifications | Jeff | PENDING |
+| AusTender registration | Jeff | DONE — registered at tenders.gov.au, email notifications active |
+| AusTender email notifications | Jeff | DONE |
 | Knowledge base export | Jeff/Manus | DONE (30 files, quality gate PASS) |
 | Board papers upload (gap noted) | Jeff | PENDING |
 | Decision to proceed to Sprint 1 | Jeff | PENDING |
@@ -124,7 +124,7 @@ Gate verification: PASS — all skills, templates, and docs present.
 - [x] Discovery summary complete — all four critical unknowns resolved
 - [x] Session persistence tested across heartbeats — **PASS**
 - [x] API capability matrix documented (`archive/DISCOVERY_SUMMARY.md`)
-- [ ] AusTender API registration submitted; email notifications active — **HUMAN TASK**
+- [x] AusTender registration submitted; email notifications active
 - [x] Knowledge base content exported with quality gate passed (1 gap: board papers)
 - [x] Paperclip Docker image digest recorded for pinning
 - [x] CC-0A complete: 19 infrastructure files, all gate checks pass
@@ -132,7 +132,7 @@ Gate verification: PASS — all skills, templates, and docs present.
 - [x] CC-0C complete: 19 skill/template/doc files, all gate checks pass
 - [x] All files committed to repository
 - [x] TASK_LOG.md updated with Day 0 completion status
-- [ ] Decision to proceed to production sprint — **AWAITING CONFIRMATION**
+- [x] Decision to proceed to production sprint — **CONFIRMED 9 April 2026**
 
 ---
 
