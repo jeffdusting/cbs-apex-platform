@@ -24,6 +24,8 @@
 
 - `scripts/test-semantic-search.py` — 5-query retrieval eval against Supabase match_documents via Voyage AI
 - `scripts/insert-governance-templates.py` — reads 9 prompt templates, upserts into Supabase prompt_templates table
+- `scripts/check-token-anomaly.py` — flags agents consuming >20% of monthly budget in a single heartbeat
+- `secrets-manifest.json` — credentials inventory (which secrets, which agents, rotation schedule)
 - `day3-test-tender/test-brief.md` — test tender brief using real TfNSW AMSS RFP (WS5364262133)
 
 ### CBS Agents (9 configured)
