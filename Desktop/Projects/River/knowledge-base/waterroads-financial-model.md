@@ -1,3 +1,9 @@
+---
+entity: waterroads
+category: financial
+title: "WaterRoads Financial Model Summary"
+---
+
 # WaterRoads Financial Model Summary
 
 > Financial modelling parameters for the Rhodes to Barangaroo hydrofoil water transport service, extracted from WaterRoads business case and investor materials.

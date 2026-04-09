@@ -1,5 +1,46 @@
 # Project River — Task Log
 
+## Day 1 — Knowledge Base Structuring
+
+**Date:** 9 April 2026
+**Status:** COMPLETE
+**Git Tag:** river-p4-kb-structure
+
+---
+
+### Phase 4: KB Structure — COMPLETE
+
+| # | Task | Status |
+|---|------|--------|
+| 4.1 | Review and structure KB files — YAML front-matter, H2-boundary splitting | DONE — 225 content files (22 originals split, 2 unchanged) |
+| 4.2 | Create MANIFEST.md | DONE — 225 entries, 1,308,775 total words |
+| 4.3 | Create RETRIEVAL_EVAL.md | DONE — 5 test queries with expected results |
+| 4.4 | Spot-check agent instruction files | DONE — 3 files checked, 4 systemic gaps found and fixed across all 12 |
+
+Gate verification: PASS — all content files have front-matter, manifest and retrieval eval present, agent fixes applied to all 12 AGENTS.md.
+
+### Agent Instruction Fixes Applied (all 12 AGENTS.md files)
+
+1. Added hard stop: "must not fabricate, invent, or estimate financial figures"
+2. Added named human escalation paths (Jeff for CBS, Jeff + Sarah for WR)
+3. Added "outside expertise" flag to Output Quality Signal
+4. Added HEARTBEAT.md reference
+
+### Files Created/Modified
+
+- knowledge-base/ — 225 structured content files with YAML front-matter
+- knowledge-base/MANIFEST.md — file manifest with entity, category, word count
+- knowledge-base/RETRIEVAL_EVAL.md — 5 retrieval evaluation queries
+- agent-instructions/*/AGENTS.md — 12 files updated with hard stop + quality signal fixes
+- scripts/kb-structure.py — structuring automation script
+
+### Next Phase
+
+- Read `06-P5-DAY2-VALIDATION.md`
+- Prerequisites: Jeff has completed Day 1 infrastructure (Railway, Supabase, Azure AD, Xero, env vars)
+
+---
+
 ## Day 0 — Platform Discovery & Configuration Generation
 
 **Date:** 8–9 April 2026

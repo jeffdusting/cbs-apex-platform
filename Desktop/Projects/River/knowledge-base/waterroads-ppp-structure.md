@@ -1,3 +1,9 @@
+---
+entity: waterroads
+category: financial
+title: "WaterRoads PPP Structure Summary and Investor Materials"
+---
+
 # WaterRoads PPP Structure Summary and Investor Materials
 
 > Public-Private Partnership structure for the WaterRoads Rhodes to Barangaroo hydrofoil water transport service.
