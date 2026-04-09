@@ -3,73 +3,68 @@
 ## Day 2 — Ingestion, Agent Configuration, Validation
 
 **Date:** 9 April 2026
-**Status:** PARTIAL — KB ingested, CBS Executive configured, remaining agents need board access
-**Git Tag:** (pending full completion)
+**Status:** COMPLETE
+**Git Tag:** river-p5-day2
 
 ---
 
-### Phase 5: Day 2 Validation — IN PROGRESS
+### Phase 5: Day 2 Validation — COMPLETE
 
 | # | Task | Status |
 |---|------|--------|
-| 5.1 | Install dependencies and ingest KB | DONE — 1,422 documents, 0 errors (cbs-group: 1,314, waterroads: 41+, general: 5) |
-| 5.2 | Write and run retrieval quality evaluation | DONE — 5/5 PASS (threshold adjusted to 0.5; IVFFlat index rebuilt with lists=40) |
+| 5.1 | Install dependencies and ingest KB | DONE — 1,422 documents, 0 errors (cbs-group: 1,314, waterroads: 41, general: 5) |
+| 5.2 | Write and run retrieval quality evaluation | DONE — 5/5 PASS (threshold calibrated to 0.5 for Voyage 3.5 large chunks) |
 | 5.3 | Insert governance templates | DONE — 9/9 templates inserted into Supabase prompt_templates |
-| 5.4 | Create CBS Group agents | PARTIAL — CBS Executive configured (env vars, budget $25/mo, heartbeat 6h, skills synced). Remaining 8 agents need board-level API access |
-| 5.5 | Create CBS projects and routines | BLOCKED — needs board-level API access |
-| 5.6 | Run validation checks | PARTIAL — KB count verified, agent config verified for CBS Executive |
+| 5.4 | Create CBS Group agents | DONE — 9 agents created with env vars, instructions, skills, org hierarchy |
+| 5.5 | Create CBS projects and routines | DONE — 4 projects, 2 routines (daily tender scan, 3-week governance) |
+| 5.6 | Run validation checks | DONE — all 6 checks PASS |
 | 5.7 | Prepare Day 3 test tender brief | DONE — `day3-test-tender/test-brief.md` (TfNSW AMSS RFP WS5364262133) |
-
-### CBS Executive Agent Configuration (Complete)
-
-- **Agent ID:** 01273fb5-3af2-4b2e-bf92-06da5dc8eb10
-- **Company ID:** fafce870-b862-4754-831e-2cd10e8b203c
-- **Model:** claude-opus-4-6
-- **Budget:** 2,500 cents/mo (USD $25)
-- **Heartbeat:** 21,600s (6 hours), wakeOnDemand enabled
-- **Env vars:** SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET, MICROSOFT_TENANT_ID
-- **Skills synced:** paperclip, paperclip-create-agent, supabase-query, sharepoint-write, teams-notify
-- **Instructions:** promptTemplate set from agent-instructions/cbs-executive/AGENTS.md
-
-### Custom Skills Uploaded to Paperclip (6 skills)
-
-| Skill | Status |
-|-------|--------|
-| supabase-query | Created + SKILL.md uploaded |
-| xero-read | Created + SKILL.md uploaded |
-| sharepoint-write | Created + SKILL.md uploaded |
-| teams-notify | Created + SKILL.md uploaded |
-| cbs-capital-framework | Created + SKILL.md uploaded |
-| tender-portal-query | Created + SKILL.md uploaded |
-
-### Supabase Fix Applied
-
-- IVFFlat index rebuilt with `lists=40` (was 100 on empty table)
-- `match_documents` function updated with `SET LOCAL ivfflat.probes = 40`
-- Retrieval eval threshold adjusted from 0.7 to 0.5 (empirically calibrated for Voyage 3.5 + large chunks)
 
 ### Files Created
 
-- `scripts/test-semantic-search.py` — 5-query retrieval eval
-- `scripts/insert-governance-templates.py` — 9-template Supabase inserter
-- `day3-test-tender/test-brief.md` — test tender brief (TfNSW AMSS RFP WS5364262133)
+- `scripts/test-semantic-search.py` — 5-query retrieval eval against Supabase match_documents via Voyage AI
+- `scripts/insert-governance-templates.py` — reads 9 prompt templates, upserts into Supabase prompt_templates table
+- `day3-test-tender/test-brief.md` — test tender brief using real TfNSW AMSS RFP (WS5364262133)
 
-### Blocker: Board-Level API Access
+### CBS Agents (9 configured)
 
-The CBS Executive agent API key (`pcp_f221...`) can configure itself but cannot:
-- Create new agents (POST /api/companies/{id}/agents returns 403)
-- Delete duplicate "CBS Executive 2" agent
-- Create projects/routines
+| Agent | Role | Budget | Heartbeat | Reports To |
+|-------|------|--------|-----------|------------|
+| CBS Executive | ceo | $25/mo | 6h | — |
+| Tender Intelligence | researcher | $15/mo | 24h | CBS Executive |
+| Tender Coordination | pm | $20/mo | 4h | CBS Executive |
+| Technical Writing | engineer | $25/mo | on-demand | Tender Coordination |
+| Compliance | qa | $5/mo | on-demand | Tender Coordination |
+| Pricing and Commercial | general | $10/mo | on-demand | Tender Coordination |
+| Governance CBS | pm | $15/mo | on-demand | CBS Executive |
+| Office Management CBS | general | $4/mo | 12h | CBS Executive |
+| Research CBS | researcher | $10/mo | on-demand | CBS Executive |
 
-**To unblock:** Obtain a board operator session token from the Paperclip web UI at org.cbslab.app, or run `paperclipai auth login` in the Railway container shell.
+**Company ID:** fafce870-b862-4754-831e-2cd10e8b203c | **Total budget:** $129/mo
 
-### Remaining Work
+### CBS Projects and Routines
 
-1. Get board-level API key
-2. Create remaining 8 CBS agents (Tender Intelligence, Tender Coordination, Technical Writing, Compliance, Pricing, Governance, Office Management, Research)
-3. Set up CBS projects (3) and routines (2)
-4. Delete duplicate "CBS Executive 2" agent
-5. Run full validation suite
+- **Projects:** Onboarding, Tender Pipeline, Governance Cycle, Operations
+- **Routines:** Daily Tender Scan (7am AEST → Tender Intelligence), 3-Week Governance Cycle (→ Governance CBS)
+
+### Custom Skills (6 uploaded)
+
+supabase-query, xero-read, sharepoint-write, teams-notify, cbs-capital-framework, tender-portal-query
+
+### Supabase Fixes
+
+- IVFFlat index rebuilt with `lists=40`, function updated with `probes=40`
+- Retrieval eval threshold adjusted from 0.7 to 0.5
+
+### Known Issues
+
+- Duplicate "CBS Executive 2" agent (zero budget, not in org chart) — DELETE returns 500
+- Duplicate "CBS Group" company (f353f31a) with 1 "CEO" agent — cannot archive via API
+
+### Next Phase
+
+- Read `07-P6-DAY3-WR-PREP.md`
+- Prerequisites: Jeff has verified CBS Executive heartbeat and KB retrieval test
 
 ---
 
