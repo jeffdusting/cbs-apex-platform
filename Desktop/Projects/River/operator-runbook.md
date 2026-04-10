@@ -264,10 +264,18 @@ curl -X POST http://localhost:3100/api/companies/{companyId}/agents \
 ### Post-Creation Steps
 
 1. Write instruction files (AGENTS.md, HEARTBEAT.md, SOUL.md, TOOLS.md) to the agent's `instructionsRootPath`.
-2. Sync skills to the agent: `POST /api/agents/{id}/skills/sync` with the desired skill list.
-3. Verify the agent appears in the org chart.
-4. Trigger a test heartbeat: `POST /api/agents/{id}/heartbeat/invoke`.
-5. Monitor the first heartbeat in the activity log.
+2. **Set the `promptTemplate`** to the full contents of AGENTS.md (the agent reads this as its system prompt — it does NOT automatically read the instruction files from disk). The AGENTS.md MUST include the embedded heartbeat protocol with all steps (Get Assignments → Work → Send Teams → Exit).
+3. **Set `TEAMS_WEBHOOK_URL`** in the agent's `adapterConfig.env` — without this, Teams notifications will silently fail.
+4. Sync skills to the agent: `POST /api/agents/{id}/skills/sync` with the desired skill list.
+5. Verify the agent appears in the org chart.
+6. Trigger a test heartbeat: `POST /api/agents/{id}/heartbeat/invoke`.
+7. Monitor the first heartbeat — confirm the agent processes its assigned tasks (not just "standing by") and sends a Teams notification if applicable.
+
+### Critical Agent Configuration Notes
+
+- **promptTemplate is the system prompt.** Agents only read what is in `promptTemplate`. They do not automatically read HEARTBEAT.md, SOUL.md, or TOOLS.md from disk. The full heartbeat protocol must be embedded in AGENTS.md.
+- **Teams notifications must be PLAIN TEXT.** The Power Automate webhook renders markdown as literal characters. All agents must use UPPERCASE for emphasis, never `**bold**` or `*italic*`.
+- **TEAMS_WEBHOOK_URL must be in every agent's env.** Missing webhook URL = silent notification failure.
 
 ---
 
