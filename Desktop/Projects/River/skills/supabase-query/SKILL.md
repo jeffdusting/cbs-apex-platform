@@ -13,33 +13,69 @@ Query the River knowledge base hosted on Supabase with pgvector. Supports semant
 
 These are injected via `adapterConfig.env` on the agent. Never hardcode credentials.
 
-## Semantic Search — match_documents
+## Semantic Search — Two-Step Process
 
-Use semantic search as the primary retrieval method. The `match_documents` function accepts a query embedding (1024-dimension float array from Voyage AI voyage-3.5) and returns documents ranked by cosine similarity.
+Semantic search requires two steps:
+1. **Embed the query** — call Voyage AI to convert your search text into a 1024-dimension vector
+2. **Search Supabase** — pass the vector to `match_documents` to find similar documents
 
-### Python Example
+You MUST use this two-step process for all KB retrieval. Do NOT skip the embedding step.
+
+### Step 1: Generate Query Embedding via Voyage AI
 
 ```python
 import os
 import httpx
 
+VOYAGE_API_KEY = os.environ["VOYAGE_API_KEY"]
+
+def get_query_embedding(query_text: str) -> list[float]:
+    """
+    Convert a search query into a 1024-dimension embedding via Voyage AI.
+    
+    Args:
+        query_text: Natural language search query.
+    
+    Returns:
+        1024-dimension float array.
+    """
+    response = httpx.post(
+        "https://api.voyageai.com/v1/embeddings",
+        headers={
+            "Authorization": f"Bearer {VOYAGE_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "input": [query_text],
+            "model": "voyage-3.5",
+            "input_type": "query",
+        },
+        timeout=30,
+    )
+    response.raise_for_status()
+    return response.json()["data"][0]["embedding"]
+```
+
+### Step 2: Search Supabase with the Embedding
+
+```python
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
-headers = {
+supabase_headers = {
     "apikey": SUPABASE_KEY,
     "Authorization": f"Bearer {SUPABASE_KEY}",
     "Content-Type": "application/json",
 }
 
 
-def semantic_search(query_embedding: list[float], entity: str = None, category: str = None, match_count: int = 10, match_threshold: float = 0.7) -> list[dict]:
+def semantic_search(query_text: str, entity: str = None, category: str = None, match_count: int = 10, match_threshold: float = 0.5) -> list[dict]:
     """
-    Search the knowledge base using semantic similarity.
+    Full semantic search: embed query via Voyage AI, then search Supabase.
 
     Args:
-        query_embedding: 1024-dimension float array from Voyage AI voyage-3.5.
-        entity: Filter by entity (e.g. "cbs-group", "waterroads").
+        query_text: Natural language search query.
+        entity: Filter by entity (e.g. "cbs-group", "waterroads"). Also returns 'shared' docs.
         category: Filter by category (e.g. "tender", "governance", "methodology").
         match_count: Maximum number of results to return.
         match_threshold: Minimum cosine similarity threshold (0.0 to 1.0).
@@ -47,6 +83,10 @@ def semantic_search(query_embedding: list[float], entity: str = None, category: 
     Returns:
         List of matching document chunks with similarity scores.
     """
+    # Step 1: Get embedding from Voyage AI
+    query_embedding = get_query_embedding(query_text)
+
+    # Step 2: Search Supabase
     payload = {
         "query_embedding": query_embedding,
         "match_count": match_count,
@@ -59,11 +99,27 @@ def semantic_search(query_embedding: list[float], entity: str = None, category: 
 
     response = httpx.post(
         f"{SUPABASE_URL}/rest/v1/rpc/match_documents",
-        headers=headers,
+        headers=supabase_headers,
         json=payload,
     )
     response.raise_for_status()
     return response.json()
+```
+
+### Complete Usage Example
+
+```python
+# Search for tunnelling experience in CBS Group knowledge base
+results = semantic_search(
+    query_text="tunnelling systems engineering asset management experience",
+    entity="cbs-group",
+    match_count=5,
+    match_threshold=0.5,
+)
+
+for doc in results:
+    print(f"[{doc['similarity']:.3f}] {doc['source_file']}: {doc['title']}")
+    print(f"  {doc['content'][:200]}...")
 ```
 
 ### Response Format
