@@ -1,23 +1,19 @@
 #!/usr/bin/env python3
-"""Project River — Insert Governance Templates into Supabase (Task 5.3)
+"""Project River — Insert WaterRoads Governance Templates into Supabase (Task 6.5)
 
-Reads all .md files from prompt-templates/, determines entity and agent_role
-from the filename, and inserts into the Supabase prompt_templates table.
-
-Filename conventions:
-  - board-paper-template.md        → entity=cbs-group, category=governance
-  - waterroads-board-paper-template.md → entity=waterroads, category=governance
+Reads WaterRoads-specific .md files from prompt-templates/ and inserts them
+into the Supabase prompt_templates table with entity=waterroads.
 
 Usage:
     source scripts/env-setup.sh
-    python scripts/insert-governance-templates.py
+    python scripts/ingest-wr-templates.py
 """
 
-import os
-import sys
 import glob
 import json
+import os
 import re
+import sys
 
 from supabase import create_client, Client
 
@@ -31,42 +27,16 @@ def get_env(key: str) -> str:
     return value
 
 
-# Map filename patterns to entity and agent role
-TEMPLATE_MAPPING = {
-    "board-paper-template.md": {
-        "entity": "cbs-group",
-        "category": "governance",
-        "agent_role": "cbs-executive",
-    },
-    "board-agenda-template.md": {
-        "entity": "cbs-group",
-        "category": "governance",
-        "agent_role": "cbs-executive",
-    },
-    "board-minutes-template.md": {
-        "entity": "cbs-group",
-        "category": "governance",
-        "agent_role": "governance-cbs",
-    },
-    "resolution-template.md": {
-        "entity": "cbs-group",
-        "category": "governance",
-        "agent_role": "governance-cbs",
-    },
-    "agm-notice-template.md": {
-        "entity": "cbs-group",
-        "category": "governance",
-        "agent_role": "governance-cbs",
-    },
-    "agm-agenda-template.md": {
-        "entity": "cbs-group",
-        "category": "governance",
-        "agent_role": "governance-cbs",
-    },
+WR_TEMPLATE_MAPPING = {
     "waterroads-board-paper-template.md": {
         "entity": "waterroads",
         "category": "governance",
         "agent_role": "wr-executive",
+    },
+    "waterroads-board-agenda-template.md": {
+        "entity": "waterroads",
+        "category": "governance",
+        "agent_role": "governance-wr",
     },
     "waterroads-board-minutes-template.md": {
         "entity": "waterroads",
@@ -78,19 +48,12 @@ TEMPLATE_MAPPING = {
         "category": "governance",
         "agent_role": "governance-wr",
     },
-    "waterroads-board-agenda-template.md": {
-        "entity": "waterroads",
-        "category": "governance",
-        "agent_role": "governance-wr",
-    },
 }
 
 
 def extract_variables(content: str) -> list[str]:
     """Extract template variables (placeholders in [square brackets]) from content."""
-    # Match [PLACEHOLDER] style variables
     variables = re.findall(r"\[([A-Z][A-Za-z0-9_ /&\-']+)\]", content)
-    # Deduplicate while preserving order
     seen = set()
     unique = []
     for v in variables:
@@ -112,34 +75,26 @@ def main():
 
     supabase: Client = create_client(supabase_url, supabase_key)
 
-    # Find all .md files in prompt-templates/
     templates_dir = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         "prompt-templates",
     )
-    md_files = sorted(glob.glob(os.path.join(templates_dir, "*.md")))
 
-    if not md_files:
-        print(f"WARNING: No .md files found in {templates_dir}")
-        sys.exit(0)
-
-    print(f"Found {len(md_files)} template files in {templates_dir}")
+    print("=" * 60)
+    print("Project River — WaterRoads Template Ingestion")
+    print("=" * 60)
 
     total_inserted = 0
-    total_skipped = 0
     total_errors = 0
 
-    for filepath in md_files:
-        filename = os.path.basename(filepath)
+    for filename, mapping in WR_TEMPLATE_MAPPING.items():
+        filepath = os.path.join(templates_dir, filename)
 
-        # Look up mapping
-        mapping = TEMPLATE_MAPPING.get(filename)
-        if not mapping:
-            print(f"  SKIP: {filename} — no mapping defined")
-            total_skipped += 1
+        if not os.path.exists(filepath):
+            print(f"  MISSING: {filename} — skipping")
+            total_errors += 1
             continue
 
-        # Read template content
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 content = f.read()
@@ -148,11 +103,9 @@ def main():
             total_errors += 1
             continue
 
-        # Extract variables
         variables = extract_variables(content)
         template_name = make_template_name(filename)
 
-        # Build record
         record = {
             "name": template_name,
             "template": content,
@@ -163,7 +116,6 @@ def main():
         }
 
         try:
-            # Upsert (insert or update on name conflict)
             supabase.table("prompt_templates").upsert(
                 record, on_conflict="name"
             ).execute()
@@ -177,11 +129,9 @@ def main():
             print(f"  ERROR inserting {filename}: {e}")
             total_errors += 1
 
-    # Summary
     print(f"\n{'=' * 60}")
-    print(f"Governance Template Insertion Complete")
+    print(f"WaterRoads Template Ingestion Complete")
     print(f"  Inserted: {total_inserted}")
-    print(f"  Skipped:  {total_skipped}")
     print(f"  Errors:   {total_errors}")
     print(f"{'=' * 60}")
 

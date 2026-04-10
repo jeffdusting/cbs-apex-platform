@@ -642,6 +642,21 @@ curl -X PATCH http://localhost:3100/api/agents/{governanceCbsAgentId} \
 
 On Day 3, the system should be operational with CBS Group agents running and WaterRoads preparation in progress. Use this decision tree if things are not working as expected.
 
+### Agent Cannot Authenticate (PAPERCLIP_API_KEY Not Injected)
+
+```
+Agent reports "PAPERCLIP_API_KEY not injected" or API calls return 401/403
+└── Check Railway env vars:
+    railway variables | grep AGENT_JWT
+    ├── PAPERCLIP_AGENT_JWT_SECRET is missing
+    │   └── Fix: railway variables set PAPERCLIP_AGENT_JWT_SECRET="$(openssl rand -base64 32)"
+    │       This triggers a redeployment. Session cookies are invalidated — re-login required.
+    └── PAPERCLIP_AGENT_JWT_SECRET is set
+        └── Check server logs for JWT errors: railway logs -n 50
+```
+
+**Background:** The Paperclip server uses `PAPERCLIP_AGENT_JWT_SECRET` to mint JWT tokens that are auto-injected as `PAPERCLIP_API_KEY` into agent heartbeat runs. Without this secret, agents spawn but cannot call the Paperclip API (cannot list issues, create subtasks, update status, etc.). This is a required variable for `PAPERCLIP_DEPLOYMENT_MODE=authenticated`.
+
 ### Agent Not Executing Heartbeats
 
 ```

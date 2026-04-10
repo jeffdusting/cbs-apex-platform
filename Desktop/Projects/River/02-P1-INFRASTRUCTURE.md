@@ -11,6 +11,27 @@ Generate all infrastructure, automation, and validation scripts for Project Rive
 
 ## Tasks
 
+### Task 1.0. Record Platform Version
+
+Create `day0-findings.md` with the confirmed platform details from DISCOVERY_SUMMARY.md:
+
+```markdown
+# Project River — Day 0 Findings
+
+## Paperclip Version
+- Docker image: ghcr.io/paperclipai/paperclip:latest
+- Pinned digest: ghcr.io/paperclipai/paperclip@sha256:791f3493d101154cb8a991a3895160297fae979f50cba657032ae4ce18132bff
+- Server: @paperclipai/server@0.3.1
+- CLI: 2026.403.0
+- Claude Code CLI: 2.1.94
+- Codex CLI: 0.118.0
+- Base image: node:lts-trixie-slim (Debian)
+- No custom Dockerfile required
+
+## Key Discovery Outcomes
+(Reference DISCOVERY_SUMMARY.md for full details)
+```
+
 ### Task 1.1. Environment Setup Script
 
 Create `scripts/env-setup.sh`:
@@ -79,9 +100,104 @@ Creates four companies. Archives Adventure Safety and MAF via `POST /api/compani
 
 **IMPORTANT:** The API field is `description`, not `mission`. Use the full mission statement text from the Reference Document Section A.2 as the `description` value.
 
+### Task 1.9b. Secrets Creation Script
+
+Create `scripts/paperclip-create-secrets.py`. For each active company (CBS Group, WaterRoads), creates encrypted secrets via the Paperclip Secrets API. This must run BEFORE agent hiring, because the agent hiring scripts reference secret IDs.
+
+```python
+# For each company, create secrets for sensitive credentials:
+POST {PAPERCLIP_URL}/api/companies/{companyId}/secrets
+{ "name": "supabase-service-role-key", "value": "<from SUPABASE_SERVICE_ROLE_KEY env>" }
+# → returns { "id": "secret-uuid-1", ... }
+
+POST {PAPERCLIP_URL}/api/companies/{companyId}/secrets
+{ "name": "microsoft-client-secret", "value": "<from MICROSOFT_CLIENT_SECRET env>" }
+# → returns { "id": "secret-uuid-2", ... }
+
+POST {PAPERCLIP_URL}/api/companies/{companyId}/secrets
+{ "name": "xero-client-secret", "value": "<from XERO_CLIENT_SECRET env>" }
+# → returns { "id": "secret-uuid-3", ... }
+
+POST {PAPERCLIP_URL}/api/companies/{companyId}/secrets
+{ "name": "voyage-api-key", "value": "<from VOYAGE_API_KEY env>" }
+# → returns { "id": "secret-uuid-4", ... }
+```
+
+The script reads credential values from environment variables (os.environ), creates secrets per company, and writes the returned secret IDs to a JSON file (`secrets-manifest.json`) that the agent hiring scripts read. This ensures credentials are encrypted at rest in Paperclip and agents receive them via `secret_ref` — not inline plain text.
+
+Output: `secrets-manifest.json` mapping company IDs to secret IDs by name.
+
+### Task 1.9c. Goals and Projects Creator Script
+
+Create `scripts/paperclip-create-goals-projects-routines.py` (replaces the previous Task 1.16 scope). This script creates company-level goals, links projects to goals, and creates routines. Goals give agents full context ancestry from company mission through to the specific task.
+
+```python
+# CBS Group Goals
+POST {PAPERCLIP_URL}/api/companies/{companyId}/goals
+{
+  "title": "Deliver high-quality tender responses leveraging CAPITAL framework IP",
+  "description": "Win work by producing technically rigorous, evidence-based tender responses that reflect CBS Group's CAPITAL methodology and value-based pricing approach",
+  "level": "company",
+  "status": "active"
+}
+# → returns goalId for tender goal
+
+POST {PAPERCLIP_URL}/api/companies/{companyId}/goals
+{
+  "title": "Maintain governance compliance and investor-ready board reporting",
+  "description": "Produce board papers, manage meeting cadence, and maintain the resolution register to a standard that satisfies director obligations and investor requirements",
+  "level": "company",
+  "status": "active"
+}
+# → returns goalId for governance goal
+
+# CBS Projects — linked to goals
+POST {PAPERCLIP_URL}/api/companies/{companyId}/projects
+{
+  "name": "CBS Tender Operations",
+  "description": "Tender identification, response, and submission workflow",
+  "goalIds": ["<tender-goal-id>"],
+  "status": "in_progress"
+}
+
+POST {PAPERCLIP_URL}/api/companies/{companyId}/projects
+{
+  "name": "CBS Governance",
+  "description": "Board papers, meeting management, and governance compliance",
+  "goalIds": ["<governance-goal-id>"],
+  "status": "in_progress"
+}
+
+POST {PAPERCLIP_URL}/api/companies/{companyId}/projects
+{ "name": "CBS General Operations", "description": "Office management and ad-hoc tasks", "status": "in_progress" }
+
+# WaterRoads Goals
+POST {PAPERCLIP_URL}/api/companies/{wrCompanyId}/goals
+{
+  "title": "Maintain governance compliance and PPP investment readiness",
+  "description": "Produce board papers tracking PPP progress, investor matters, regulatory compliance, ferry route development, and funding position to a standard that satisfies joint director obligations",
+  "level": "company",
+  "status": "active"
+}
+
+# WR Projects — linked to goals
+POST {PAPERCLIP_URL}/api/companies/{wrCompanyId}/projects
+{
+  "name": "WR Governance",
+  "description": "Board papers, meeting management, and governance compliance",
+  "goalIds": ["<wr-governance-goal-id>"],
+  "status": "in_progress"
+}
+
+# Routines (same as before)
+# ... daily tender scan, 3-week governance cycle for CBS and WR
+```
+
+Accepts `--entity` flag for CBS or WR. Reports goal IDs, project IDs, and routine IDs.
+
 ### Task 1.10. CBS Agent Hiring Script
 
-Create `scripts/paperclip-hire-cbs-agents.py`. Uses the **direct creation endpoint** (board operator path):
+Create `scripts/paperclip-hire-cbs-agents.py`. Reads `secrets-manifest.json` (from Task 1.9b) for secret IDs. Uses the **direct creation endpoint** (board operator path):
 
 ```python
 POST {PAPERCLIP_URL}/api/companies/{companyId}/agents
@@ -100,9 +216,9 @@ POST {PAPERCLIP_URL}/api/companies/{companyId}/agents
     "timeoutSec": 0,
     "env": {
       "SUPABASE_URL": { "type": "plain", "value": "<from env>" },
-      "SUPABASE_SERVICE_ROLE_KEY": { "type": "secret", "value": "<from env>" },
+      "SUPABASE_SERVICE_ROLE_KEY": { "type": "secret_ref", "secretId": "<from secrets-manifest>", "version": "latest" },
       "MICROSOFT_CLIENT_ID": { "type": "plain", "value": "<from env>" },
-      "MICROSOFT_CLIENT_SECRET": { "type": "secret", "value": "<from env>" },
+      "MICROSOFT_CLIENT_SECRET": { "type": "secret_ref", "secretId": "<from secrets-manifest>", "version": "latest" },
       "MICROSOFT_TENANT_ID": { "type": "plain", "value": "<from env>" }
     }
   },
@@ -147,36 +263,9 @@ Create `scripts/paperclip-validate.py`. Accepts `--check` flag with options: `co
 
 Create `scripts/create-sharepoint-folders.py`. Uses Graph API to create: CBS Group (Board Papers/, Minutes/, Resolutions/, Tender Documents/) and WaterRoads (Board Papers/, Minutes/, Resolutions/, Tender Documents/).
 
-### Task 1.16. Project and Routine Creator
+### Task 1.16. (Merged into Task 1.9c)
 
-Create `scripts/paperclip-create-projects-routines.py`. Creates projects and routines for CBS Group:
-
-```python
-# Projects
-POST /api/companies/{companyId}/projects
-{ "name": "CBS Tender Operations", "description": "Tender identification, response, and submission workflow" }
-
-POST /api/companies/{companyId}/projects
-{ "name": "CBS Governance", "description": "Board papers, meeting management, and governance compliance" }
-
-POST /api/companies/{companyId}/projects
-{ "name": "CBS General Operations", "description": "Office management and ad-hoc tasks" }
-
-# Routines
-POST /api/companies/{companyId}/routines
-{ "title": "Daily tender opportunity scan", "assigneeAgentId": "<tender-intel-id>", "projectId": "<tender-ops-project-id>" }
-
-POST /api/routines/{routineId}/triggers
-{ "kind": "schedule", "cronExpression": "0 7 * * *" }
-
-POST /api/companies/{companyId}/routines
-{ "title": "Board paper preparation cycle", "assigneeAgentId": "<governance-cbs-id>", "projectId": "<governance-project-id>" }
-
-POST /api/routines/{routineId}/triggers
-{ "kind": "schedule", "cronExpression": "0 8 1,22 * *" }
-```
-
-Accepts `--entity` flag for CBS or WR (WR has different routine config).
+Goals, projects, and routines are now created by `scripts/paperclip-create-goals-projects-routines.py` (Task 1.9c above), which handles the full hierarchy: goals → projects (linked to goals) → routines (linked to projects).
 
 ### Task 1.17. Monitoring Dashboard
 
@@ -207,10 +296,12 @@ Create `scripts/requirements.txt`: supabase, voyageai, requests, msal, xero-pyth
 # 1. All scripts exist
 ls scripts/env-setup.sh scripts/ingest-knowledge-base.py scripts/test-graph-api.py \
    scripts/test-xero-api.py scripts/tender-portal-query.py scripts/test-hard-stop-layer2.py \
-   scripts/paperclip-create-companies.py scripts/paperclip-hire-cbs-agents.py \
+   scripts/paperclip-create-companies.py scripts/paperclip-create-secrets.py \
+   scripts/paperclip-create-goals-projects-routines.py \
+   scripts/paperclip-hire-cbs-agents.py \
    scripts/paperclip-hire-wr-agents.py scripts/paperclip-create-ticket.py \
    scripts/paperclip-set-heartbeats.py scripts/paperclip-validate.py \
-   scripts/create-sharepoint-folders.py scripts/paperclip-create-projects-routines.py \
+   scripts/create-sharepoint-folders.py \
    scripts/river-test-suite.py scripts/requirements.txt \
    monitoring/river-dashboard.html docker-compose.yml supabase-schema.sql
 echo "PASS: All files present"
@@ -222,7 +313,10 @@ grep -r "sk-ant\|sk-proj\|Bearer " scripts/ && echo "FAIL: Hardcoded credentials
 grep -r "heartbeatInterval\b" scripts/ && echo "FAIL: Old heartbeatInterval field used" || echo "PASS: Correct heartbeat field"
 grep -r "NEXT_PUBLIC_APP_URL" scripts/ docker-compose.yml && echo "FAIL: Wrong env var name" || echo "PASS: Correct env var names"
 
-# 4. Python syntax check
+# 4. Secret refs used (not inline secrets)
+grep -r '"type": "secret"' scripts/paperclip-hire-*.py && echo "FAIL: Inline secrets — should use secret_ref" || echo "PASS: Using secret_ref"
+
+# 5. Python syntax check
 python3 -m py_compile scripts/paperclip-create-companies.py && echo "PASS: Syntax OK" || echo "FAIL: Syntax error"
 ```
 
@@ -238,7 +332,7 @@ Update TASK_LOG.md:
 **Git Tag:** river-p1-infrastructure
 
 ### Files Created
-- scripts/ (19 files)
+- scripts/ (21 files including secrets creation and goals/projects/routines)
 - docker-compose.yml
 - supabase-schema.sql
 - monitoring/river-dashboard.html

@@ -1,1 +1,5 @@
 __pycache__/
+scripts/env-setup.sh
+credentials-raw.txt
+.env
+*.key

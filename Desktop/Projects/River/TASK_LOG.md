@@ -1,5 +1,97 @@
 # Project River — Task Log
 
+## Day 3 — WaterRoads Preparation and Test Support
+
+**Date:** 10 April 2026
+**Status:** COMPLETE
+**Git Tag:** river-p6-day3
+
+---
+
+### Phase 6: Day 3 — WR Preparation and CBS Test Support
+
+| # | Task | Status |
+|---|------|--------|
+| 6.1 | Set CBS test heartbeats (30min) | DONE — 10/10 agents set to 1800s, production config saved |
+| 6.2 | Create test tender ticket | DONE — CBSA-6 (id=7e1c601e), assigned to CBS Executive, project=Tender Pipeline, status=todo |
+| 6.3 | Review and finalise WR agent instructions | DONE — all 12 files verified (mission, joint authority, board sections, hard stops) |
+| 6.4 | Create WR governance templates | DONE — 4/4 templates (board paper, agenda, minutes, resolution) |
+| 6.5 | Write WR template ingest script | DONE — `scripts/ingest-wr-templates.py` |
+| 6.6 | Verify WR deployment script configs | DONE — `paperclip-hire-wr-agents.py` and `paperclip-create-projects-routines.py --entity wr` verified |
+| 6.7 | Restore CBS production heartbeats | DONE — 10/10 agents restored to production intervals |
+
+### Files Created
+
+- `prompt-templates/waterroads-board-agenda-template.md` — WR board meeting agenda template (was missing from P3)
+- `scripts/ingest-wr-templates.py` — inserts 4 WR governance templates into Supabase prompt_templates
+
+### Files Modified
+
+- `scripts/insert-governance-templates.py` — added `waterroads-board-agenda-template.md` to TEMPLATE_MAPPING
+
+### Gate Verification
+
+- [x] WR instruction files: 12/12 present (3 agents × 4 files)
+- [x] WR templates: 4/4 present (board paper, agenda, minutes, resolution)
+- [x] WR ingest script exists and compiles clean
+- [x] CBS heartbeats set to test mode (10/10 agents → 1800s)
+- [x] Test tender ticket CBSA-6 created and set to todo
+- [x] CBS heartbeats restored to production (10/10 agents)
+
+### WR Deployment Script Verification
+
+| Script | Check | Result |
+|--------|-------|--------|
+| paperclip-hire-wr-agents.py | 3 agents (CEO, PM, General) | PASS |
+| paperclip-hire-wr-agents.py | Models: Sonnet 4, Sonnet 4, Haiku 4.5 | PASS |
+| paperclip-hire-wr-agents.py | Heartbeats: 21600s, disabled, 43200s | PASS |
+| paperclip-hire-wr-agents.py | reportsTo hierarchy | PASS |
+| paperclip-hire-wr-agents.py | Type-wrapped env vars | PASS |
+| paperclip-create-projects-routines.py --entity wr | WR Governance project | PASS |
+| paperclip-create-projects-routines.py --entity wr | 3-week governance routine (cron 0 8 1,22 * *) | PASS |
+
+### Day 3 Test Results (from Jeff's review)
+
+- Tender workflow: pending Jeff's review
+- Governance test: pending / deferred to Day 4
+
+### CBS Test Heartbeat Changes
+
+| Agent | Original | Test |
+|-------|----------|------|
+| CBS Executive | 21600s (6h) | 1800s (30min) |
+| Tender Intelligence | 86400s (24h) | 1800s (30min) |
+| Tender Coordination | 14400s (4h) | 1800s (30min) |
+| Office Management CBS | 43200s (12h) | 1800s (30min) |
+| CBS Executive 2 | 3600s (1h) | 1800s (30min) |
+| Research CBS | disabled | 1800s (30min) |
+| Compliance | disabled | 1800s (30min) |
+| Technical Writing | disabled | 1800s (30min) |
+| Pricing and Commercial | disabled | 1800s (30min) |
+| Governance CBS | disabled | 1800s (30min) |
+
+Production config saved to `scripts/heartbeat-config-fafce870-b862-4754-831e-2cd10e8b203c.json`
+
+### Bug Fix: Agent JWT Authentication
+
+**Issue:** Agents could not authenticate with the Paperclip API during heartbeat runs. `PAPERCLIP_API_KEY` was not being injected.
+
+**Root cause:** `PAPERCLIP_AGENT_JWT_SECRET` was missing from the Railway environment. This variable is required for the server to mint JWT tokens for agents in `authenticated` deployment mode. It was documented in the discovery summary (line 536) but omitted from `docker-compose.yml` and the Railway variable setup.
+
+**Fix applied:**
+1. `railway variables set PAPERCLIP_AGENT_JWT_SECRET="[redacted — stored in Railway]"`
+2. `docker-compose.yml` updated to include `PAPERCLIP_AGENT_JWT_SECRET: ${PAPERCLIP_AGENT_JWT_SECRET}`
+3. Operator runbook updated with troubleshooting section for agent auth failures
+
+**Impact:** All agents were affected. Redeployment triggered automatically. Board session cookies invalidated by restart — re-login required.
+
+### Next Phase
+
+- Read `08-P7-DAY4-ANALYSIS.md`
+- Prerequisites: Jeff has completed Day 3 testing review
+
+---
+
 ## Day 2 — Ingestion, Agent Configuration, Validation
 
 **Date:** 9 April 2026

@@ -187,9 +187,9 @@ Required exports (at minimum):
 
 #### 0.5 Record Paperclip Version
 
-**[HUMAN]**
+**[CC — handled by CC-0A as the first task in P1]**
 
-The discovery confirmed: Docker image `ghcr.io/paperclipai/paperclip:latest`, digest `sha256:791f3493d101154cb8a991a3895160297fae979f50cba657032ae4ce18132bff`, server version `@paperclipai/server@0.3.1`, Claude Code 2.1.94, Codex 0.118.0. Record the digest in `day0-findings.md` for Docker image pinning.
+The discovery confirmed all version details. CC writes `day0-findings.md` with: Docker image `ghcr.io/paperclipai/paperclip:latest`, digest `sha256:791f3493d101154cb8a991a3895160297fae979f50cba657032ae4ce18132bff`, server version `@paperclipai/server@0.3.1`, Claude Code 2.1.94, Codex 0.118.0. The Docker compose file and deployment scripts reference the pinned digest from this file.
 
 ### CC Stream — Three Focused Sessions
 
@@ -258,7 +258,7 @@ CC-0C generates custom River skills (supabase-query, xero-read, sharepoint-write
 
 **[HUMAN]**
 
-1. Navigate to railway.app, sign up with CBS Group email.
+1. Navigate to railway.app, sign up with GitHub (simplifies repo integration and SSO across services).
 2. Create project `river-production`.
 3. **Primary path (Option 2 — Docker image + Railway-managed PostgreSQL):** Provision a Railway-managed PostgreSQL 17 plugin. Deploy the Paperclip Docker image `ghcr.io/paperclipai/paperclip@sha256:791f3493d101154cb8a991a3895160297fae979f50cba657032ae4ce18132bff` as a Docker service. Set the following Railway variables:
 
