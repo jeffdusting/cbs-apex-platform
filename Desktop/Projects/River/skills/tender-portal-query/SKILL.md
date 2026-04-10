@@ -37,7 +37,17 @@ The RSS feed and OCDS API (`api.tenders.gov.au`) are both blocked by server-side
 
 ## Email-Based Tender Scanning (Primary Method)
 
-AusTender and Tenders.NSW send email notifications to Jeff Dusting's inbox when new matching tenders are published. Use the Microsoft Graph API (Mail.Read permission) to scan for these emails and extract tender details.
+Government tender portals send email notifications to Jeff Dusting's inbox when new matching tenders are published. Use the Microsoft Graph API (Mail.Read permission) to scan for these emails and extract tender details.
+
+### Monitored Tender Sources
+
+| Source | Portal | Email Sender Pattern | Jurisdictions |
+|---|---|---|---|
+| AusTender | tenders.gov.au | `*tenders.gov.au`, `*austender*` | Australian Federal Government |
+| Tenders.NSW | tenders.nsw.gov.au | `*tenders.nsw.gov.au`, `*nsw.gov.au*tender*` | NSW State Government |
+| Buying for Victoria | buying.vic.gov.au | `*buying.vic.gov.au`, `*vic.gov.au*tender*` | Victorian State Government |
+| GETS NZ | gets.govt.nz | `*gets.govt.nz`, `*GETS*` | New Zealand Government |
+| Inland Rail | inlandrail.artc.com.au | `*inlandrail*`, `*artc.com.au*` | ARTC Inland Rail Programme |
 
 ### Step 1: Query Inbox for AusTender Emails
 
@@ -79,16 +89,31 @@ def get_tender_emails(token: str, days_back: int = 1, max_results: int = 20) -> 
 
     headers = {"Authorization": f"Bearer {token}"}
 
-    # Search for AusTender and Tenders.NSW notification emails
+    # Search for tender notification emails from all monitored sources
     # Jeff's email: jeff@cbsaustralia.com.au
     filter_query = (
         f"receivedDateTime ge {since} and ("
+        # AusTender (Federal)
         "contains(from/emailAddress/address, 'tenders.gov.au') or "
         "contains(from/emailAddress/address, 'austender') or "
+        # Tenders.NSW
         "contains(from/emailAddress/address, 'tenders.nsw.gov.au') or "
+        # Buying for Victoria
+        "contains(from/emailAddress/address, 'buying.vic.gov.au') or "
+        # GETS NZ
+        "contains(from/emailAddress/address, 'gets.govt.nz') or "
+        # Inland Rail / ARTC
+        "contains(from/emailAddress/address, 'inlandrail') or "
+        "contains(from/emailAddress/address, 'artc.com.au') or "
+        # Catch-all subject patterns
         "contains(subject, 'AusTender') or "
         "contains(subject, 'Tender Notification') or "
-        "contains(subject, 'ATM')"
+        "contains(subject, 'GETS') or "
+        "contains(subject, 'Buying for Victoria') or "
+        "contains(subject, 'Inland Rail') or "
+        "contains(subject, 'ATM') or "
+        "contains(subject, 'RFT') or "
+        "contains(subject, 'RFQ')"
         ")"
     )
 
@@ -146,14 +171,27 @@ def parse_tender_from_email(email: dict) -> dict | None:
     body = email.get("body", "") or email.get("preview", "")
 
     # Extract common fields from AusTender email format
+    # Identify source portal
+    from_addr = email.get("from", "").lower()
+    if "buying.vic.gov.au" in from_addr or "vic.gov.au" in from_addr:
+        source = "buying_for_victoria"
+    elif "gets.govt.nz" in from_addr:
+        source = "gets_nz"
+    elif "inlandrail" in from_addr or "artc.com.au" in from_addr:
+        source = "inland_rail"
+    elif "tenders.nsw.gov.au" in from_addr or "nsw.gov.au" in from_addr:
+        source = "tenders_nsw"
+    else:
+        source = "austender"
+
     tender = {
-        "source": "austender_email",
+        "source": source,
         "email_subject": subject,
         "received": email.get("received", ""),
     }
 
-    # Try to extract ATM/RFT reference number
-    ref_match = re.search(r"(ATM|RFT|RFQ|EOI)[-\s]?(\d+)", subject + " " + body, re.IGNORECASE)
+    # Try to extract reference number (ATM/RFT/RFQ/EOI/RFP formats)
+    ref_match = re.search(r"(ATM|RFT|RFQ|EOI|RFP|GETS)[-\s]?(\d+)", subject + " " + body, re.IGNORECASE)
     if ref_match:
         tender["reference"] = f"{ref_match.group(1)}-{ref_match.group(2)}"
 
@@ -248,6 +286,15 @@ CBS Group's capability profile maps to the following search terms. Use these whe
 - safety assurance
 - KPI framework
 - asset condition assessment
+
+### Geographic and Programme Keywords
+
+| Source | Additional Keywords |
+|---|---|
+| Buying for Victoria | VicRoads, Major Road Projects Victoria, MRPV, Level Crossing Removal, Metro Tunnel, North East Link |
+| GETS NZ | NZTA, Waka Kotahi, KiwiRail, Auckland Transport, rail infrastructure NZ |
+| Inland Rail | ARTC, Inland Rail, Melbourne to Brisbane, rail freight, intermodal |
+| Tenders.NSW | Transport for NSW, TfNSW, Sydney Metro, WestConnex, motorway, M6, Western Harbour Tunnel |
 
 ### Sector Codes (UNSPSC)
 
