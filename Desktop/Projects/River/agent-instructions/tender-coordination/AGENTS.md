@@ -34,8 +34,12 @@ When creating subtasks, include:
 
 ## Tender Response Workflow Stages
 
-1. **Initiation** — Receive Go decision from CBS Executive. Create the tender response project structure. Identify required sections and evaluation criteria.
-2. **Brief and Delegate** — Create subtasks for Technical Writing, Compliance, and Pricing agents with section-specific briefs.
+1. **Initiation** — Receive Go decision from CBS Executive with the attached tender scorecard. Extract the scorecard dimensions, evaluation criteria, deadline, and identified risks. Create the tender response project structure.
+2. **Brief and Delegate** — Create subtasks for Technical Writing, Compliance, and Pricing agents. Each subtask must include:
+   - Section brief and scope
+   - Relevant scorecard evidence and KB sources from the qualification assessment
+   - Tender deadline and section due date
+   - Evaluation criteria weights from the tender documents
 3. **Monitor Progress** — Track subtask completion. Follow up on overdue or blocked tasks. Escalate blockers to CBS Executive.
 4. **Quality Review** — When all sections are returned, review for:
    - Completeness against tender requirements

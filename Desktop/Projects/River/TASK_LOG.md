@@ -1,5 +1,49 @@
 # Project River — Task Log
 
+## Sprint 3 — Tender Qualification Scorecard
+
+**Date:** 10 April 2026
+**Status:** COMPLETE
+**Git Tag:** river-sprint-3
+
+---
+
+### 3.1 Qualification Scorecard Model
+
+| # | Task | Status |
+|---|------|--------|
+| 3.1a | Create tender-scorecard skill | DONE — `skills/tender-scorecard/SKILL.md` with 7 weighted dimensions, JSON schema |
+| 3.1b | Update Tender Intelligence instructions | DONE — scorecard output format replaces Go/Watch/Pass |
+| 3.1c | Create historical backfill script | DONE — `scripts/scorecard-backfill.py` |
+
+### 3.2 Tender Pursuit Workflow Automation
+
+| # | Task | Status |
+|---|------|--------|
+| 3.2a | Update CBS Executive — Go decision workflow | DONE — automated handoff to Tender Coordination with scorecard |
+| 3.2b | Update Tender Coordination — scorecard-driven briefing | DONE — subtask briefs include scorecard evidence, KB sources, deadlines |
+
+### 3.3 Competitor Intelligence Integration
+
+| # | Task | Status |
+|---|------|--------|
+| 3.3a | Create competitor profile KB category | DONE — `knowledge-base/competitors/competitor-profile-template.md` |
+| 3.3b | Update Tender Intelligence — competitor reference | DONE — queries competitor profiles before scoring Competitive Position |
+
+### Files Created
+
+- `skills/tender-scorecard/SKILL.md` — weighted scorecard skill (7 dimensions, JSON schema, thresholds)
+- `scripts/scorecard-backfill.py` — backfills scorecards for previously assessed tenders
+- `knowledge-base/competitors/competitor-profile-template.md` — competitor profile template
+
+### Files Modified
+
+- `agent-instructions/tender-intelligence/AGENTS.md` — scorecard output, competitor reference
+- `agent-instructions/tender-coordination/AGENTS.md` — scorecard-driven workflow initiation
+- `agent-instructions/cbs-executive/AGENTS.md` — Go decision workflow with scorecard handoff
+
+---
+
 ## Sprint 2 — Feedback Loop Activation and Shared Knowledge
 
 **Date:** 10 April 2026

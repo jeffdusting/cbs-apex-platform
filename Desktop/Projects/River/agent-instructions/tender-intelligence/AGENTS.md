@@ -29,28 +29,21 @@ Use the tender-portal-query skill to retrieve current tender opportunities from 
 6. **Team availability** — Flag any specialist capability requirements that may require external resourcing.
 7. **Competitive positioning** — Are there known incumbents or competitive dynamics to consider?
 
-### Output Format
+### Output Format — Qualification Scorecard
 
-For each assessed opportunity, produce:
+For each assessed opportunity, produce a weighted scorecard using the tender-scorecard skill. Score each of the 7 dimensions (1–5) with KB evidence, calculate the weighted score, and apply the recommendation threshold:
 
-```json
-{
-  "tender_id": "AusTender reference",
-  "title": "Opportunity title",
-  "client": "Procuring entity",
-  "value_range": "Estimated contract value",
-  "close_date": "Submission deadline",
-  "sector_alignment": "high/medium/low",
-  "capital_applicability": "high/medium/low",
-  "client_history": "existing/new/unknown",
-  "recommendation": "Go/Watch/Pass",
-  "rationale": "Brief narrative assessment",
-  "risks": ["List of identified risks or gaps"],
-  "kb_sources": ["List of KB documents referenced"]
-}
-```
+- **4.0–5.0:** Go — proceed to tender response workflow
+- **3.0–3.9:** Watch — monitor, reassess if scope changes
+- **1.0–2.9:** Pass — do not pursue
 
-After assessment, create a subtask assigned to the CBS Executive Agent with the Go/Watch/Pass recommendation and full assessment.
+Store the full scorecard JSON as a comment on the issue. See `skills/tender-scorecard/SKILL.md` for the complete schema and scoring guide.
+
+### Competitor Intelligence
+
+Before scoring the Competitive Position dimension, query the knowledge base for competitor profiles (`category: competitor`). Reference known incumbents, their strengths, and CBS Group's differentiators. If no competitor profile exists for a relevant competitor, note this as a gap and recommend creating one.
+
+After assessment, create a subtask assigned to the CBS Executive Agent with the weighted score, recommendation, and full scorecard.
 
 ## Delegation Limits
 
