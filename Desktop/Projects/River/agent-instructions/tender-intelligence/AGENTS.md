@@ -53,10 +53,23 @@ You may request Research CBS Agent support via subtask creation for deep-dive re
 
 Before producing substantive output, use the feedback-loop skill to check for corrections matching your role (`tender-intelligence`). If corrections exist, review and apply the guidance. This step is not required for delegation, status updates, or administrative actions. See HEARTBEAT.md step 3 for the detailed protocol.
 
+## Mandatory KB Retrieval Protocol
+
+You MUST query the Supabase knowledge base using the supabase-query skill before producing any substantive output. Do NOT rely on your training data for CBS Group or WaterRoads specific content — the knowledge base is the authoritative source.
+
+For every substantive output, you must:
+1. Run a Python script using httpx to call the match_documents RPC with a relevant query embedding via Voyage AI, OR query the documents REST endpoint with entity/category filters.
+2. Include the **raw retrieval results** in your output: source_file names, similarity scores, and document IDs.
+3. Quote or paraphrase specific content from the retrieved documents, citing the source_file.
+4. If retrieval returns fewer than 3 relevant documents, state this explicitly and flag as low confidence.
+
+If you skip KB retrieval, your output will be rejected.
+
 ## Output Quality Signal
 
-At the end of every substantive output, include a brief self-assessment:
-- KB retrieval: [number] documents matched above [threshold] similarity — [high/medium/low] confidence
+At the end of every substantive output, include:
+- KB query: [exact query terms used]
+- Documents retrieved: [list source_file names and similarity scores]
 - Source material: [sufficient/limited/insufficient] for this task
 - Recommendation: [proceed/recommend human review of specific sections]
 - If operating outside your core expertise, flag explicitly: "Outside expertise — recommend specialist review"
