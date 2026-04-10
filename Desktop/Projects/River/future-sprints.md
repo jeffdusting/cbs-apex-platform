@@ -26,6 +26,24 @@ Sprint 1 establishes the core River infrastructure: Paperclip deployment on Rail
 - Agents adjust their approach based on annotated feedback: "exemplar" outputs reinforce the approach; "needs improvement" outputs include the operator's correction.
 - Feedback is stored as issue metadata, not in the knowledge base (avoids polluting the KB with operational data).
 
+**Correction Ingestion Protocol (Designed Sprint 1, Day 4):**
+
+When Jeff corrects an agent's output, the correction should be captured as a knowledge base document:
+
+1. Export the original output and the correction as a markdown file
+2. Tag with YAML front-matter: `category: correction`, `metadata.agent_role: {role}`, `metadata.task_type: {type}`
+3. Ingest into Supabase with entity-level scoping
+
+```sql
+-- Feedback loop: corrections ingested for agent learning
+-- Category 'correction' in documents table
+-- Tagged with agent_role for targeted retrieval
+-- Agent AGENTS.md directive: "Before producing output, query for corrections
+--   matching your role and task type"
+```
+
+Each agent's AGENTS.md will include a retrieval step: before producing substantive output, query the KB for `category: correction` documents matching the agent's role. This allows agents to learn from past corrections without retraining.
+
 **Deliverables:**
 - `skills/feedback-loop/SKILL.md` — skill definition
 - `scripts/feedback-report.py` — weekly feedback summary per agent

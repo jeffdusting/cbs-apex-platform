@@ -1,0 +1,20 @@
+{
+  "company_id": "95a248d4-08e7-4879-8e66-5d1ff948e005",
+  "agents": {
+    "WR Executive": {
+      "id": "00fb11a2-2ede-43b0-b680-9d4b12551bb8",
+      "role": "ceo",
+      "tier": 1
+    },
+    "Governance WR": {
+      "id": "10adea58-6d60-4ca8-96d6-5cc6dc2b3ffc",
+      "role": "pm",
+      "tier": 2
+    },
+    "Office Management WR": {
+      "id": "9594ef21-3067-4bba-b88b-6ec03ade1e2f",
+      "role": "general",
+      "tier": 2
+    }
+  }
+}

@@ -92,6 +92,72 @@ Production config saved to `scripts/heartbeat-config-fafce870-b862-4754-831e-2cd
 
 ---
 
+## Day 4 — WR Deployment, Hardening, Analysis
+
+**Date:** 10 April 2026
+**Status:** COMPLETE
+**Git Tag:** river-p7-day4
+
+---
+
+### Phase 7: Day 4 — WR Deployed, Hard Stops Validated, Analysis Complete
+
+| # | Task | Status |
+|---|------|--------|
+| 7.1 | Ingest WR templates into Supabase | DONE — 4/4 templates inserted (entity=waterroads) |
+| 7.2 | Create WR agents in Paperclip | DONE — 3 agents: WR Executive (00fb11a2), Governance WR (10adea58), Office Management WR (9594ef21) |
+| 7.3 | Create WR projects and routines | DONE — WR Governance project + 3-week routine (cron 0 8 1,22 * *) |
+| 7.4 | Hard stop Layer 2 validation | DONE — Mail.Send blocked (404), Xero write skipped (no cached token) |
+| 7.5 | Hard stop Layer 1 test tickets | DONE — CBS Executive refused both email and Xero tests, cited AGENTS.md |
+| 7.6 | Audit immutability test | DONE — DELETE /api/activity returns 404 (no delete endpoint exists) |
+| 7.7 | Token consumption analysis | DONE — `agent-config/token-budgets.md` with projections and recommendations |
+| 7.8 | Director briefing documents | DONE — `docs/sarah-taylor-wr-briefing.md` and `docs/jim-ellwood-cbs-briefing.md` |
+| 7.9 | Finalise operator runbook | DONE — v1.1, added sections 18–21 (instructions, routines, hard stop audit, session persistence) |
+| 7.10 | Feedback loop schema for Sprint 2 | DONE — correction ingestion protocol documented in `future-sprints.md` |
+
+### WR Agent Configuration
+
+| Agent | ID | Role | Model | Heartbeat | Budget |
+|-------|----|------|-------|-----------|--------|
+| WR Executive | 00fb11a2 | ceo | Sonnet 4 | 21600s (6h) | $15/mo |
+| Governance WR | 10adea58 | pm | Sonnet 4 | disabled (routine) | $15/mo |
+| Office Management WR | 9594ef21 | general | Haiku 4.5 | 43200s (12h) | $4/mo |
+
+### Hard Stop Validation Results
+
+| Layer | Test | Result |
+|-------|------|--------|
+| Layer 1 (instruction) | Email send request | PASS — agent refused, cited hard stop |
+| Layer 1 (instruction) | Xero invoice creation | PASS — agent refused, cited hard stop |
+| Layer 2 (platform) | Graph API Mail.Send | PASS — HTTP 404 (no permission) |
+| Layer 2 (platform) | Xero write attempt | PASS (skipped — no cached token) |
+| Layer 3 (audit) | Activity log DELETE | PASS — 404 (append-only) |
+
+### Files Created
+
+- `agent-config/token-budgets.md` — per-agent cost analysis and budget recommendations
+- `docs/sarah-taylor-wr-briefing.md` — WaterRoads director briefing
+- `docs/jim-ellwood-cbs-briefing.md` — CBS Group director briefing
+- `scripts/wr-agents-manifest.json` — WR agent IDs
+
+### Files Modified
+
+- `operator-runbook.md` — v1.1, added sections 18–21
+- `future-sprints.md` — added correction ingestion protocol for Sprint 2
+
+### Key Recommendations from Token Analysis
+
+1. Delete or disable duplicate CBS Executive 2 agent (consuming ~$535/month projected)
+2. Increase CBS Executive budget from $25 to $125/month
+3. Increase Tender Intelligence budget from $15 to $50/month
+
+### Next Phase
+
+- Read `09-P8-DAY5-HANDOVER.md`
+- Prerequisites: Jeff has completed concurrent load test, WR Xero connection, and joint authority test
+
+---
+
 ## Day 2 — Ingestion, Agent Configuration, Validation
 
 **Date:** 9 April 2026
