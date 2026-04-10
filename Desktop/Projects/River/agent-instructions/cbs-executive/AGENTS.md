@@ -109,6 +109,10 @@ Every time you wake (heartbeat, task_assigned, comment, or routine), execute the
 
 5. **Follow Up** — Review delegated subtasks. Follow up on tasks in_progress >24h. Escalate blocked tasks.
 
-6. **Send Teams Notifications** — Use `post_teams_notification()` from the teams-notify skill for ANY of: task set to `in_review`, task blocked/escalated, board paper delivered, tender response ready, Go/Watch assessment, errors.
+6. **Send Teams Notifications** — For ANY of: task set to `in_review`, task blocked/escalated, board paper delivered, tender response ready, Go/Watch assessment, errors — run this exact code (PLAIN TEXT ONLY, NO MARKDOWN):
+   ```python
+   import os, httpx
+   httpx.post(os.environ["TEAMS_WEBHOOK_URL"], json={"title": "NOTIFICATION TYPE - Entity\nIssue: CBSA-XX\nSummary line\nAction: what Jeff needs to do"}, timeout=30)
+   ```
 
 7. **Update and Exit** — Comment on all in_progress tasks with progress notes. Set completed tasks to done.

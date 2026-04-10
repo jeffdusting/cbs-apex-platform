@@ -14,9 +14,18 @@ This is injected via `adapterConfig.env` on the agent. Never hardcode the URL.
 
 ## How It Works
 
-The webhook accepts a JSON POST with a `title` field. Only the `title` field renders in Teams — all other fields are ignored. Use `\n` for line breaks within the title. Do not use markdown formatting (no `**bold**` or `*italic*`).
+The webhook accepts a JSON POST with a `title` field. Only the `title` field renders in Teams — all other fields are ignored.
+
+## CRITICAL FORMAT RULES
+
+- **NO MARKDOWN** — do not use `**`, `*`, `#`, `_`, `[]()`, backticks, or any markdown syntax. Teams renders it as literal characters (e.g. `**text**` shows as `**text**` not bold).
+- **PLAIN TEXT ONLY** — use UPPERCASE for emphasis instead of bold/italic.
+- Use `\n` for line breaks within the title.
+- First line must be the notification type in UPPERCASE (e.g. `APPROVAL REQUIRED`, `TENDER OPPORTUNITY`).
 
 ## Posting a Notification
+
+You MUST use this exact function. Copy it verbatim. Do not modify the payload format.
 
 ```python
 import os
@@ -27,16 +36,27 @@ TEAMS_WEBHOOK_URL = os.environ["TEAMS_WEBHOOK_URL"]
 
 def post_teams_notification(lines: list[str]) -> bool:
     """
-    Post a notification to the configured Teams channel.
+    Post a plain-text notification to Teams. NO MARKDOWN.
 
     Args:
-        lines: List of text lines. Joined with newlines.
+        lines: List of plain text lines (no markdown). Joined with newlines.
 
     Returns:
         True if the message was accepted (HTTP 202).
+
+    Example:
+        post_teams_notification([
+            "APPROVAL REQUIRED - CBS Group Board Paper",
+            "Issue: CBSA-25",
+            "The board paper is ready for review.",
+            "Action: Log in to org.cbslab.app to approve.",
+        ])
     """
+    # Strip any markdown characters that may have been accidentally included
+    clean_lines = [line.replace("**", "").replace("*", "").replace("`", "").replace("#", "") for line in lines]
+
     payload = {
-        "title": "\n".join(lines),
+        "title": "\n".join(clean_lines),
     }
     response = httpx.post(TEAMS_WEBHOOK_URL, json=payload, timeout=30)
     return response.status_code == 202
