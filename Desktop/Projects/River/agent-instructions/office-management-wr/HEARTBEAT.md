@@ -53,7 +53,19 @@ For document filing tasks:
 3. Write to SharePoint via sharepoint-write skill.
 4. Update the task with the filing location.
 
-## 7. Update and Exit
+## 7. Send Teams Notifications
+
+Before exiting, send a Teams notification via the teams-notify skill for ANY of the following that occurred during this heartbeat:
+
+- A task was set to `in_review` (approval required)
+- A task was escalated or marked `blocked`
+- A board paper or tender response was delivered to SharePoint
+- A tender opportunity was assessed as Go or Watch
+- An error or hard stop refusal occurred
+
+Use the `post_teams_notification()` function from the teams-notify skill. Include the issue identifier, a one-line summary, and the action required. If nothing noteworthy happened this cycle, skip this step.
+
+## 8. Update and Exit
 
 - Update all processed tasks with outcomes.
 - Set completed tasks to `done`.

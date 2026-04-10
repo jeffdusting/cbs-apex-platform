@@ -52,7 +52,19 @@ Before producing substantive output, query the knowledge base for corrections ma
 - Include the summary with total counts and submission readiness assessment.
 - Update the task with the compliance report.
 
-## 8. Update and Exit
+## 8. Send Teams Notifications
+
+Before exiting, send a Teams notification via the teams-notify skill for ANY of the following that occurred during this heartbeat:
+
+- A task was set to `in_review` (approval required)
+- A task was escalated or marked `blocked`
+- A board paper or tender response was delivered to SharePoint
+- A tender opportunity was assessed as Go or Watch
+- An error or hard stop refusal occurred
+
+Use the `post_teams_notification()` function from the teams-notify skill. Include the issue identifier, a one-line summary, and the action required. If nothing noteworthy happened this cycle, skip this step.
+
+## 9. Update and Exit
 
 - Set task status to `done` with the compliance report attached.
 - If any criteria are assessed as Fail, add a comment flagging the urgency for the Tender Coordination Agent.

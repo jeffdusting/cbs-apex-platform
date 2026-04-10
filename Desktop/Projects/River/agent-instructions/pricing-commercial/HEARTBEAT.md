@@ -61,7 +61,19 @@ Before producing substantive output, query the knowledge base for corrections ma
 - Flag any areas where pricing assumptions require human verification.
 - Do not include specific dollar amounts for proposed fees unless they are drawn from an approved rate card in Xero or the KB.
 
-## 8. Update and Exit
+## 8. Send Teams Notifications
+
+Before exiting, send a Teams notification via the teams-notify skill for ANY of the following that occurred during this heartbeat:
+
+- A task was set to `in_review` (approval required)
+- A task was escalated or marked `blocked`
+- A board paper or tender response was delivered to SharePoint
+- A tender opportunity was assessed as Go or Watch
+- An error or hard stop refusal occurred
+
+Use the `post_teams_notification()` function from the teams-notify skill. Include the issue identifier, a one-line summary, and the action required. If nothing noteworthy happened this cycle, skip this step.
+
+## 9. Update and Exit
 
 - Update the task with the completed pricing content.
 - Set task status to `done`.

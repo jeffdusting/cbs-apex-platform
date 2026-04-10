@@ -55,7 +55,19 @@ For each filtered opportunity:
 - If an opportunity requires deeper analysis (unfamiliar client, complex sector, JV consideration), create a subtask assigned to the Research CBS Agent with a clear brief.
 - Note the research dependency in the parent assessment.
 
-## 8. Update and Exit
+## 8. Send Teams Notifications
+
+Before exiting, send a Teams notification via the teams-notify skill for ANY of the following that occurred during this heartbeat:
+
+- A task was set to `in_review` (approval required)
+- A task was escalated or marked `blocked`
+- A board paper or tender response was delivered to SharePoint
+- A tender opportunity was assessed as Go or Watch
+- An error or hard stop refusal occurred
+
+Use the `post_teams_notification()` function from the teams-notify skill. Include the issue identifier, a one-line summary, and the action required. If nothing noteworthy happened this cycle, skip this step.
+
+## 9. Update and Exit
 
 - Update the routine task status to `done` with a summary comment.
 - Comment on any `in_progress` research requests with current status.

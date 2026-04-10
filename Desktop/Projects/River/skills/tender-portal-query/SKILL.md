@@ -35,6 +35,185 @@ The RSS feed and OCDS API (`api.tenders.gov.au`) are both blocked by server-side
 | Base URL | `https://api.tenders.gov.au/ocds/` |
 | Status | **BLOCKED — returns HTTP 403** |
 
+## Email-Based Tender Scanning (Primary Method)
+
+AusTender and Tenders.NSW send email notifications to Jeff Dusting's inbox when new matching tenders are published. Use the Microsoft Graph API (Mail.Read permission) to scan for these emails and extract tender details.
+
+### Step 1: Query Inbox for AusTender Emails
+
+```python
+import os
+import httpx
+import msal
+
+TENANT_ID = os.environ["MICROSOFT_TENANT_ID"]
+CLIENT_ID = os.environ["MICROSOFT_CLIENT_ID"]
+CLIENT_SECRET = os.environ["MICROSOFT_CLIENT_SECRET"]
+
+
+def get_graph_token() -> str:
+    """Get Microsoft Graph API access token via client credentials."""
+    app = msal.ConfidentialClientApplication(
+        CLIENT_ID,
+        authority=f"https://login.microsoftonline.com/{TENANT_ID}",
+        client_credential=CLIENT_SECRET,
+    )
+    result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
+    return result["access_token"]
+
+
+def get_tender_emails(token: str, days_back: int = 1, max_results: int = 20) -> list[dict]:
+    """
+    Search inbox for AusTender and Tenders.NSW notification emails.
+
+    Args:
+        token: Graph API access token.
+        days_back: How many days back to search.
+        max_results: Maximum emails to return.
+
+    Returns:
+        List of email objects with subject, body preview, received date.
+    """
+    from datetime import datetime, timedelta, timezone
+    since = (datetime.now(timezone.utc) - timedelta(days=days_back)).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # Search for AusTender and Tenders.NSW notification emails
+    # Jeff's email: jeff@cbsaustralia.com.au
+    filter_query = (
+        f"receivedDateTime ge {since} and ("
+        "contains(from/emailAddress/address, 'tenders.gov.au') or "
+        "contains(from/emailAddress/address, 'austender') or "
+        "contains(from/emailAddress/address, 'tenders.nsw.gov.au') or "
+        "contains(subject, 'AusTender') or "
+        "contains(subject, 'Tender Notification') or "
+        "contains(subject, 'ATM')"
+        ")"
+    )
+
+    # Query all users' mailboxes the app has access to
+    # Try Jeff's mailbox first
+    users_resp = httpx.get(
+        "https://graph.microsoft.com/v1.0/users",
+        headers=headers,
+        params={"$select": "id,mail,displayName", "$top": 10},
+        timeout=30,
+    )
+    users = users_resp.json().get("value", [])
+
+    all_emails = []
+    for user in users:
+        user_id = user["id"]
+        mail_resp = httpx.get(
+            f"https://graph.microsoft.com/v1.0/users/{user_id}/messages",
+            headers=headers,
+            params={
+                "$filter": filter_query,
+                "$select": "subject,bodyPreview,body,receivedDateTime,from",
+                "$top": max_results,
+                "$orderby": "receivedDateTime desc",
+            },
+            timeout=30,
+        )
+        if mail_resp.status_code == 200:
+            messages = mail_resp.json().get("value", [])
+            for msg in messages:
+                all_emails.append({
+                    "subject": msg.get("subject", ""),
+                    "from": msg.get("from", {}).get("emailAddress", {}).get("address", ""),
+                    "received": msg.get("receivedDateTime", ""),
+                    "preview": msg.get("bodyPreview", ""),
+                    "body": msg.get("body", {}).get("content", ""),
+                    "user": user.get("mail", user_id),
+                })
+
+    return all_emails
+```
+
+### Step 2: Parse Tender Details from Email
+
+```python
+import re
+
+def parse_tender_from_email(email: dict) -> dict | None:
+    """
+    Extract tender details from an AusTender notification email.
+
+    Returns a structured dict or None if the email doesn't contain tender info.
+    """
+    subject = email.get("subject", "")
+    body = email.get("body", "") or email.get("preview", "")
+
+    # Extract common fields from AusTender email format
+    tender = {
+        "source": "austender_email",
+        "email_subject": subject,
+        "received": email.get("received", ""),
+    }
+
+    # Try to extract ATM/RFT reference number
+    ref_match = re.search(r"(ATM|RFT|RFQ|EOI)[-\s]?(\d+)", subject + " " + body, re.IGNORECASE)
+    if ref_match:
+        tender["reference"] = f"{ref_match.group(1)}-{ref_match.group(2)}"
+
+    # Extract agency
+    agency_match = re.search(r"(?:Agency|Organisation|Department):\s*(.+?)(?:\n|<)", body)
+    if agency_match:
+        tender["agency"] = agency_match.group(1).strip()
+
+    # Extract title
+    title_match = re.search(r"(?:Title|Subject|Description):\s*(.+?)(?:\n|<)", body)
+    if title_match:
+        tender["title"] = title_match.group(1).strip()
+    else:
+        tender["title"] = subject  # Fall back to email subject
+
+    # Extract closing date
+    close_match = re.search(r"(?:Closing|Close|Closes|Due)[\s:]+(\d{1,2}[\s/-]\w+[\s/-]\d{2,4})", body, re.IGNORECASE)
+    if close_match:
+        tender["close_date"] = close_match.group(1).strip()
+
+    # Extract value if present
+    value_match = re.search(r"\$[\d,]+(?:\.\d{2})?(?:\s*-\s*\$[\d,]+(?:\.\d{2})?)?", body)
+    if value_match:
+        tender["estimated_value"] = value_match.group(0)
+
+    return tender
+```
+
+### Step 3: Complete Scan Workflow
+
+```python
+def scan_for_tenders(days_back: int = 1) -> list[dict]:
+    """
+    Complete tender scan: get emails, parse, return structured opportunities.
+    """
+    token = get_graph_token()
+    emails = get_tender_emails(token, days_back=days_back)
+
+    opportunities = []
+    for email in emails:
+        tender = parse_tender_from_email(email)
+        if tender:
+            opportunities.append(tender)
+
+    return opportunities
+
+
+# Usage in heartbeat:
+tenders = scan_for_tenders(days_back=1)
+for t in tenders:
+    print(f"[{t.get('reference', 'N/A')}] {t['title']} — closes {t.get('close_date', 'TBC')}")
+```
+
+### Fallback: Web Search
+
+If no email notifications are found, use Claude Code's web search capability to search AusTender directly:
+1. Search `site:tenders.gov.au` with CBS Group's primary sector keywords
+2. Parse the search results for tender titles, references, and closing dates
+3. Note that web search results may be less structured than email notifications
+
 ## Reference Script
 
 The full query implementation is in `scripts/tender-portal-query.py`. This skill provides the patterns and guidance for using that script or implementing equivalent logic during heartbeat execution.

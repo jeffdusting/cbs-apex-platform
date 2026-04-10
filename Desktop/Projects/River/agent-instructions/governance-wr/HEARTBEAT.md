@@ -69,7 +69,19 @@ Before producing substantive output, query the knowledge base for corrections ma
 - Once approved, write the board paper to SharePoint via sharepoint-write skill.
 - Notify via teams-notify skill: "WaterRoads board paper for [period] delivered to SharePoint."
 
-## 9. Update and Exit
+## 9. Send Teams Notifications
+
+Before exiting, send a Teams notification via the teams-notify skill for ANY of the following that occurred during this heartbeat:
+
+- A task was set to `in_review` (approval required)
+- A task was escalated or marked `blocked`
+- A board paper or tender response was delivered to SharePoint
+- A tender opportunity was assessed as Go or Watch
+- An error or hard stop refusal occurred
+
+Use the `post_teams_notification()` function from the teams-notify skill. Include the issue identifier, a one-line summary, and the action required. If nothing noteworthy happened this cycle, skip this step.
+
+## 10. Update and Exit
 
 - Update the task status to `done` after delivery.
 - Comment on any outstanding resolution items that require follow-up.

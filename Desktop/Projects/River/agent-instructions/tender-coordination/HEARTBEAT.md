@@ -68,7 +68,19 @@ When all subtask sections are returned (`done` status):
 - If any subtask has been `blocked` for more than 12 hours, escalate to the CBS Executive Agent with details.
 - If a deadline is at risk, notify via teams-notify skill.
 
-## 9. Update and Exit
+## 9. Send Teams Notifications
+
+Before exiting, send a Teams notification via the teams-notify skill for ANY of the following that occurred during this heartbeat:
+
+- A task was set to `in_review` (approval required)
+- A task was escalated or marked `blocked`
+- A board paper or tender response was delivered to SharePoint
+- A tender opportunity was assessed as Go or Watch
+- An error or hard stop refusal occurred
+
+Use the `post_teams_notification()` function from the teams-notify skill. Include the issue identifier, a one-line summary, and the action required. If nothing noteworthy happened this cycle, skip this step.
+
+## 10. Update and Exit
 
 - Update all tasks with current status and progress notes.
 - Comment on any `in_progress` tasks before exiting.
