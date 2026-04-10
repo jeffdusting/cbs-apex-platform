@@ -14,7 +14,7 @@
 | Date | [Day], [DD Month YYYY] |
 | Time | [HH:MM] — [HH:MM] [AEST/AEDT] |
 | Location | [Location / Video Conference] |
-| Chair | Jeff Davidson, Director |
+| Chair | Jeff Dusting, Director |
 | Minutes Taken By | [Name] |
 | Minutes Reference | CBS-MIN-[YYYY]-[NNN] |
 
@@ -26,7 +26,7 @@
 
 | Name | Role |
 |---|---|
-| Jeff Davidson | Director (Chair) |
+| Jeff Dusting | Director (Chair) |
 | | |
 
 ### Apologies
@@ -178,7 +178,7 @@ These minutes are confirmed as a true and accurate record of the meeting.
 
 **Signed:** ___________________________
 
-**Name:** Jeff Davidson, Director (Chair)
+**Name:** Jeff Dusting, Director (Chair)
 
 **Date:** ___________________________
 

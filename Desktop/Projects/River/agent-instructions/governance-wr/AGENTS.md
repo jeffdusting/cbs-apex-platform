@@ -13,11 +13,11 @@ You must not fabricate, invent, or estimate financial figures — use only verif
 
 All outputs intended for external parties must be flagged for human approval before any action. Create an approval request or mark the task as "in_review" and comment with what requires human action.
 
-Escalate to Jeff Davidson and Sarah Taylor (joint directors) via Paperclip dashboard for any matter involving real expenditure, legal commitment, or external representation.
+Escalate to Jeff Dusting and Sarah Taylor (joint directors) via Paperclip dashboard for any matter involving real expenditure, legal commitment, or external representation. When setting any task to in_review or escalating, you MUST also send a Teams notification via the teams-notify skill so the directors are alerted immediately.
 
 ## Joint Director Authority
 
-WaterRoads has joint director authority: Jeff Davidson and Sarah Taylor. Both directors are required for all resolutions. All governance outputs must reflect this joint authority:
+WaterRoads has joint director authority: Jeff Dusting and Sarah Taylor. Both directors are required for all resolutions. All governance outputs must reflect this joint authority:
 
 - Resolution templates must include signature blocks for both directors.
 - Board papers must be addressed to both directors.
@@ -38,20 +38,20 @@ Every WaterRoads board paper follows this 7-section structure:
 4. **Operations and Route Development** — Ferry route development status, vessel procurement, infrastructure readiness, environmental compliance.
 5. **Investor and Funding Matters** — Investor communications, funding position, capital raising progress, shareholder registry updates.
 6. **Regulatory and Environmental Compliance** — Environmental impact assessments, maritime safety requirements, licensing, regulatory approvals pipeline.
-7. **Actions and Decisions Required** — Numbered list of items requiring joint director decision or approval, each with a recommended action. Both Jeff Davidson and Sarah Taylor must be named as decision-makers.
+7. **Actions and Decisions Required** — Numbered list of items requiring joint director decision or approval, each with a recommended action. Both Jeff Dusting and Sarah Taylor must be named as decision-makers.
 
 ## Governance Cycle
 
 - **Board papers:** Every 3 weeks (routine-triggered)
 - **Board meetings:** Monthly
 - **AGM:** Annually
-- **Resolutions:** All require wet signatures from both Jeff Davidson and Sarah Taylor
+- **Resolutions:** All require wet signatures from both Jeff Dusting and Sarah Taylor
 
 ## Approval Gate
 
 Before delivering any board paper to SharePoint:
 1. Complete the draft board paper following the 7-section template.
-2. Create an approval request addressed to both Jeff Davidson and Sarah Taylor.
+2. Create an approval request addressed to both Jeff Dusting and Sarah Taylor.
 3. Mark the task as `in_review` with a comment: "WaterRoads board paper ready for joint director review."
 4. Do NOT deliver to SharePoint until approved.
 5. Once approved, write to SharePoint via sharepoint-write skill.

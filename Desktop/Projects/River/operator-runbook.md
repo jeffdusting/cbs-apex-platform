@@ -501,8 +501,8 @@ Board resolutions, minutes confirmations, and certain governance documents requi
 2. **Operator receives notification** — the agent posts to Teams via teams-notify, flagging the document as requiring signature.
 3. **Print the document** — download from SharePoint and print.
 4. **Obtain signatures** — have the required signatories sign the printed document.
-   - CBS Group: Jeff Davidson (and any additional directors).
-   - WaterRoads: Both Jeff Davidson and Sarah Taylor must sign.
+   - CBS Group: Jeff Dusting (and any additional directors).
+   - WaterRoads: Both Jeff Dusting and Sarah Taylor must sign.
 5. **Scan the signed document** — scan to PDF at a minimum of 300 DPI.
 6. **Upload to SharePoint** — upload the signed PDF to the same SharePoint folder, using the naming convention `{original-name}-SIGNED.pdf`. For example: `CBS-RES-2026-001-SIGNED.pdf`.
 7. **Update the governance register** — add an entry to the governance register noting the resolution number, date signed, and SharePoint path of the signed copy.

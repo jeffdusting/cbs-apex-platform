@@ -45,7 +45,7 @@
 
 | Role | Name | Vote |
 |---|---|---|
-| Director | Jeff Davidson | ☐ For &emsp; ☐ Against &emsp; ☐ Abstain |
+| Director | Jeff Dusting | ☐ For &emsp; ☐ Against &emsp; ☐ Abstain |
 | [Director] | [Name] | ☐ For &emsp; ☐ Against &emsp; ☐ Abstain |
 
 ---
@@ -82,7 +82,7 @@ Date: ___________________________
 
 Signature: ___________________________
 
-Name: Jeff Davidson, Director
+Name: Jeff Dusting, Director
 
 Date: ___________________________
 
@@ -98,7 +98,7 @@ If this resolution is passed as a circular resolution under Section 248A of the 
 
 | Director | Signature | Date |
 |---|---|---|
-| Jeff Davidson | ___________________________ | _______________ |
+| Jeff Dusting | ___________________________ | _______________ |
 | [Name] | ___________________________ | _______________ |
 
 ---

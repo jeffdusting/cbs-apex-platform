@@ -58,7 +58,7 @@ Before producing substantive output, query the knowledge base for corrections ma
 
 ## 7. Approval Gate
 
-- Create an approval request for Jeff Davidson.
+- Create an approval request for Jeff Dusting.
 - Mark the task as `in_review`.
 - Comment: "Board paper for [period] ready for director review. Financial data as at [timestamp]."
 - Do NOT proceed to SharePoint delivery until approval is received.

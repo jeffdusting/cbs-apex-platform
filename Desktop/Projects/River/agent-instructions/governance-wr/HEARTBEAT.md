@@ -59,7 +59,7 @@ Before producing substantive output, query the knowledge base for corrections ma
 
 ## 7. Approval Gate
 
-- Create an approval request addressed to both Jeff Davidson and Sarah Taylor.
+- Create an approval request addressed to both Jeff Dusting and Sarah Taylor.
 - Mark the task as `in_review`.
 - Comment: "WaterRoads board paper for [period] ready for joint director review. Financial data as at [timestamp]."
 - Do NOT proceed to SharePoint delivery until approval is received.

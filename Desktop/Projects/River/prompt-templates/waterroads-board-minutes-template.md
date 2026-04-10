@@ -14,7 +14,7 @@
 | Date | [Day], [DD Month YYYY] |
 | Time | [HH:MM] — [HH:MM] [AEST/AEDT] |
 | Location | [Location / Video Conference] |
-| Chair | [Jeff Davidson / Sarah Taylor] |
+| Chair | [Jeff Dusting / Sarah Taylor] |
 | Minutes Taken By | [Name] |
 | Minutes Reference | WR-MIN-[YYYY]-[NNN] |
 
@@ -32,7 +32,7 @@ WaterRoads Pty Ltd requires both directors to approve all resolutions. Minutes r
 
 | Name | Role |
 |---|---|
-| Jeff Davidson | Director |
+| Jeff Dusting | Director |
 | Sarah Taylor | Director |
 
 ### Apologies
@@ -63,7 +63,7 @@ The minutes of the meeting held on [DD Month YYYY] (Reference: WR-MIN-[YYYY]-[NN
 
 **Resolution:** The board confirmed the minutes of the previous meeting as a true and accurate record.
 
-Jeff Davidson: ☐ Approved &emsp; Sarah Taylor: ☐ Approved &emsp; **Carried**
+Jeff Dusting: ☐ Approved &emsp; Sarah Taylor: ☐ Approved &emsp; **Carried**
 
 ---
 
@@ -143,7 +143,7 @@ Key points noted:
 
 | Director | Position |
 |---|---|
-| Jeff Davidson | ☐ Approved &emsp; ☐ Not Approved &emsp; ☐ Abstained |
+| Jeff Dusting | ☐ Approved &emsp; ☐ Not Approved &emsp; ☐ Abstained |
 | Sarah Taylor | ☐ Approved &emsp; ☐ Not Approved &emsp; ☐ Abstained |
 
 **Result:** ☐ Carried (both approved) &emsp; ☐ Not Carried
@@ -192,7 +192,7 @@ These minutes are confirmed as a true and accurate record of the meeting.
 
 Signature: ___________________________
 
-Name: Jeff Davidson
+Name: Jeff Dusting
 
 Date: ___________________________
 

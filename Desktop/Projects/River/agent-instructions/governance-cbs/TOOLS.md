@@ -6,7 +6,7 @@
 Core coordination skill. Use for:
 - Checking out and releasing governance tasks
 - Updating task status through the governance workflow
-- Creating approval requests for Jeff Davidson
+- Creating approval requests for Jeff Dusting
 - Adding comments with board paper content and progress updates
 - Reviewing active issues for operations update section
 

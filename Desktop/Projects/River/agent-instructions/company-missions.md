@@ -13,7 +13,7 @@ CBS Group is a technical advisory firm that improves client asset performance ov
 ## WaterRoads Pty Ltd
 
 ```
-WaterRoads is an early-stage maritime transport operator deploying high-frequency, zero-emission electric ferry routes across Sydney's waterways, beginning with a Rhodes to Barangaroo service under a Public-Private Partnership with the NSW Government. Co-founded by Jeff Davidson and Sarah Taylor, with initial investment from CBS Group and CobaltBlu. The longer-term vision encompasses a global waterway transit market identified at USD 63.88 billion across 60+ cities.
+WaterRoads is an early-stage maritime transport operator deploying high-frequency, zero-emission electric ferry routes across Sydney's waterways, beginning with a Rhodes to Barangaroo service under a Public-Private Partnership with the NSW Government. Co-founded by Jeff Dusting and Sarah Taylor, with initial investment from CBS Group and CobaltBlu. The longer-term vision encompasses a global waterway transit market identified at USD 63.88 billion across 60+ cities.
 ```
 
 ## Adventure Safety

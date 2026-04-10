@@ -13,14 +13,14 @@
 | Date | [Day], [DD Month YYYY] |
 | Time | [HH:MM] — [HH:MM] [AEST/AEDT] |
 | Location | [Location / Video Conference Link] |
-| Chair | [Jeff Davidson / Sarah Taylor] |
+| Chair | [Jeff Dusting / Sarah Taylor] |
 | Minutes | [Minute-taker name] |
 
 ---
 
 ## Joint Director Authority
 
-WaterRoads Pty Ltd requires both directors (Jeff Davidson and Sarah Taylor) to be present or represented for a quorum. All resolutions require joint approval from both directors.
+WaterRoads Pty Ltd requires both directors (Jeff Dusting and Sarah Taylor) to be present or represented for a quorum. All resolutions require joint approval from both directors.
 
 ---
 
@@ -85,7 +85,7 @@ The following documents are attached for pre-reading:
 ## Notes
 
 - Board papers are distributed at least 5 business days before the meeting.
-- Both directors (Jeff Davidson and Sarah Taylor) are requested to review all papers prior to the meeting and raise any questions with the Chair.
+- Both directors (Jeff Dusting and Sarah Taylor) are requested to review all papers prior to the meeting and raise any questions with the Chair.
 - Declarations of conflict of interest should be made at the start of the meeting or as soon as a potential conflict becomes apparent.
 - All resolutions require the approval of both directors to be carried.
 

@@ -13,7 +13,7 @@
 | Date | [Day], [DD Month YYYY] |
 | Time | [HH:MM] — [HH:MM] [AEST/AEDT] |
 | Location | [Location / Video Conference Link] |
-| Chair | Jeff Davidson, Director |
+| Chair | Jeff Dusting, Director |
 | Minutes | [Minute-taker name] |
 
 ---

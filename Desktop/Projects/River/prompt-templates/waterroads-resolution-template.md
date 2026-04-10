@@ -17,7 +17,7 @@
 
 ## Joint Director Authority
 
-WaterRoads Pty Ltd requires joint authority for all board resolutions. Both directors listed below must approve for any resolution to be valid. A resolution is not carried unless both Jeff Davidson and Sarah Taylor have indicated their approval.
+WaterRoads Pty Ltd requires joint authority for all board resolutions. Both directors listed below must approve for any resolution to be valid. A resolution is not carried unless both Jeff Dusting and Sarah Taylor have indicated their approval.
 
 This requirement is established by the WaterRoads constitution and shareholders' agreement.
 
@@ -54,7 +54,7 @@ This requirement is established by the WaterRoads constitution and shareholders'
 
 **Both directors must approve for this resolution to be carried.**
 
-#### Director 1 — Jeff Davidson
+#### Director 1 — Jeff Dusting
 
 | Item | Detail |
 |---|---|
@@ -100,7 +100,7 @@ If this resolution is passed as a circular resolution under Section 248A of the 
 
 | Director | Signature | Date |
 |---|---|---|
-| Jeff Davidson | ___________________________ | _______________ |
+| Jeff Dusting | ___________________________ | _______________ |
 | Sarah Taylor | ___________________________ | _______________ |
 
 ---
@@ -120,4 +120,4 @@ If this resolution is passed as a circular resolution under Section 248A of the 
 
 ---
 
-*This resolution was drafted by the WaterRoads Governance Agent. It requires review and execution by both Jeff Davidson and Sarah Taylor. The agent cannot execute resolutions. Both directors must sign the wet copy, which must then be scanned and uploaded to SharePoint.*
+*This resolution was drafted by the WaterRoads Governance Agent. It requires review and execution by both Jeff Dusting and Sarah Taylor. The agent cannot execute resolutions. Both directors must sign the wet copy, which must then be scanned and uploaded to SharePoint.*

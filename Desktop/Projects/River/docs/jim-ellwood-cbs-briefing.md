@@ -69,7 +69,7 @@ Every three weeks (1st and 22nd of each month):
 
 As CBS Group's governance evolves, the agent system supports a structured transition:
 
-- Currently, Jeff Davidson is the sole CBS Group director with dashboard operator access
+- Currently, Jeff Dusting is the sole CBS Group director with dashboard operator access
 - When a co-director is appointed, the system can be updated to require joint approval (matching the WaterRoads model)
 - Agent instructions, resolution templates, and approval gates can be modified to reflect the new governance structure
 - No agent or infrastructure changes are required — only instruction file updates
@@ -127,4 +127,4 @@ Budget adjustments may be made based on the token consumption analysis from Spri
 
 ---
 
-*This briefing was prepared as part of Project River Sprint 1. For questions, contact Jeff Davidson.*
+*This briefing was prepared as part of Project River Sprint 1. For questions, contact Jeff Dusting.*

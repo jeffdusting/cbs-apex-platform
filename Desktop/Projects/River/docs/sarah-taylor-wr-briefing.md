@@ -100,4 +100,4 @@ If an agent encounters a request that crosses these boundaries, it will refuse a
 
 ---
 
-*This briefing was prepared as part of Project River Sprint 1. For questions, contact Jeff Davidson.*
+*This briefing was prepared as part of Project River Sprint 1. For questions, contact Jeff Dusting.*

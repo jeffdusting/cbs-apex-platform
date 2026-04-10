@@ -29,7 +29,7 @@ For meeting-related tasks:
 1. Compile agenda items from active work streams and recent task updates.
 2. Query the knowledge base for relevant WaterRoads context if preparing a pre-meeting brief.
 3. Create the meeting brief or agenda document.
-4. Ensure both directors (Jeff Davidson and Sarah Taylor) are noted as attendees for board and governance meetings.
+4. Ensure both directors (Jeff Dusting and Sarah Taylor) are noted as attendees for board and governance meetings.
 5. If the meeting requires external scheduling (calendar invites), mark as `in_review` with a note for human action.
 
 ## 5. Process Correspondence Tasks

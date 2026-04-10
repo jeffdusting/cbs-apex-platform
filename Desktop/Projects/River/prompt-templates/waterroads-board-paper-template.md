@@ -24,7 +24,7 @@ WaterRoads Pty Ltd is governed by joint director authority. Both directors must 
 
 | Director | Role |
 |---|---|
-| **Jeff Davidson** | Director |
+| **Jeff Dusting** | Director |
 | **Sarah Taylor** | Director |
 
 No resolution is valid unless both directors have indicated their approval. Refer to the WaterRoads constitution and shareholders' agreement for the specific approval mechanics.
@@ -175,7 +175,7 @@ Summary of the current status of the CBS Group relationship, including:
 
 | Director | Approval | Signature | Date |
 |---|---|---|---|
-| Jeff Davidson | ☐ Approved &emsp; ☐ Not Approved | ___________________________ | _______________ |
+| Jeff Dusting | ☐ Approved &emsp; ☐ Not Approved | ___________________________ | _______________ |
 | Sarah Taylor | ☐ Approved &emsp; ☐ Not Approved | ___________________________ | _______________ |
 
 **Result:** ☐ Carried (both directors approved) &emsp; ☐ Not Carried
@@ -200,4 +200,4 @@ Summary of the current status of the CBS Group relationship, including:
 
 ---
 
-*This board paper was prepared by the WaterRoads Executive Agent using data from the River knowledge base. Financial figures should be verified against source systems before relying on them for formal decisions. All resolutions require the approval of both Jeff Davidson and Sarah Taylor.*
+*This board paper was prepared by the WaterRoads Executive Agent using data from the River knowledge base. Financial figures should be verified against source systems before relying on them for formal decisions. All resolutions require the approval of both Jeff Dusting and Sarah Taylor.*

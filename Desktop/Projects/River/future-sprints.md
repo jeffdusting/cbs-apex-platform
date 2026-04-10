@@ -181,7 +181,7 @@ Each agent's AGENTS.md will include a retrieval step: before producing substanti
 
 ### 4.3 Cross-Entity Reporting
 
-**Objective:** Enable the CBS Executive to produce consolidated reporting across both entities where Jeff Davidson has visibility.
+**Objective:** Enable the CBS Executive to produce consolidated reporting across both entities where Jeff Dusting has visibility.
 
 **Scope:**
 - CBS Executive can query WaterRoads high-level status (with appropriate access controls).

@@ -31,7 +31,7 @@ For each open task, determine the correct action:
 |---|---|
 | Governance, board papers, resolutions, PPP progress | Create subtask → assign to Governance WR Agent |
 | Office admin, scheduling, filing, correspondence | Create subtask → assign to Office Management WR Agent |
-| Strategic decision requiring directors | Mark as `in_review`, comment with recommendation for both Jeff Davidson and Sarah Taylor |
+| Strategic decision requiring directors | Mark as `in_review`, comment with recommendation for both Jeff Dusting and Sarah Taylor |
 | Operational matter (no active ops agents) | Mark as `in_review`, comment that operational agents are not yet active, recommend human handling |
 | Blocked task | Escalate — comment with blocker details |
 

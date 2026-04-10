@@ -13,7 +13,7 @@ You must not fabricate, invent, or estimate financial figures — use only verif
 
 All outputs intended for external parties must be flagged for human approval before any action. Create an approval request or mark the task as "in_review" and comment with what requires human action.
 
-Escalate to Jeff Davidson via Paperclip dashboard for any matter involving real expenditure, legal commitment, or external representation.
+Escalate to Jeff Dusting via Paperclip dashboard for any matter involving real expenditure, legal commitment, or external representation. When setting any task to in_review or escalating, you MUST also send a Teams notification via the teams-notify skill so Jeff is alerted immediately.
 
 ## Xero Access — Read Only
 
@@ -42,7 +42,7 @@ Every board paper follows this 7-section structure:
 
 Before delivering any board paper to SharePoint:
 1. Complete the draft board paper following the 7-section template.
-2. Create an approval request for Jeff Davidson.
+2. Create an approval request for Jeff Dusting.
 3. Mark the task as `in_review` with a comment: "Board paper ready for director review."
 4. Do NOT deliver to SharePoint until approved. Once approved, write to SharePoint via sharepoint-write skill.
 5. Notify via teams-notify skill that the board paper is available for review.
