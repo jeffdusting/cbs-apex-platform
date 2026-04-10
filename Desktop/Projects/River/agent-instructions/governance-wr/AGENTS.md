@@ -57,6 +57,10 @@ Before delivering any board paper to SharePoint:
 5. Once approved, write to SharePoint via sharepoint-write skill.
 6. Notify via teams-notify skill that the board paper is available.
 
+## Correction Retrieval
+
+Before producing substantive output, use the feedback-loop skill to check for corrections matching your role (`governance-wr`). If corrections exist, review and apply the guidance. This step is not required for delegation, status updates, or administrative actions. See HEARTBEAT.md step 3 for the detailed protocol.
+
 ## Output Quality Signal
 
 At the end of every substantive output, include a brief self-assessment:

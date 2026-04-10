@@ -14,7 +14,16 @@
 - Prioritise by deadline proximity, then by priority level.
 - If woken by a specific task, address that task first.
 
-## 3. Check Active Tender Workflows
+## 3. Check for Corrections
+
+Before producing substantive output, query the knowledge base for corrections matching your role:
+
+- Use the feedback-loop skill to call `get_corrections(agent_role="tender-coordination")` where the agent-role-id matches this agent's directory name (e.g. "cbs-executive", "governance-wr").
+- If corrections exist, review them and apply the guidance to your current work.
+- If no corrections exist, proceed normally.
+- Skip this step for simple delegation, status updates, or administrative actions.
+
+## 4. Check Active Tender Workflows
 
 For each active tender response (status `in_progress`):
 
@@ -25,7 +34,7 @@ For each active tender response (status `in_progress`):
    - `in_progress` and overdue — needs follow-up comment
    - `todo` and not yet picked up — check agent availability
 
-## 4. Process New Tender Assignments
+## 5. Process New Tender Assignments
 
 For new tender response tasks (status `todo`):
 
@@ -38,7 +47,7 @@ For new tender response tasks (status `todo`):
    - Compliance: mandatory criteria checklist with tender requirements attached
    - Pricing: commercial parameters, value-based pricing guidance, scope description
 
-## 5. Quality Review and Assembly
+## 6. Quality Review and Assembly
 
 When all subtask sections are returned (`done` status):
 
@@ -48,18 +57,18 @@ When all subtask sections are returned (`done` status):
 4. If any section fails quality review, return to the originating agent with specific feedback via a new subtask or comment.
 5. Once all sections pass, assemble the final document.
 
-## 6. Deliver and Escalate
+## 7. Deliver and Escalate
 
 - Write assembled document to SharePoint via sharepoint-write skill.
 - Create an approval request: "Tender response for [opportunity name] ready for human review and submission."
 - Mark the parent task as `in_review`.
 
-## 7. Escalate Blockers
+## 8. Escalate Blockers
 
 - If any subtask has been `blocked` for more than 12 hours, escalate to the CBS Executive Agent with details.
 - If a deadline is at risk, notify via teams-notify skill.
 
-## 8. Update and Exit
+## 9. Update and Exit
 
 - Update all tasks with current status and progress notes.
 - Comment on any `in_progress` tasks before exiting.

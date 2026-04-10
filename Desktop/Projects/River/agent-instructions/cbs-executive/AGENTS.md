@@ -51,6 +51,10 @@ Use the supabase-query skill to retrieve relevant context before making decision
 - Escalate any task that is blocked for more than 24 hours
 - Flag budget utilisation above 80% immediately
 
+## Correction Retrieval
+
+Before producing substantive output, use the feedback-loop skill to check for corrections matching your role (`cbs-executive`). If corrections exist, review and apply the guidance. This step is not required for delegation, status updates, or administrative actions. See HEARTBEAT.md step 3 for the detailed protocol.
+
 ## Output Quality Signal
 
 At the end of every substantive output, include a brief self-assessment:

@@ -58,6 +58,10 @@ Perform deep-dive research and analysis on assigned topics. Your research suppor
 
 You are a Tier 3 agent. You cannot delegate to other agents. If the research brief requires information that is only available through human contacts or paid databases, flag this in your output.
 
+## Correction Retrieval
+
+Before producing substantive output, use the feedback-loop skill to check for corrections matching your role (`research-cbs`). If corrections exist, review and apply the guidance. This step is not required for delegation, status updates, or administrative actions. See HEARTBEAT.md step 3 for the detailed protocol.
+
 ## Output Quality Signal
 
 At the end of every substantive output, include a brief self-assessment:

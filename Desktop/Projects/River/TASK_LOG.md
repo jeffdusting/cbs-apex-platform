@@ -1,5 +1,60 @@
 # Project River — Task Log
 
+## Sprint 2 — Feedback Loop Activation and Shared Knowledge
+
+**Date:** 10 April 2026
+**Status:** COMPLETE
+**Git Tag:** river-sprint-2
+
+---
+
+### 2.1 Agent Feedback Loop
+
+| # | Task | Status |
+|---|------|--------|
+| 2.1a | Create feedback-loop skill | DONE — `skills/feedback-loop/SKILL.md` |
+| 2.1b | Create feedback-report script | DONE — `scripts/feedback-report.py` |
+| 2.1c | Update HEARTBEAT.md with correction step | DONE — all 12 agents, step 3 "Check for Corrections" |
+| 2.1d | Update AGENTS.md with correction directive | DONE — all 12 agents, "Correction Retrieval" section |
+| 2.1e | Sync feedback-loop skill to agents | DONE — behaviour encoded in instructions (Paperclip skill import requires GitHub source, not needed) |
+
+### 2.2 Shared Knowledge Category
+
+| # | Task | Status |
+|---|------|--------|
+| 2.2a | Schema migration SQL | DONE — `scripts/shared-knowledge-migration.sql` (match_documents updated to include shared entity) |
+| 2.2b | Update supabase-query skill | DONE — shared entity documented, correction category added |
+| 2.2c | Migrate shared documents | DONE — 16 CAPITAL methodology docs migrated cbs-group → shared |
+
+### Manual Step Required
+
+Run `scripts/shared-knowledge-migration.sql` in the Supabase SQL Editor to update the `match_documents` function to include shared entity results.
+
+### Files Created
+
+- `skills/feedback-loop/SKILL.md` — correction retrieval protocol
+- `scripts/feedback-report.py` — weekly feedback summary per agent
+- `scripts/migrate-shared-knowledge.py` — moves documents to shared entity
+- `scripts/shared-knowledge-migration.sql` — updates match_documents for shared entity support
+
+### Files Modified
+
+- `skills/supabase-query/SKILL.md` — added shared entity, correction category
+- `agent-instructions/*/HEARTBEAT.md` — 12 files, added step 3 "Check for Corrections"
+- `agent-instructions/*/AGENTS.md` — 12 files, added "Correction Retrieval" section
+- `future-sprints.md` — Sprint 1 recap updated
+
+### Items Deferred
+
+- 2.3 HTTP Adapter (Manus) — pending Paperclip release
+- 2.4 OpenClaw Gateway — pending Paperclip release
+
+### Operational Note
+
+CBSA-6 test tender: Technical Writing and Compliance agents invoked manually (wakeOnDemand not triggering for pre-assigned tasks). Both now processing.
+
+---
+
 ## Day 3 — WaterRoads Preparation and Test Support
 
 **Date:** 10 April 2026

@@ -14,7 +14,16 @@
 - You wake on task assignment only — there should be a specific pricing task.
 - If woken by a comment, review for feedback or revision requests.
 
-## 3. Checkout and Read Brief
+## 3. Check for Corrections
+
+Before producing substantive output, query the knowledge base for corrections matching your role:
+
+- Use the feedback-loop skill to call `get_corrections(agent_role="pricing-commercial")` where the agent-role-id matches this agent's directory name (e.g. "cbs-executive", "governance-wr").
+- If corrections exist, review them and apply the guidance to your current work.
+- If no corrections exist, proceed normally.
+- Skip this step for simple delegation, status updates, or administrative actions.
+
+## 4. Checkout and Read Brief
 
 - `POST /api/issues/{id}/checkout` to claim the task.
 - Read the task description from the Tender Coordination Agent.
@@ -24,7 +33,7 @@
   - Required output type (pricing narrative, fee structure rationale, commercial risk assessment)
   - Deadline for completion
 
-## 4. Query Knowledge Base and Financial Data
+## 5. Query Knowledge Base and Financial Data
 
 - Use supabase-query to retrieve:
   - CBS Group fee structure documents and commercial principles
@@ -36,7 +45,7 @@
   - Current rate card benchmarks
   - Relevant financial context
 
-## 5. Apply CAPITAL Framework Commercial Principles
+## 6. Apply CAPITAL Framework Commercial Principles
 
 - Use the cbs-capital-framework skill for methodology guidance.
 - Structure the pricing narrative around value-based principles:
@@ -45,14 +54,14 @@
   - Position pricing as investment rather than cost
   - Address the client's total cost of ownership, not just the advisory engagement cost
 
-## 6. Draft Pricing Content
+## 7. Draft Pricing Content
 
 - Produce the requested output type.
 - Ensure all commercial claims are supported by KB evidence or Xero data.
 - Flag any areas where pricing assumptions require human verification.
 - Do not include specific dollar amounts for proposed fees unless they are drawn from an approved rate card in Xero or the KB.
 
-## 7. Update and Exit
+## 8. Update and Exit
 
 - Update the task with the completed pricing content.
 - Set task status to `done`.

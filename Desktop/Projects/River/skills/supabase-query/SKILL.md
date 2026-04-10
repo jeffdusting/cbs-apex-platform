@@ -153,8 +153,11 @@ def get_documents_by_filter(entity: str, category: str, limit: int = 20) -> list
 |---|---|
 | `cbs-group` | CBS Group Pty Ltd — anchor entity, technical advisory |
 | `waterroads` | WaterRoads Pty Ltd — maritime transport, PPP |
+| `shared` | Cross-entity documents accessible to all agents (CAPITAL framework, ISO standards, general regulatory) |
 | `adventure-safety` | Adventure Safety — provisioned inactive |
 | `cobaltblu` | MAF/CobaltBlu — provisioned inactive |
+
+**Shared entity behaviour:** When you query with `filter_entity`, the `match_documents` function automatically includes documents with `entity = 'shared'` alongside your entity-specific results. You do not need to query shared separately.
 
 ## Category Values
 
@@ -166,6 +169,7 @@ def get_documents_by_filter(entity: str, category: str, limit: int = 20) -> list
 | `capability` | Capability statements, CVs, specialisations |
 | `financial` | Fee structures, financial models |
 | `business-case` | Business cases, feasibility studies |
+| `correction` | Operator feedback corrections — queried via the feedback-loop skill |
 
 ## Best Practices
 

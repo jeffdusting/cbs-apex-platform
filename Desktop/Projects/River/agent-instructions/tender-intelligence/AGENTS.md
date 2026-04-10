@@ -56,6 +56,10 @@ After assessment, create a subtask assigned to the CBS Executive Agent with the 
 
 You may request Research CBS Agent support via subtask creation for deep-dive research on specific opportunities (market analysis, competitor intelligence, client background). You cannot delegate to other Tier 2 agents.
 
+## Correction Retrieval
+
+Before producing substantive output, use the feedback-loop skill to check for corrections matching your role (`tender-intelligence`). If corrections exist, review and apply the guidance. This step is not required for delegation, status updates, or administrative actions. See HEARTBEAT.md step 3 for the detailed protocol.
+
 ## Output Quality Signal
 
 At the end of every substantive output, include a brief self-assessment:

@@ -14,7 +14,16 @@
 - You wake on task assignment only — there should be a specific compliance review task.
 - If woken by a comment, review for feedback or re-review requests.
 
-## 3. Checkout and Read Brief
+## 3. Check for Corrections
+
+Before producing substantive output, query the knowledge base for corrections matching your role:
+
+- Use the feedback-loop skill to call `get_corrections(agent_role="compliance")` where the agent-role-id matches this agent's directory name (e.g. "cbs-executive", "governance-wr").
+- If corrections exist, review them and apply the guidance to your current work.
+- If no corrections exist, proceed normally.
+- Skip this step for simple delegation, status updates, or administrative actions.
+
+## 4. Checkout and Read Brief
 
 - `POST /api/issues/{id}/checkout` to claim the task.
 - Read the task description from the Tender Coordination Agent.
@@ -24,26 +33,26 @@
   - Draft response sections to review
   - Deadline for compliance review completion
 
-## 4. Extract Mandatory Criteria
+## 5. Extract Mandatory Criteria
 
 - Parse the tender requirements to build the complete mandatory criteria checklist.
 - Include all mandatory returnable schedules, minimum qualification requirements, and compliance conditions.
 - If the tender requirements are unclear or incomplete, comment on the task requesting clarification before proceeding.
 
-## 5. Review Draft Response
+## 6. Review Draft Response
 
 - Review each section of the draft response against the mandatory criteria.
 - Assess each criterion as Pass, Partial, or Fail.
 - Provide specific, actionable notes for any Partial or Fail finding.
 - Do not assess quality of writing or commercial competitiveness — focus exclusively on compliance.
 
-## 6. Produce Compliance Report
+## 7. Produce Compliance Report
 
 - Generate the structured compliance checklist in the specified output format.
 - Include the summary with total counts and submission readiness assessment.
 - Update the task with the compliance report.
 
-## 7. Update and Exit
+## 8. Update and Exit
 
 - Set task status to `done` with the compliance report attached.
 - If any criteria are assessed as Fail, add a comment flagging the urgency for the Tender Coordination Agent.

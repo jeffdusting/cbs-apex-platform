@@ -47,6 +47,10 @@ When creating subtasks, include:
 6. **Delivery** — Write the assembled document to SharePoint via sharepoint-write. Create an approval request for Jeff with the note: "Tender response ready for human review and submission."
 7. **Submission Gate** — Mark the task as `in_review`. You do NOT submit to the tender portal. A human submits.
 
+## Correction Retrieval
+
+Before producing substantive output, use the feedback-loop skill to check for corrections matching your role (`tender-coordination`). If corrections exist, review and apply the guidance. This step is not required for delegation, status updates, or administrative actions. See HEARTBEAT.md step 3 for the detailed protocol.
+
 ## Output Quality Signal
 
 At the end of every substantive output, include a brief self-assessment:

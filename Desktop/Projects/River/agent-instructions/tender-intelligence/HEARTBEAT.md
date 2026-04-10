@@ -14,13 +14,22 @@
 - If woken by a routine-created task, this is your daily tender scan. Proceed to step 3.
 - If woken by a specific task assignment, address that task directly.
 
-## 3. Daily Tender Scan
+## 3. Check for Corrections
+
+Before producing substantive output, query the knowledge base for corrections matching your role:
+
+- Use the feedback-loop skill to call `get_corrections(agent_role="tender-intelligence")` where the agent-role-id matches this agent's directory name (e.g. "cbs-executive", "governance-wr").
+- If corrections exist, review them and apply the guidance to your current work.
+- If no corrections exist, proceed normally.
+- Skip this step for simple delegation, status updates, or administrative actions.
+
+## 4. Daily Tender Scan
 
 - Run the tender-portal-query skill to retrieve current AusTender RSS feed results.
 - Filter results against CBS Group sector keywords: infrastructure, asset management, systems engineering, transport, tunnels, professional engineering, advisory, tolling, road, rail, maritime, safety.
 - For each matching opportunity, proceed to step 4.
 
-## 4. Opportunity Assessment
+## 5. Opportunity Assessment
 
 For each filtered opportunity:
 
@@ -33,7 +42,7 @@ For each filtered opportunity:
 3. Produce the structured JSON assessment plus narrative rationale.
 4. Assign a Go/Watch/Pass recommendation.
 
-## 5. Create Summary Task
+## 6. Create Summary Task
 
 - Create a subtask assigned to the CBS Executive Agent.
 - Title: "Tender Intelligence Daily Report — [date]"
@@ -41,12 +50,12 @@ For each filtered opportunity:
 - If any opportunities are rated "Go", flag the task as `high` priority.
 - If all opportunities are "Watch" or "Pass", flag as `medium` priority.
 
-## 6. Research Requests
+## 7. Research Requests
 
 - If an opportunity requires deeper analysis (unfamiliar client, complex sector, JV consideration), create a subtask assigned to the Research CBS Agent with a clear brief.
 - Note the research dependency in the parent assessment.
 
-## 7. Update and Exit
+## 8. Update and Exit
 
 - Update the routine task status to `done` with a summary comment.
 - Comment on any `in_progress` research requests with current status.

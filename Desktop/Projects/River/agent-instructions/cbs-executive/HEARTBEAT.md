@@ -15,7 +15,16 @@
 - Review all open issues. Prioritise by: `critical` > `high` > `medium` > `low`.
 - If woken by a specific task (`PAPERCLIP_TASK_ID`), address that task first.
 
-## 3. Triage and Delegate
+## 3. Check for Corrections
+
+Before producing substantive output, query the knowledge base for corrections matching your role:
+
+- Use the feedback-loop skill to call `get_corrections(agent_role="cbs-executive")` where the agent-role-id matches this agent's directory name (e.g. "cbs-executive", "governance-wr").
+- If corrections exist, review them and apply the guidance to your current work.
+- If no corrections exist, proceed normally.
+- Skip this step for simple delegation, status updates, or administrative actions.
+
+## 4. Triage and Delegate
 
 For each open task, determine the correct action:
 
@@ -29,19 +38,19 @@ For each open task, determine the correct action:
 | Strategic decision requiring Jeff | Mark as `in_review`, comment with recommendation and what requires human decision |
 | Blocked task | Escalate — comment with blocker details, tag relevant agent |
 
-## 4. Checkout and Work
+## 5. Checkout and Work
 
 - `POST /api/issues/{id}/checkout` for each task you are actively processing.
 - For delegation: create the subtask, assign to the correct agent, update the parent task status to `in_progress` with a comment noting delegation.
 - For synthesis tasks: query KB via supabase-query skill, compile inputs from completed subtasks, produce summary output.
 
-## 5. Follow-Up on Delegated Tasks
+## 6. Follow-Up on Delegated Tasks
 
 - Review all subtasks you have created that are in `in_progress` or `blocked` status.
 - If a delegated task has been `in_progress` for more than 24 hours without an update, add a follow-up comment.
 - If a delegated task is `blocked`, assess whether you can unblock it or escalate to Jeff.
 
-## 6. Update and Exit
+## 7. Update and Exit
 
 - Update all tasks you worked on with current status and any outputs.
 - For tasks completed this heartbeat, set status to `done` (or `in_review` if human approval required).

@@ -14,7 +14,16 @@
 - You wake on task assignment only — there should be a specific research task.
 - If woken by a comment, review for additional questions or scope clarification.
 
-## 3. Checkout and Read Brief
+## 3. Check for Corrections
+
+Before producing substantive output, query the knowledge base for corrections matching your role:
+
+- Use the feedback-loop skill to call `get_corrections(agent_role="research-cbs")` where the agent-role-id matches this agent's directory name (e.g. "cbs-executive", "governance-wr").
+- If corrections exist, review them and apply the guidance to your current work.
+- If no corrections exist, proceed normally.
+- Skip this step for simple delegation, status updates, or administrative actions.
+
+## 4. Checkout and Read Brief
 
 - `POST /api/issues/{id}/checkout` to claim the task.
 - Read the research brief from the assigning agent (Tender Intelligence or CBS Executive).
@@ -24,7 +33,7 @@
   - Deadline for completion
   - Any specific sources or angles to investigate
 
-## 4. Query Internal Knowledge Base
+## 5. Query Internal Knowledge Base
 
 - Use supabase-query to check if relevant information already exists in the CBS Group knowledge base.
 - Search for:
@@ -32,7 +41,7 @@
   - CBS Group capability documents relevant to the research area
   - Case studies or project history related to the research question
 
-## 5. Conduct External Research
+## 6. Conduct External Research
 
 - Use web search to investigate the research question.
 - Follow the research standards:
@@ -41,14 +50,14 @@
   - Use multiple search strategies if initial queries are insufficient
 - Cross-reference external findings with internal KB content.
 
-## 6. Analyse and Structure Findings
+## 7. Analyse and Structure Findings
 
 - Synthesise internal and external research into the structured report format.
 - Distinguish clearly between facts, analysis, and speculation.
 - Flag any contradictions between sources.
 - Note limitations and gaps.
 
-## 7. Update and Exit
+## 8. Update and Exit
 
 - Update the task with the completed research report.
 - Set task status to `done`.

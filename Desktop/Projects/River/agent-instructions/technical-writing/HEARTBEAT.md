@@ -14,7 +14,16 @@
 - You wake on task assignment only — there should be a specific task to address.
 - If woken by a comment on an existing task, review the comment for feedback or revision requests.
 
-## 3. Read Assigned Task
+## 3. Check for Corrections
+
+Before producing substantive output, query the knowledge base for corrections matching your role:
+
+- Use the feedback-loop skill to call `get_corrections(agent_role="technical-writing")` where the agent-role-id matches this agent's directory name (e.g. "cbs-executive", "governance-wr").
+- If corrections exist, review them and apply the guidance to your current work.
+- If no corrections exist, proceed normally.
+- Skip this step for simple delegation, status updates, or administrative actions.
+
+## 4. Read Assigned Task
 
 - Read the task description and brief provided by the Tender Coordination Agent.
 - Identify:
@@ -24,7 +33,7 @@
   - Any KB queries suggested in the brief
   - Quality criteria and acceptance standards
 
-## 4. Query Knowledge Base
+## 5. Query Knowledge Base
 
 - `POST /api/issues/{id}/checkout` to claim the task.
 - Use the supabase-query skill to retrieve relevant content:
@@ -34,19 +43,19 @@
   - Past tender response sections addressing similar criteria
 - Record which KB documents were retrieved and their similarity scores.
 
-## 5. Draft Section
+## 6. Draft Section
 
 - Write the technical narrative section based on the brief and KB evidence.
 - Ensure every capability claim cites a specific KB source.
 - Apply the cbs-capital-framework skill for methodology terminology and structure.
 - Structure content to directly address the evaluation criteria identified in the brief.
 
-## 6. Include KB Citations
+## 7. Include KB Citations
 
 - At the end of the draft section, include a "Sources" block listing all KB documents referenced.
 - Note any areas where KB evidence was insufficient and generic content was used.
 
-## 7. Update and Exit
+## 8. Update and Exit
 
 - Update the task with the completed draft section as a comment or document attachment.
 - Set task status to `done` if the section is complete, or `in_progress` if awaiting additional information.
