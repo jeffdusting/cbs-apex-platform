@@ -45,7 +45,7 @@ Government tender portals send email notifications to Jeff Dusting's inbox when 
 |---|---|---|---|
 | AusTender | tenders.gov.au | `*tenders.gov.au`, `*austender*` | Australian Federal Government |
 | Tenders.NSW | tenders.nsw.gov.au | `*tenders.nsw.gov.au`, `*nsw.gov.au*tender*` | NSW State Government |
-| Buying for Victoria | buying.vic.gov.au | `*buying.vic.gov.au`, `*vic.gov.au*tender*` | Victorian State Government |
+| Buying for Victoria | buying.vic.gov.au | `*tenders.vic.gov.au`, `*buying.vic.gov.au` | Victorian State Government |
 | GETS NZ | gets.govt.nz | `*gets.govt.nz`, `*GETS*` | New Zealand Government |
 | Inland Rail | inlandrail.artc.com.au | `*inlandrail*`, `*artc.com.au*` | ARTC Inland Rail Programme |
 
@@ -90,7 +90,7 @@ def get_tender_emails(token: str, days_back: int = 1, max_results: int = 20) -> 
     headers = {"Authorization": f"Bearer {token}"}
 
     # Search for tender notification emails from all monitored sources
-    # Jeff's email: jeff@cbsaustralia.com.au
+    # Jeff's email: jeff@cbs.com.au (Microsoft 365 / Exchange Online)
     filter_query = (
         f"receivedDateTime ge {since} and ("
         # AusTender (Federal)
@@ -98,7 +98,8 @@ def get_tender_emails(token: str, days_back: int = 1, max_results: int = 20) -> 
         "contains(from/emailAddress/address, 'austender') or "
         # Tenders.NSW
         "contains(from/emailAddress/address, 'tenders.nsw.gov.au') or "
-        # Buying for Victoria
+        # Buying for Victoria (sender: noreply@tenders.vic.gov.au)
+        "contains(from/emailAddress/address, 'tenders.vic.gov.au') or "
         "contains(from/emailAddress/address, 'buying.vic.gov.au') or "
         # GETS NZ
         "contains(from/emailAddress/address, 'gets.govt.nz') or "
@@ -117,19 +118,9 @@ def get_tender_emails(token: str, days_back: int = 1, max_results: int = 20) -> 
         ")"
     )
 
-    # Query all users' mailboxes the app has access to
-    # Try Jeff's mailbox first
-    users_resp = httpx.get(
-        "https://graph.microsoft.com/v1.0/users",
-        headers=headers,
-        params={"$select": "id,mail,displayName", "$top": 10},
-        timeout=30,
-    )
-    users = users_resp.json().get("value", [])
-
+    # Query Jeff's mailbox directly
     all_emails = []
-    for user in users:
-        user_id = user["id"]
+    for user_id in ["jeff@cbs.com.au"]:
         mail_resp = httpx.get(
             f"https://graph.microsoft.com/v1.0/users/{user_id}/messages",
             headers=headers,
@@ -150,7 +141,7 @@ def get_tender_emails(token: str, days_back: int = 1, max_results: int = 20) -> 
                     "received": msg.get("receivedDateTime", ""),
                     "preview": msg.get("bodyPreview", ""),
                     "body": msg.get("body", {}).get("content", ""),
-                    "user": user.get("mail", user_id),
+                    "user": user_id,
                 })
 
     return all_emails
@@ -173,7 +164,7 @@ def parse_tender_from_email(email: dict) -> dict | None:
     # Extract common fields from AusTender email format
     # Identify source portal
     from_addr = email.get("from", "").lower()
-    if "buying.vic.gov.au" in from_addr or "vic.gov.au" in from_addr:
+    if "tenders.vic.gov.au" in from_addr or "buying.vic.gov.au" in from_addr or "vic.gov.au" in from_addr:
         source = "buying_for_victoria"
     elif "gets.govt.nz" in from_addr:
         source = "gets_nz"
