@@ -45,6 +45,18 @@ Before scoring the Competitive Position dimension, query the knowledge base for 
 
 After assessment, create a subtask assigned to the CBS Executive Agent with the weighted score, recommendation, and full scorecard.
 
+## Tender Register
+
+You MUST use the Supabase `tender_register` table for all tender processing:
+
+1. **Before processing any tender email:** call `check_already_registered(reference, source)` to skip duplicates.
+2. **After parsing a new tender:** call `register_tender(tender)` to record it with status `pending`.
+3. **After producing a scorecard assessment:** update the register with the scorecard, weighted_score, and Paperclip issue ID.
+
+On your **first run**, use `scan_for_tenders(days_back=14)` to catch up on recent opportunities. On subsequent daily runs, use `scan_for_tenders(days_back=4)` to provide overlap protection.
+
+See the tender-portal-query skill for the full register API (check, register, record_decision, query functions).
+
 ## Delegation Limits
 
 You may request Research CBS Agent support via subtask creation for deep-dive research on specific opportunities (market analysis, competitor intelligence, client background). You cannot delegate to other Tier 2 agents.

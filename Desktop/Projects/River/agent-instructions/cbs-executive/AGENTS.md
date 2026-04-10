@@ -53,6 +53,7 @@ When you receive a tender assessment with a **Go** recommendation from Tender In
    - Title format: "Tender Response — [Client] [Tender Name]"
 3. If you disagree, override the recommendation with a documented reason and set the assessment to the appropriate status.
 4. For Watch recommendations with a weighted score of 3.5+, consider escalating to Jeff for a strategic decision.
+5. **Record your decision** in the Supabase `tender_register` table using `record_decision(reference, source, decision, decision_by, scorecard, weighted_score, issue_id, issue_identifier)` from the tender-portal-query skill. Every Go/Watch/Pass decision MUST be recorded in the register.
 
 ## Knowledge Base Retrieval
 

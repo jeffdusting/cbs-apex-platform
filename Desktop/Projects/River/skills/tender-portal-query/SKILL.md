@@ -211,30 +211,195 @@ def parse_tender_from_email(email: dict) -> dict | None:
     return tender
 ```
 
-### Step 3: Complete Scan Workflow
+### Step 3: Deduplication via Tender Register
+
+Before processing any tender, check the Supabase `tender_register` table to see if it has already been recorded. This prevents re-assessing the same opportunity every scan cycle.
 
 ```python
-def scan_for_tenders(days_back: int = 1) -> list[dict]:
+def check_already_registered(reference: str, source: str) -> bool:
     """
-    Complete tender scan: get emails, parse, return structured opportunities.
+    Check if a tender is already in the register.
+
+    Args:
+        reference: Tender reference number (e.g. ATM-12345).
+        source: Source portal identifier.
+
+    Returns:
+        True if the tender is already registered (skip it).
+    """
+    SUPABASE_URL = os.environ["SUPABASE_URL"]
+    SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+
+    resp = httpx.get(
+        f"{SUPABASE_URL}/rest/v1/tender_register",
+        headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+        params={"reference": f"eq.{reference}", "source": f"eq.{source}", "select": "id", "limit": 1},
+        timeout=15,
+    )
+    return resp.status_code == 200 and len(resp.json()) > 0
+
+
+def register_tender(tender: dict) -> dict | None:
+    """
+    Write a new tender to the register. Returns the created record or None.
+    """
+    SUPABASE_URL = os.environ["SUPABASE_URL"]
+    SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+
+    record = {
+        "reference": tender.get("reference", f"UNREFERENCED-{tender.get('received', '')[:10]}"),
+        "source": tender.get("source", "unknown"),
+        "title": tender.get("title", ""),
+        "agency": tender.get("agency"),
+        "estimated_value": tender.get("estimated_value"),
+        "close_date": tender.get("close_date"),
+        "email_subject": tender.get("email_subject"),
+        "email_date": tender.get("received"),
+    }
+
+    resp = httpx.post(
+        f"{SUPABASE_URL}/rest/v1/tender_register",
+        headers={
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {SUPABASE_KEY}",
+            "Content-Type": "application/json",
+            "Prefer": "return=representation",
+        },
+        json=record,
+        timeout=15,
+    )
+    if resp.status_code in (200, 201):
+        return resp.json()[0] if resp.json() else None
+    return None
+
+
+def record_decision(reference: str, source: str, decision: str, decision_by: str,
+                    scorecard: dict = None, weighted_score: float = None,
+                    issue_id: str = None, issue_identifier: str = None, notes: str = None):
+    """
+    Record a Go/Watch/Pass decision in the tender register.
+    Called by CBS Executive after reviewing a Tender Intelligence assessment.
+    """
+    SUPABASE_URL = os.environ["SUPABASE_URL"]
+    SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+
+    update = {
+        "decision": decision,
+        "decision_date": "now()",
+        "decision_by": decision_by,
+    }
+    if scorecard:
+        update["scorecard"] = scorecard
+    if weighted_score is not None:
+        update["weighted_score"] = weighted_score
+    if issue_id:
+        update["issue_id"] = issue_id
+    if issue_identifier:
+        update["issue_identifier"] = issue_identifier
+    if notes:
+        update["decision_notes"] = notes
+
+    resp = httpx.patch(
+        f"{SUPABASE_URL}/rest/v1/tender_register",
+        headers={
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {SUPABASE_KEY}",
+            "Content-Type": "application/json",
+        },
+        params={"reference": f"eq.{reference}", "source": f"eq.{source}"},
+        json=update,
+        timeout=15,
+    )
+    return resp.status_code in (200, 204)
+```
+
+### Step 4: Complete Scan Workflow with Deduplication
+
+```python
+def scan_for_tenders(days_back: int = 4) -> list[dict]:
+    """
+    Complete tender scan with deduplication.
+
+    Default lookback: 4 days (provides overlap protection).
+    On first run after deployment, use days_back=14 to catch up.
+
+    Returns only NEW tenders not already in the register.
     """
     token = get_graph_token()
     emails = get_tender_emails(token, days_back=days_back)
 
-    opportunities = []
+    new_opportunities = []
+    skipped = 0
+
     for email in emails:
         tender = parse_tender_from_email(email)
-        if tender:
-            opportunities.append(tender)
+        if not tender:
+            continue
 
-    return opportunities
+        ref = tender.get("reference", f"UNREFERENCED-{tender.get('received', '')[:10]}")
+        src = tender.get("source", "unknown")
+
+        # Dedup check
+        if check_already_registered(ref, src):
+            skipped += 1
+            continue
+
+        # Register the new tender
+        registered = register_tender(tender)
+        if registered:
+            tender["register_id"] = registered.get("id")
+            new_opportunities.append(tender)
+
+    print(f"Scan: {len(emails)} emails, {skipped} already registered, {len(new_opportunities)} new")
+    return new_opportunities
 
 
 # Usage in heartbeat:
-tenders = scan_for_tenders(days_back=1)
+# First run (catch-up): scan_for_tenders(days_back=14)
+# Daily routine: scan_for_tenders(days_back=4)
+tenders = scan_for_tenders(days_back=4)
 for t in tenders:
-    print(f"[{t.get('reference', 'N/A')}] {t['title']} — closes {t.get('close_date', 'TBC')}")
+    print(f"[NEW] [{t.get('reference', 'N/A')}] {t['title']} — closes {t.get('close_date', 'TBC')}")
 ```
+
+### Querying the Tender Register
+
+```python
+def get_pending_decisions() -> list[dict]:
+    """Get all tenders awaiting a Go/Watch/Pass decision."""
+    SUPABASE_URL = os.environ["SUPABASE_URL"]
+    SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+
+    resp = httpx.get(
+        f"{SUPABASE_URL}/rest/v1/tender_register",
+        headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+        params={"decision": "eq.pending", "order": "created_at.desc", "limit": 50},
+        timeout=15,
+    )
+    return resp.json() if resp.status_code == 200 else []
+
+
+def get_decision_history(limit: int = 20) -> list[dict]:
+    """Get recent Go/Watch/Pass decisions for reporting."""
+    SUPABASE_URL = os.environ["SUPABASE_URL"]
+    SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+
+    resp = httpx.get(
+        f"{SUPABASE_URL}/rest/v1/tender_register",
+        headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
+        params={"decision": "neq.pending", "order": "decision_date.desc", "limit": limit},
+        timeout=15,
+    )
+    return resp.json() if resp.status_code == 200 else []
+```
+
+### Lookback Configuration
+
+| Scenario | days_back | Purpose |
+|---|---|---|
+| First run after deployment | 14 | Catch up on recent opportunities |
+| Daily routine (steady state) | 4 | 4-day overlap protects against missed scans |
+| Manual catch-up after outage | 14+ | Recover missed period |
 
 ### Fallback: Web Search
 
