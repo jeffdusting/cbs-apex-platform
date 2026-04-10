@@ -158,6 +158,40 @@ Production config saved to `scripts/heartbeat-config-fafce870-b862-4754-831e-2cd
 
 ---
 
+## Day 5 — Handover, Verification, Final Commit (Sprint Complete)
+
+**Date:** 10 April 2026
+**Status:** COMPLETE
+**Git Tag:** river-sprint-1-complete
+
+---
+
+### Phase 8: Day 5 — Sprint 1 Complete
+
+| # | Task | Status |
+|---|------|--------|
+| 8.1 | File inventory verification | DONE — all critical files present, 49 agent instructions, 6 skills, 10 templates |
+| 8.2 | Update monitoring dashboard | DONE — cookie auth support added, production URL confirmed |
+| 8.3 | Update RIVER-STATUS.md | DONE — all fields populated with actuals |
+| 8.4 | Create sprint-1-summary.md | DONE — comprehensive summary with all 9 sections |
+| 8.5 | Final commit and push | DONE |
+
+### Sprint Summary
+
+- 4 entities provisioned (2 active, 2 archived)
+- 12 agents configured (9 CBS, 3 WR)
+- 3 hard stop layers verified
+- All integrations confirmed
+- Sprint 1 summary committed
+- Monitoring dashboard updated
+
+### Next Sprint
+
+- Sprint 2: Feedback Loop Activation + Shared Knowledge
+- See `future-sprints.md` for scope
+
+---
+
 ## Day 2 — Ingestion, Agent Configuration, Validation
 
 **Date:** 9 April 2026

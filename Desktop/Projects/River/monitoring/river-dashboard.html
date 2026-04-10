@@ -48,8 +48,8 @@ const CONFIG = {
     <!-- API Key Input (session only, not stored) -->
     <div id="auth-bar" class="bg-gray-900 rounded-lg p-4 mb-6 border border-gray-800">
         <div class="flex items-center gap-4">
-            <label class="text-sm text-gray-400 whitespace-nowrap">API Key:</label>
-            <input type="password" id="api-key-input" placeholder="Paste your Paperclip API key"
+            <label class="text-sm text-gray-400 whitespace-nowrap">API Key (optional if logged in):</label>
+            <input type="password" id="api-key-input" placeholder="Leave blank to use session cookie"
                    class="flex-1 bg-gray-800 border border-gray-700 rounded px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
                    onchange="CONFIG.API_KEY = this.value">
             <button onclick="CONFIG.API_KEY = document.getElementById('api-key-input').value; refreshAll();"
@@ -109,14 +109,18 @@ let pollTimer = null;
 // API Helpers
 // ============================================================
 async function apiFetch(path) {
-    if (!CONFIG.API_KEY) return null;
+    // Support two auth modes:
+    // 1. Session cookie (when opened from the same domain or with credentials)
+    // 2. Bearer token (when an API key is provided)
+    const fetchOpts = {
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",  // Always send cookies for same-origin/CORS
+    };
+    if (CONFIG.API_KEY) {
+        fetchOpts.headers["Authorization"] = `Bearer ${CONFIG.API_KEY}`;
+    }
     try {
-        const resp = await fetch(`${CONFIG.PAPERCLIP_URL}${path}`, {
-            headers: {
-                "Authorization": `Bearer ${CONFIG.API_KEY}`,
-                "Content-Type": "application/json",
-            },
-        });
+        const resp = await fetch(`${CONFIG.PAPERCLIP_URL}${path}`, fetchOpts);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         return await resp.json();
     } catch (e) {

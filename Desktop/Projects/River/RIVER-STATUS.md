@@ -1,5 +1,99 @@
 # Project River — Status
 
+**Current Day:** Complete (Sprint 1 finished 10 April 2026)
+**Git Tag:** river-sprint-1-complete
+
+---
+
+## Platform
+
+| Field | Value |
+|---|---|
+| Paperclip URL | `https://org.cbslab.app` |
+| Paperclip Version | 0.3.1 |
+| Deployment Mode | authenticated |
+| Docker Image | `ghcr.io/paperclipai/paperclip@sha256:791f3493d101...` |
+| Railway Project | just-learning / production / Paperclip |
+| Supabase Project | eptugqwlgsmwhnubbqsk |
+
+---
+
+## Entities
+
+| Entity | Status | Company ID | Agents | Budget |
+|--------|--------|------------|--------|--------|
+| CBS Group | active | fafce870-b862-4754-831e-2cd10e8b203c | 9 | $129/mo |
+| WaterRoads | active (governance) | 95a248d4-08e7-4879-8e66-5d1ff948e005 | 3 | $34/mo |
+| Adventure Safety | archived | 9d3e3196-e802-4f17-982a-aad28d717b04 | 0 | — |
+| MAF CobaltBlu | archived | 44f71a7a-921c-4330-8ae3-56af5347c9d5 | 0 | — |
+
+---
+
+## CBS Group Agents
+
+| Agent | Role | Model | Heartbeat | Budget | Agent ID |
+|-------|------|-------|-----------|--------|----------|
+| CBS Executive | ceo | Opus 4.6 | 21600s (6h) | $25/mo | 01273fb5 |
+| Tender Intelligence | researcher | Sonnet 4 | 86400s (24h) | $15/mo | 1dcabe74 |
+| Tender Coordination | pm | Sonnet 4 | 14400s (4h) | $20/mo | 69aa7cc8 |
+| Technical Writing | engineer | Sonnet 4 | disabled | $25/mo | 31230e7a |
+| Compliance | qa | Sonnet 4 | disabled | $5/mo | 9f649467 |
+| Pricing and Commercial | general | Sonnet 4 | disabled | $10/mo | 43468bee |
+| Governance CBS | pm | Sonnet 4 | disabled (routine) | $15/mo | beb7d905 |
+| Office Management CBS | general | Haiku 4.5 | 43200s (12h) | $4/mo | d5df66da |
+| Research CBS | researcher | Sonnet 4 | disabled | $10/mo | a0bb2e2a |
+
+## WaterRoads Agents
+
+| Agent | Role | Model | Heartbeat | Budget | Agent ID |
+|-------|------|-------|-----------|--------|----------|
+| WR Executive | ceo | Sonnet 4 | 21600s (6h) | $15/mo | 00fb11a2 |
+| Governance WR | pm | Sonnet 4 | disabled (routine) | $15/mo | 10adea58 |
+| Office Management WR | general | Haiku 4.5 | 43200s (12h) | $4/mo | 9594ef21 |
+
+---
+
+## Integrations
+
+| Integration | Status | Scope |
+|-------------|--------|-------|
+| M365 Graph API | active | SharePoint write, Teams notify, Calendar, Mail.Read |
+| Xero | active | CBS read-only, WR read-only |
+| Supabase pgvector | active | 1,422 documents, 13 templates |
+| AusTender | active | Email notifications, portal query skill |
+| GitHub | active | Version control (cbs-apex-platform repo) |
+
+---
+
+## Hard Stop Status
+
+| Layer | Test | Result | Last Verified |
+|-------|------|--------|---------------|
+| Layer 1 (instruction) | Email refusal | PASS | 10 April 2026 |
+| Layer 1 (instruction) | Xero refusal | PASS | 10 April 2026 |
+| Layer 2 (platform) | Graph Mail.Send | PASS (404) | 10 April 2026 |
+| Layer 2 (platform) | Xero write | PASS (no scope) | 10 April 2026 |
+| Layer 3 (audit) | Activity log immutability | PASS (404) | 10 April 2026 |
+
+---
+
+## Routines
+
+| Entity | Routine | Cron | Agent |
+|--------|---------|------|-------|
+| CBS Group | Daily tender opportunity scan | `0 7 * * *` | Tender Intelligence |
+| CBS Group | Board paper preparation cycle | `0 8 1,22 * *` | Governance CBS |
+| WaterRoads | Board paper preparation cycle | `0 8 1,22 * *` | Governance WR |
+
+---
+
+## Known Issues
+
+1. **CBS Executive 2 (duplicate)** — duplicate agent (id=117c536c) consuming budget at 1h intervals. DELETE returns 500. Recommend disabling.
+2. **CBS Group duplicate** — second "CBS Group" company (f353f31a) with 1 "CEO" agent, archived but not deletable.
+
+---
+
 ## Rollback Snapshot — Pre-Day 3
 
 **Taken:** 10 April 2026, 09:49 AEST (2026-04-09T23:49Z UTC)
@@ -24,17 +118,6 @@
 | PostgreSQL version | 18.3 (Debian) |
 | Database | railway |
 | Host | mainline.proxy.rlwy.net:41427 |
-
-### Paperclip
-
-| Field | Value |
-|---|---|
-| Version | 0.3.1 |
-| Deployment mode | authenticated |
-| CBS Group company ID | fafce870-b862-4754-831e-2cd10e8b203c |
-| CBS agents | 9 active |
-| Projects | 4 |
-| Routines | 2 |
 
 ### Recovery Procedure
 
