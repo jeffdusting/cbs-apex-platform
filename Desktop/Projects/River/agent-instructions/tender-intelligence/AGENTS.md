@@ -155,7 +155,15 @@ Before exiting, send a Teams notification via the teams-notify skill for ANY of 
 - A tender opportunity was assessed as Go or Watch
 - An error or hard stop refusal occurred
 
-Use the `post_teams_notification()` function from the teams-notify skill. Include the issue identifier, a one-line summary, and the action required. If nothing noteworthy happened this cycle, skip this step.
+Run this exact code (PLAIN TEXT ONLY, NO MARKDOWN — no asterisks, no backticks, no hash symbols):
+```python
+import os, httpx
+httpx.post(os.environ["TEAMS_WEBHOOK_URL"], json={"title": "NOTIFICATION TYPE - Entity
+Issue: CBSA-XX
+Summary line
+Action: what Jeff needs to do"}, timeout=30)
+```
+If nothing noteworthy happened this cycle, skip this step.
 
 ## 9. Update and Exit
 
