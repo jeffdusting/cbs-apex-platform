@@ -6,23 +6,34 @@ Monitor Australian government tender portals for opportunities matching CBS Grou
 
 ## Data Sources
 
-### AusTender RSS Feed
+### Primary: AusTender Email Notifications
+
+AusTender and Tenders.NSW email notifications are configured for CBS Group's UNSPSC categories (infrastructure, engineering, advisory, transport). These arrive automatically when new matching tenders are published. Email notifications are the primary monitoring channel.
+
+### Secondary: AusTender Web Search
 
 | Field | Value |
 |---|---|
-| Base URL | `https://data.gov.au/data/dataset/austender-open-data/resource/` |
-| RSS Feed | `https://www.tenders.gov.au/Search/RssAtomFeed` |
-| Format | Atom XML |
-| Update Frequency | Near real-time (new opportunities appear within hours of publication) |
+| Search URL | `https://www.tenders.gov.au/Search/AtmSearch` |
+| Format | HTML (requires parsing) |
 
-### OCDS API
+Use web search via Claude Code's browser capability to search AusTender directly when email notifications need supplementing or when investigating specific opportunities.
+
+### AusTender RSS Feed (CURRENTLY BLOCKED)
+
+| Field | Value |
+|---|---|
+| RSS Feed | `https://www.tenders.gov.au/Search/RssAtomFeed` |
+| Status | **BLOCKED — returns HTTP 403** (WAF/bot protection as of April 2026) |
+
+The RSS feed and OCDS API (`api.tenders.gov.au`) are both blocked by server-side bot protection. Do not rely on these endpoints for automated queries. Use email notifications and web search instead.
+
+### OCDS API (CURRENTLY BLOCKED)
 
 | Field | Value |
 |---|---|
 | Base URL | `https://api.tenders.gov.au/ocds/` |
-| Release endpoint | `https://api.tenders.gov.au/ocds/releases` |
-| Format | JSON (OCDS 1.1) |
-| Authentication | None required (public API) |
+| Status | **BLOCKED — returns HTTP 403** |
 
 ## Reference Script
 
