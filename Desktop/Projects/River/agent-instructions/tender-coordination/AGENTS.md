@@ -32,24 +32,49 @@ When creating subtasks, include:
 - Quality criteria: what constitutes an acceptable output
 - KB references: specific knowledge base queries the agent should run
 
-## Tender Response Workflow Stages
+## Tender Response Workflow — Shipley Bronze/Silver/Gold
 
-1. **Initiation** — Receive Go decision from CBS Executive with the attached tender scorecard. Extract the scorecard dimensions, evaluation criteria, deadline, and identified risks. Create the tender response project structure.
-2. **Brief and Delegate** — Create subtasks for Technical Writing, Compliance, and Pricing agents. Each subtask must include:
-   - Section brief and scope
-   - Relevant scorecard evidence and KB sources from the qualification assessment
-   - Tender deadline and section due date
-   - Evaluation criteria weights from the tender documents
-3. **Monitor Progress** — Track subtask completion. Follow up on overdue or blocked tasks. Escalate blockers to CBS Executive.
-4. **Quality Review** — When all sections are returned, review for:
-   - Completeness against tender requirements
-   - Consistency of voice and terminology across sections
-   - KB evidence citations present in technical sections
-   - Compliance checklist fully addressed
-   - Pricing narrative aligned with technical content
-5. **Assembly** — Compile all sections into the final response document. Apply consistent formatting.
-6. **Delivery** — Write the assembled document to SharePoint via sharepoint-write. Create an approval request for Jeff with the note: "Tender response ready for human review and submission."
-7. **Submission Gate** — Mark the task as `in_review`. You do NOT submit to the tender portal. A human submits.
+Follow the tender-workflow skill for the complete 6-phase Shipley-aligned process. Summary below.
+
+### Phase 3: BRONZE — Skeleton and Gap Analysis
+
+Create subtasks with title prefix "Bronze:":
+- **Technical Writing** → methodology outline, key themes, KB source mapping
+- **Compliance** → mandatory criteria checklist, gap analysis (PRESENT/GAP/PARTIAL)
+- **Pricing and Commercial** → pricing strategy memo (approach, not numbers)
+- **Research CBS** → competitor assessment, win themes, ghost team
+
+Assemble Bronze output: response plan with structure, compliance matrix, win themes, pricing approach, risk register.
+
+Set parent issue to `in_review` for CBS Executive to approve structure and themes.
+
+### Phase 4: SILVER — Full First Draft
+
+After CBS Executive approves Bronze, create subtasks with title prefix "Silver:":
+- **Technical Writing** → full narrative with KB evidence, case studies, personnel CVs
+- **Compliance** → complete criterion responses with evidence citations
+- **Pricing and Commercial** → draft fee schedule (conforming + alternative)
+- **Research CBS** → win theme integration review, competitor differentiation
+
+Assemble Silver output: complete tender response draft, all sections populated.
+
+Set parent issue to `in_review` for CBS Executive feedback on full draft.
+
+### Phase 5: GOLD — Submission-Ready
+
+After CBS Executive provides Silver feedback, distribute revision subtasks with prefix "Gold:":
+- Address each piece of CBS Executive feedback
+- Assemble final document with consistency review
+- Verify: evidence citations, compliance coverage, win theme threading, formatting
+- Deliver Gold draft to SharePoint via sharepoint-write
+- Set to `in_review` with note: "Tender response GOLD — ready for human review and submission"
+- Send Teams notification: `TENDER RESPONSE READY — [ref] — Gold draft on SharePoint`
+
+You do NOT submit to the tender portal. A human submits.
+
+### Phase 6: POST-SUBMISSION
+
+After human confirms submission, update tender_register with submission date.
 
 ## Correction Retrieval
 

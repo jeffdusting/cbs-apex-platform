@@ -227,11 +227,54 @@ def get_documents_by_filter(entity: str, category: str, limit: int = 20) -> list
 | `business-case` | Business cases, feasibility studies |
 | `correction` | Operator feedback corrections — queried via the feedback-loop skill |
 
+## Query Strategy Guide
+
+Different tasks require different query approaches. Use this guide to choose the right strategy:
+
+| Task | Query Strategy | Entity | Category | match_count |
+|---|---|---|---|---|
+| Tender response — methodology section | Semantic search for CAPITAL + scope keywords | cbs-group | methodology | 10 |
+| Tender response — past experience | Semantic search for client name + project type | cbs-group | tender | 15 |
+| Tender response — personnel | Semantic search for role + skill keywords | cbs-group | ip | 10 |
+| Board paper — financial data | Category filter (no embedding needed) | entity-specific | financial | 20 |
+| Board paper — governance precedent | Category filter for past board papers | entity-specific | governance | 10 |
+| Competitor analysis | Semantic search for competitor name | cbs-group | competitor | 5 |
+| CAPITAL framework detail | Semantic search for specific CAPITAL aspect | cbs-group (includes shared) | methodology | 10 |
+
+### Chaining Queries for Complex Topics
+
+For tender responses that span multiple dimensions, chain multiple queries:
+
+```python
+# Step 1: Get methodology content
+methodology_results = semantic_search("CAPITAL framework whole-of-life asset management", entity="cbs-group", category="methodology", match_count=5)
+
+# Step 2: Get relevant past tender content
+experience_results = semantic_search(f"{client_name} {project_type} experience", entity="cbs-group", category="tender", match_count=10)
+
+# Step 3: Get personnel
+personnel_results = semantic_search(f"{required_role} {required_expertise} experience", entity="cbs-group", category="ip", match_count=5)
+
+# Step 4: Get competitor intelligence
+competitor_results = semantic_search(f"{competitor_name} strengths weaknesses", entity="cbs-group", category="competitor", match_count=3)
+```
+
+### Minimum Result Thresholds
+
+| Scenario | Minimum Results | If Below Threshold |
+|---|---|---|
+| Tender section drafting | 3 results above 0.45 | Flag as low confidence, identify gaps |
+| Governance board paper | 2 results above 0.40 | Acceptable — governance content is structured, less semantic overlap |
+| Competitor analysis | 1 result above 0.40 | If zero, note "no competitor profile in KB" |
+| General research | 5 results above 0.40 | If below, broaden query terms and retry |
+
 ## Best Practices
 
-1. Always attempt semantic search first. Only fall back to full-text search if semantic results are insufficient (fewer than 3 results above 0.7 similarity).
+1. Always attempt semantic search first. Only fall back to full-text search if semantic results are insufficient (fewer than 3 results above 0.45 similarity).
 2. Filter by entity when the task context is clear. A CBS Group tender task should filter by `entity: "cbs-group"`.
 3. Filter by category to narrow results. Governance tasks should use `category: "governance"`.
-4. Include the retrieval confidence in your output signal: report the number of documents matched, the similarity range, and your assessment of sufficiency.
-5. Never fabricate content that was not present in the retrieved documents. If retrieval is insufficient, say so.
-6. Respect rate limits — avoid calling the RPC function more than 10 times per heartbeat cycle.
+4. Chain multiple queries for complex tasks — methodology + experience + personnel + competitors.
+5. Include the retrieval confidence in your output signal: report the number of documents matched, the similarity range, and your assessment of sufficiency.
+6. Never fabricate content that was not present in the retrieved documents. If retrieval is insufficient, say so.
+7. Respect rate limits — avoid calling the RPC function more than 10 times per heartbeat cycle.
+8. For tender responses, always search at least 3 categories: methodology, tender (past experience), and ip (personnel).

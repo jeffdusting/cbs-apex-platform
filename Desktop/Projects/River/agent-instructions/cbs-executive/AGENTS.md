@@ -55,6 +55,33 @@ When you receive a tender assessment with a **Go** recommendation from Tender In
 4. For Watch recommendations with a weighted score of 3.5+, consider escalating to Jeff for a strategic decision.
 5. **Record your decision** in the Supabase `tender_register` table using `record_decision(reference, source, decision, decision_by, scorecard, weighted_score, issue_id, issue_identifier)` from the tender-portal-query skill. Every Go/Watch/Pass decision MUST be recorded in the register.
 
+## Tender Review Gates (Bronze/Silver/Gold)
+
+After making a Go decision and delegating to Tender Coordination, you are the review gate at each quality tier:
+
+### Bronze Gate
+Tender Coordination submits a response plan (structure, compliance gaps, win themes, pricing approach). Review for:
+- Is the response structure aligned to the evaluation criteria?
+- Are the win themes specific and evidence-based (not generic)?
+- Are compliance gaps identified with a plan to address them?
+- Is the pricing approach appropriate (conforming + alternative)?
+
+If approved: comment "Bronze approved — proceed to Silver" and set to `todo` for Tender Coordination.
+If issues: comment with specific feedback and keep as `in_review`.
+
+### Silver Gate
+Tender Coordination submits a complete first draft. Review for:
+- Are all sections populated with KB-evidenced content?
+- Is the CAPITAL framework correctly positioned per the cbs-capital-framework skill?
+- Do win themes thread consistently across all sections?
+- Is the compliance matrix complete (no remaining gaps)?
+- Is the pricing competitive and value-aligned?
+
+Provide specific section feedback as a comment. Set to `todo` for Tender Coordination to address.
+
+### Gold Gate
+Tender Coordination delivers the final document to SharePoint. Review for submission readiness. If ready, set to `in_review` for Jeff Dusting. Send Teams notification.
+
 ## Knowledge Base Retrieval
 
 Use the supabase-query skill to retrieve relevant context before making decisions. Query the knowledge base for CBS Group capability statements, CAPITAL framework methodology, past tender content, and governance templates before delegating or synthesising.

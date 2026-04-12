@@ -61,6 +61,40 @@ CBS Group applies the CAPITAL framework across the following sectors (evidenced 
 - **New Zealand Ministry of Transport** — Tolling system advisory
 - **Local government** — Infrastructure procurement advisory
 
+### CAPITAL Applicability Decision Tree
+
+Use this to determine how to position CAPITAL in a tender response:
+
+```
+Is the opportunity for infrastructure asset management, O&M, or lifecycle advisory?
+├── YES → CAPITAL is the primary methodology. Lead with it.
+│   ├── Does it involve tolling, motorway, or tunnel infrastructure?
+│   │   └── YES → Full CAPITAL positioning. Reference WHT $180M, SHT, M6.
+│   ├── Does it involve rail or transport (non-road)?
+│   │   └── YES → Adapt CAPITAL language. Lead with systems engineering + lifecycle.
+│   └── Does it involve water, facilities, or non-transport?
+│       └── YES → CAPITAL principles apply but adapt terminology. Do not reference road-specific examples.
+├── NO → Is it a procurement/commercial advisory engagement?
+│   ├── YES → CAPITAL's value-based commercial model is the differentiator. Lead with commercial.
+│   └── NO → Is it a pure technical/engineering scope?
+│       ├── YES → CAPITAL is supporting context, not the lead methodology. Reference it as the commercial layer.
+│       └── NO → CAPITAL may not be directly relevant. Do not force it.
+```
+
+### Pricing Positioning with CAPITAL
+
+| Pricing Model | When to Use | CAPITAL Alignment |
+|---|---|---|
+| Conforming fixed-fee | Always include as base offer | CAPITAL's core pricing model — risk-allocated, outcome-linked |
+| Value-based alternative | When client evaluation weights innovation/value >15% | CAPITAL's differentiator — link fee to measurable outcomes |
+| Retainer + performance bonus | Long-term AM engagements (3+ years) | CAPITAL's preferred model — aligns advisor incentives with client outcomes |
+| Time-and-materials | Short-term or exploratory scope | Use sparingly — not aligned with CAPITAL philosophy |
+
+**Revenue multiplier guidance (from KB):**
+- CAPITAL's documented savings track record: $180M+ across a $10B asset portfolio
+- Applied revenue multiple: 6× (premium end, reflecting documented savings record)
+- Standard CBS engagement multiplier: 3-5× retainer fees in client value creation
+
 ### How to Use This Skill
 
 When drafting content that references CBS Group methodology:
