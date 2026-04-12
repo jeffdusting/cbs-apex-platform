@@ -14,14 +14,22 @@ This is injected via `adapterConfig.env` on the agent. Never hardcode the URL.
 
 ## How It Works
 
-The webhook accepts a JSON POST with a `title` field. Only the `title` field renders in Teams — all other fields are ignored.
+The webhook accepts a JSON POST. The Power Automate flow parses the fields and posts to Teams (Adaptive Card with clickable link) and optionally sends an email.
 
 ## CRITICAL FORMAT RULES
 
-- **NO MARKDOWN** — do not use `**`, `*`, `#`, `_`, `[]()`, backticks, or any markdown syntax. Teams renders it as literal characters (e.g. `**text**` shows as `**text**` not bold).
+- **NO MARKDOWN** — do not use `**`, `*`, `#`, `_`, `[]()`, backticks, or any markdown syntax.
 - **PLAIN TEXT ONLY** — use UPPERCASE for emphasis instead of bold/italic.
-- Use `\n` for line breaks within the title.
-- First line must be the notification type in UPPERCASE (e.g. `APPROVAL REQUIRED`, `TENDER OPPORTUNITY`).
+- Always include the `url` field with the direct link to the issue in Paperclip.
+
+## Company IDs for URL Construction
+
+| Entity | Company ID |
+|---|---|
+| CBS Group | fafce870-b862-4754-831e-2cd10e8b203c |
+| WaterRoads | 95a248d4-08e7-4879-8e66-5d1ff948e005 |
+
+Issue URL format: `https://org.cbslab.app/companies/{companyId}/issues/{issueId}`
 
 ## Posting a Notification
 
@@ -33,93 +41,116 @@ import httpx
 
 TEAMS_WEBHOOK_URL = os.environ["TEAMS_WEBHOOK_URL"]
 
+CBS_COMPANY_ID = "fafce870-b862-4754-831e-2cd10e8b203c"
+WR_COMPANY_ID = "95a248d4-08e7-4879-8e66-5d1ff948e005"
 
-def post_teams_notification(lines: list[str]) -> bool:
+
+def post_notification(
+    notification_type: str,
+    entity: str,
+    issue_id: str,
+    issue_identifier: str,
+    summary: str,
+    action: str,
+    company_id: str = CBS_COMPANY_ID,
+) -> bool:
     """
-    Post a plain-text notification to Teams. NO MARKDOWN.
+    Post a structured notification to Teams and email via Power Automate.
 
     Args:
-        lines: List of plain text lines (no markdown). Joined with newlines.
+        notification_type: UPPERCASE type (APPROVAL REQUIRED, TENDER RESPONSE READY, etc.)
+        entity: Entity name (CBS Group, WaterRoads)
+        issue_id: Paperclip issue UUID
+        issue_identifier: Issue display ID (e.g. CBSA-25)
+        summary: One sentence describing what happened
+        action: What Jeff needs to do
+        company_id: Company UUID for URL construction
 
     Returns:
-        True if the message was accepted (HTTP 202).
+        True if accepted (HTTP 202).
 
     Example:
-        post_teams_notification([
-            "APPROVAL REQUIRED - CBS Group Board Paper",
-            "Issue: CBSA-25",
-            "The board paper is ready for review.",
-            "Action: Log in to org.cbslab.app to approve.",
-        ])
+        post_notification(
+            notification_type="APPROVAL REQUIRED",
+            entity="CBS Group",
+            issue_id="abc-123-def",
+            issue_identifier="CBSA-25",
+            summary="Board paper for April governance cycle is ready.",
+            action="Review and approve the board paper.",
+            company_id=CBS_COMPANY_ID,
+        )
     """
-    # Strip any markdown characters that may have been accidentally included
-    clean_lines = [line.replace("**", "").replace("*", "").replace("`", "").replace("#", "") for line in lines]
+    # Strip markdown
+    clean = lambda s: s.replace("**","").replace("*","").replace("`","").replace("#","")
+
+    url = f"https://org.cbslab.app/companies/{company_id}/issues/{issue_id}"
 
     payload = {
-        "title": "\n".join(clean_lines),
+        "title": clean(f"{notification_type} - {entity}"),
+        "issue": clean(issue_identifier),
+        "summary": clean(summary),
+        "action": clean(action),
+        "url": url,
     }
+
     response = httpx.post(TEAMS_WEBHOOK_URL, json=payload, timeout=30)
     return response.status_code == 202
 ```
 
 ## Notification Templates
 
-### Governance — Board Paper Delivered
-
-```python
-def notify_board_paper_delivered(entity: str, meeting_date: str, sharepoint_url: str):
-    return post_teams_notification([
-        f"BOARD PAPER DELIVERED - {entity}",
-        f"Meeting date: {meeting_date}",
-        f"SharePoint: {sharepoint_url}",
-        "Status: Awaiting human review and approval",
-    ])
-```
+Use `post_notification()` for all notifications. Examples:
 
 ### Governance — Approval Required
 
 ```python
-def notify_approval_required(entity: str, item_type: str, item_title: str):
-    return post_teams_notification([
-        f"APPROVAL REQUIRED - {entity} {item_type}",
-        f"Item: {item_title}",
-        "This item will not proceed until approved.",
-    ])
+post_notification(
+    notification_type="APPROVAL REQUIRED",
+    entity="CBS Group",
+    issue_id=issue["id"],
+    issue_identifier=issue["identifier"],
+    summary=f"Board paper for {meeting_date} governance cycle ready for review.",
+    action="Review and approve the board paper.",
+)
 ```
 
-### Tender — Response Ready for Review
+### Tender — Response Ready (Gold)
 
 ```python
-def notify_tender_ready(tender_ref: str, tender_title: str, sharepoint_url: str):
-    return post_teams_notification([
-        f"TENDER RESPONSE READY - {tender_ref}",
-        f"Title: {tender_title}",
-        f"SharePoint: {sharepoint_url}",
-        "Action: Human submission to tender portal required.",
-    ])
+post_notification(
+    notification_type="TENDER RESPONSE READY",
+    entity="CBS Group",
+    issue_id=issue["id"],
+    issue_identifier=issue["identifier"],
+    summary=f"Gold draft for {tender_ref} delivered to SharePoint.",
+    action="Review and submit to tender portal.",
+)
 ```
 
-### Tender — New Opportunity Identified
+### Tender — New Opportunity (Go/Watch)
 
 ```python
-def notify_tender_opportunity(tender_ref: str, title: str, value: str, recommendation: str):
-    return post_teams_notification([
-        f"TENDER OPPORTUNITY - {recommendation}: {tender_ref}",
-        f"Title: {title}",
-        f"Estimated value: {value}",
-        f"Recommendation: {recommendation}",
-    ])
+post_notification(
+    notification_type=f"TENDER OPPORTUNITY - {recommendation}",
+    entity="CBS Group",
+    issue_id=issue["id"],
+    issue_identifier=issue["identifier"],
+    summary=f"{tender_ref}: {title} (est. {value})",
+    action=f"Review scorecard and confirm {recommendation} decision.",
+)
 ```
 
 ### System — Budget Alert
 
 ```python
-def notify_budget_alert(agent_name: str, spent: str, budget: str):
-    return post_teams_notification([
-        f"BUDGET ALERT - {agent_name}",
-        f"Spent: {spent} of {budget}",
-        "Action: Review agent activity and adjust budget if needed.",
-    ])
+post_notification(
+    notification_type="BUDGET ALERT",
+    entity="CBS Group",
+    issue_id="",  # no specific issue
+    issue_identifier=agent_name,
+    summary=f"{agent_name} has spent {spent} of {budget}.",
+    action="Review agent activity and adjust budget if needed.",
+)
 ```
 
 ## When to Notify
