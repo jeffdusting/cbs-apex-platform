@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River — Review Queue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a1a;
+            --paper: #f6f3ed;
+            --cream: #ede8de;
+            --warm: #d4c9b5;
+            --muted: #8c8374;
+            --accent: #c0562b;
+            --accent-soft: #e8d5c4;
+            --green: #3d7a4a;
+            --green-soft: #d4e5d7;
+            --amber: #b8860b;
+            --amber-soft: #f0e4c4;
+            --red: #b33a3a;
+            --red-soft: #f0d4d4;
+            --blue: #3a6b9b;
+            --blue-soft: #d4e0f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .serif { font-family: 'DM Serif Display', serif; }
+
+        /* Top bar */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2.5rem;
+            border-bottom: 1px solid var(--warm);
+            background: var(--cream);
+        }
+        .topbar h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+        }
+        .topbar h1 span { color: var(--muted); font-weight: 400; }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .status-dot.live { background: var(--green); }
+        .status-dot.error { background: var(--red); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .topbar-meta {
+            font-size: 0.8rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .refresh-btn {
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            padding: 0.5rem 1.25rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .refresh-btn:hover { background: var(--accent); }
+
+        /* Layout */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            min-height: calc(100vh - 62px);
+        }
+
+        /* Main queue */
+        .queue-panel {
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+        }
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--warm);
+        }
+        .count-badge {
+            background: var(--ink);
+            color: var(--paper);
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: 1px solid var(--warm);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+        .card:hover {
+            border-color: var(--ink);
+            transform: translateX(4px);
+        }
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .card-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.35;
+            color: var(--ink);
+        }
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+        .card-agent {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .agent-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+        .card-priority {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.15rem 0.5rem;
+        }
+        .priority-high { background: var(--red-soft); color: var(--red); }
+        .priority-medium { background: var(--amber-soft); color: var(--amber); }
+        .priority-low { background: var(--green-soft); color: var(--green); }
+        .priority-urgent { background: var(--red); color: white; }
+
+        .card-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.15rem 0.5rem;
+        }
+        .status-in_review { background: var(--amber-soft); color: var(--amber); }
+        .status-blocked { background: var(--red-soft); color: var(--red); }
+        .status-todo { background: var(--blue-soft); color: var(--blue); }
+
+        .card-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        /* Expanded card detail */
+        .card-detail {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--cream);
+        }
+        .card.expanded .card-detail { display: block; }
+        .card-description {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--ink);
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .card-comments {
+            margin-top: 1rem;
+        }
+        .comment {
+            padding: 0.75rem;
+            background: var(--cream);
+            margin-bottom: 0.5rem;
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+        .comment-body {
+            max-height: 150px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .action-btn {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: 1px solid;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .action-approve {
+            background: var(--green);
+            color: white;
+            border-color: var(--green);
+        }
+        .action-approve:hover { background: #2d5e38; }
+        .action-feedback {
+            background: white;
+            color: var(--ink);
+            border-color: var(--warm);
+        }
+        .action-feedback:hover { border-color: var(--ink); }
+        .action-reject {
+            background: white;
+            color: var(--red);
+            border-color: var(--red-soft);
+        }
+        .action-reject:hover { background: var(--red-soft); }
+
+        .action-link {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            color: var(--blue);
+            text-decoration: none;
+            padding: 0.5rem 0;
+            margin-left: auto;
+        }
+        .action-link:hover { text-decoration: underline; }
+
+        /* Right sidebar */
+        .sidebar {
+            border-left: 1px solid var(--warm);
+            background: var(--cream);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .stat-block {
+            margin-bottom: 2rem;
+        }
+        .stat-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            line-height: 1;
+            color: var(--ink);
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        .entity-block {
+            margin-bottom: 1.5rem;
+        }
+        .entity-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .agent-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+            font-size: 0.78rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .agent-status-indicator {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .agent-status-indicator.idle { background: var(--green); }
+        .agent-status-indicator.running { background: var(--blue); animation: pulse 1s infinite; }
+        .agent-status-indicator.error { background: var(--red); }
+        .agent-status-indicator.paused { background: var(--amber); }
+        .agent-name-text {
+            flex: 1;
+            margin-left: 0.5rem;
+        }
+        .agent-last-hb {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--muted);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--muted);
+        }
+        .empty-state .serif {
+            font-size: 1.5rem;
+            color: var(--ink);
+            margin-bottom: 0.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .layout { grid-template-columns: 1fr; }
+            .sidebar { border-left: none; border-top: 1px solid var(--warm); }
+            .topbar { padding: 1rem 1.5rem; }
+            .queue-panel { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <h1>River <span>Review Queue</span></h1>
+    <div class="topbar-right">
+        <div class="topbar-meta">
+            <span class="status-dot live" id="conn-dot"></span>
+            <span id="conn-status">Connecting...</span>
+        </div>
+        <span class="topbar-meta" id="last-refresh"></span>
+        <button class="refresh-btn" onclick="loadAll()">Refresh</button>
+    </div>
+</div>
+
+<div class="layout">
+    <div class="queue-panel" id="queue">
+        <div class="loading">Loading review queue...</div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="loading">Loading...</div>
+    </div>
+</div>
+
+<script>
+const API = "https://org.cbslab.app/api";
+const COMPANIES = {
+    CBS: "fafce870-b862-4754-831e-2cd10e8b203c",
+    WR: "95a248d4-08e7-4879-8e66-5d1ff948e005",
+};
+
+async function apiFetch(path) {
+    try {
+        const r = await fetch(`${API}${path}`, {
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+        });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return await r.json();
+    } catch (e) {
+        console.error(`API ${path}:`, e);
+        return null;
+    }
+}
+
+async function apiPatch(path, body) {
+    try {
+        const r = await fetch(`${API}${path}`, {
+            method: "PATCH",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                "Origin": "https://org.cbslab.app",
+            },
+            body: JSON.stringify(body),
+        });
+        return r.ok;
+    } catch (e) {
+        console.error(`PATCH ${path}:`, e);
+        return false;
+    }
+}
+
+function timeAgo(iso) {
+    if (!iso) return "";
+    const diff = Date.now() - new Date(iso).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return "just now";
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    const days = Math.floor(hrs / 24);
+    return `${days}d ago`;
+}
+
+function escHtml(s) {
+    if (!s) return "";
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function truncate(s, n) {
+    if (!s) return "";
+    return s.length > n ? s.slice(0, n) + "..." : s;
+}
+
+let allAgents = {};
+
+async function loadAll() {
+    document.getElementById("conn-status").textContent = "Loading...";
+
+    // Load issues and agents for both companies
+    const [cbsIssues, wrIssues, cbsAgents, wrAgents] = await Promise.all([
+        apiFetch(`/companies/${COMPANIES.CBS}/issues`),
+        apiFetch(`/companies/${COMPANIES.WR}/issues`),
+        apiFetch(`/companies/${COMPANIES.CBS}/agents`),
+        apiFetch(`/companies/${COMPANIES.WR}/agents`),
+    ]);
+
+    if (!cbsIssues && !wrIssues) {
+        document.getElementById("conn-dot").className = "status-dot error";
+        document.getElementById("conn-status").textContent = "Not connected — open org.cbslab.app and log in first";
+        document.getElementById("queue").innerHTML = `
+            <div class="empty-state">
+                <p class="serif">Not Connected</p>
+                <p>Log in to <a href="https://org.cbslab.app" target="_blank" style="color:var(--accent)">org.cbslab.app</a> in this browser, then refresh.</p>
+            </div>`;
+        return;
+    }
+
+    document.getElementById("conn-dot").className = "status-dot live";
+    document.getElementById("conn-status").textContent = "Connected";
+    document.getElementById("last-refresh").textContent = new Date().toLocaleTimeString();
+
+    // Index agents
+    allAgents = {};
+    const agentsList = [];
+    for (const a of [...(cbsAgents || []), ...(wrAgents || [])]) {
+        allAgents[a.id] = a;
+        agentsList.push(a);
+    }
+
+    // Combine and categorise issues
+    const issues = [...(cbsIssues || []), ...(wrIssues || [])];
+    const reviewQueue = issues.filter(i => i.status === "in_review");
+    const blocked = issues.filter(i => i.status === "blocked");
+    const pending = issues.filter(i => i.status === "todo" && i.assigneeAgentId);
+
+    renderQueue(reviewQueue, blocked, pending);
+    renderSidebar(agentsList, issues);
+}
+
+function renderQueue(review, blocked, pending) {
+    const el = document.getElementById("queue");
+    let html = "";
+
+    if (review.length === 0 && blocked.length === 0 && pending.length === 0) {
+        html = `<div class="empty-state">
+            <p class="serif">All clear</p>
+            <p>Nothing requires your attention right now.</p>
+        </div>`;
+        el.innerHTML = html;
+        return;
+    }
+
+    if (review.length > 0) {
+        html += `<div class="section-label">Awaiting Your Review <span class="count-badge">${review.length}</span></div>`;
+        for (const issue of review.sort((a,b) => priorityWeight(b.priority) - priorityWeight(a.priority))) {
+            html += renderCard(issue);
+        }
+    }
+
+    if (blocked.length > 0) {
+        html += `<div class="section-label" style="margin-top:2rem">Blocked — Needs Attention <span class="count-badge">${blocked.length}</span></div>`;
+        for (const issue of blocked) {
+            html += renderCard(issue);
+        }
+    }
+
+    if (pending.length > 0) {
+        html += `<div class="section-label" style="margin-top:2rem">In Agent Queue</div>`;
+        for (const issue of pending.slice(0, 10)) {
+            html += renderCard(issue);
+        }
+    }
+
+    el.innerHTML = html;
+}
+
+function priorityWeight(p) {
+    return { urgent: 4, high: 3, medium: 2, low: 1 }[p] || 0;
+}
+
+function renderCard(issue) {
+    const agent = allAgents[issue.assigneeAgentId];
+    const agentName = agent ? agent.name : "Unassigned";
+    const company = issue.identifier?.startsWith("WAT") ? "WR" : "CBS";
+    const time = timeAgo(issue.updatedAt || issue.createdAt);
+
+    return `
+    <div class="card" id="card-${issue.id}" onclick="toggleCard('${issue.id}')">
+        <div class="card-header">
+            <div>
+                <div class="card-title">${escHtml(issue.title)}</div>
+            </div>
+            <span class="card-status status-${issue.status}">${issue.status.replace("_"," ")}</span>
+        </div>
+        <div class="card-meta">
+            <span class="card-id mono">${issue.identifier || "—"}</span>
+            <span class="card-agent"><span class="agent-dot"></span> ${escHtml(agentName)}</span>
+            <span class="card-priority priority-${issue.priority || 'medium'}">${issue.priority || "medium"}</span>
+            <span class="card-time">${time}</span>
+            <span style="margin-left:auto;font-size:0.7rem;color:var(--muted)">${company}</span>
+        </div>
+        <div class="card-detail" id="detail-${issue.id}">
+            <div id="detail-content-${issue.id}"><div class="loading">Loading...</div></div>
+        </div>
+    </div>`;
+}
+
+async function toggleCard(issueId) {
+    const card = document.getElementById(`card-${issueId}`);
+    const wasExpanded = card.classList.contains("expanded");
+
+    // Collapse all
+    document.querySelectorAll(".card.expanded").forEach(c => c.classList.remove("expanded"));
+
+    if (wasExpanded) return;
+
+    card.classList.add("expanded");
+
+    // Load comments
+    const comments = await apiFetch(`/issues/${issueId}/comments`);
+    const issue = await apiFetch(`/issues/${issueId}`);
+    const contentEl = document.getElementById(`detail-content-${issueId}`);
+
+    let html = "";
+
+    if (issue?.description) {
+        html += `<div class="card-description">${escHtml(truncate(issue.description, 600))}</div>`;
+    }
+
+    if (comments && comments.length > 0) {
+        html += `<div class="card-comments">`;
+        // Show last 3 comments
+        const recent = (Array.isArray(comments) ? comments : (comments.comments || comments.data || [])).slice(-3);
+        for (const c of recent) {
+            const author = c.authorAgentId ? (allAgents[c.authorAgentId]?.name || "Agent") : "You";
+            html += `<div class="comment">
+                <div class="comment-author">${escHtml(author)}</div>
+                <div class="comment-body">${escHtml(truncate(c.body, 500))}</div>
+            </div>`;
+        }
+        html += `</div>`;
+    }
+
+    html += `
+    <div class="card-actions">
+        <button class="action-btn action-approve" onclick="event.stopPropagation();approveIssue('${issueId}')">Approve</button>
+        <button class="action-btn action-feedback" onclick="event.stopPropagation();feedbackIssue('${issueId}')">Give Feedback</button>
+        <button class="action-btn action-reject" onclick="event.stopPropagation();rejectIssue('${issueId}')">Return</button>
+        <a class="action-link" href="https://org.cbslab.app/companies/${issue?.companyId}/issues/${issueId}" target="_blank" onclick="event.stopPropagation()">Open in Paperclip ↗</a>
+    </div>`;
+
+    contentEl.innerHTML = html;
+}
+
+async function approveIssue(id) {
+    if (await apiPatch(`/issues/${id}`, { status: "done" })) {
+        document.getElementById(`card-${id}`).style.opacity = "0.3";
+        setTimeout(loadAll, 500);
+    }
+}
+
+async function rejectIssue(id) {
+    if (await apiPatch(`/issues/${id}`, { status: "todo" })) {
+        document.getElementById(`card-${id}`).style.opacity = "0.3";
+        setTimeout(loadAll, 500);
+    }
+}
+
+async function feedbackIssue(id) {
+    const feedback = prompt("Your feedback for the agent:");
+    if (!feedback) return;
+    await fetch(`${API}/issues/${id}/comments`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "Origin": "https://org.cbslab.app",
+        },
+        body: JSON.stringify({ body: feedback }),
+    });
+    toggleCard(id);
+}
+
+function renderSidebar(agents, issues) {
+    const el = document.getElementById("sidebar");
+    const reviewCount = issues.filter(i => i.status === "in_review").length;
+    const blockedCount = issues.filter(i => i.status === "blocked").length;
+    const activeCount = agents.filter(a => a.status === "running").length;
+
+    // Group agents by company
+    const cbs = agents.filter(a => a.companyId === COMPANIES.CBS && a.budgetMonthlyCents > 0);
+    const wr = agents.filter(a => a.companyId === COMPANIES.WR);
+
+    let html = `
+    <div class="stat-block">
+        <div class="stat-number">${reviewCount}</div>
+        <div class="stat-label">Awaiting Review</div>
+    </div>
+    <div class="stat-block">
+        <div class="stat-number">${blockedCount}</div>
+        <div class="stat-label">Blocked</div>
+    </div>
+    <div class="stat-block">
+        <div class="stat-number">${activeCount}</div>
+        <div class="stat-label">Agents Running</div>
+    </div>
+    `;
+
+    html += `<div class="section-label">CBS Group Agents</div>`;
+    html += `<div class="entity-block">`;
+    for (const a of cbs.sort((a,b) => a.name.localeCompare(b.name))) {
+        const hb = timeAgo(a.lastHeartbeatAt);
+        html += `<div class="agent-row">
+            <span class="agent-status-indicator ${a.status}"></span>
+            <span class="agent-name-text">${escHtml(a.name)}</span>
+            <span class="agent-last-hb">${hb}</span>
+        </div>`;
+    }
+    html += `</div>`;
+
+    html += `<div class="section-label" style="margin-top:1.5rem">WaterRoads Agents</div>`;
+    html += `<div class="entity-block">`;
+    for (const a of wr.sort((a,b) => a.name.localeCompare(b.name))) {
+        const hb = timeAgo(a.lastHeartbeatAt);
+        html += `<div class="agent-row">
+            <span class="agent-status-indicator ${a.status}"></span>
+            <span class="agent-name-text">${escHtml(a.name)}</span>
+            <span class="agent-last-hb">${hb}</span>
+        </div>`;
+    }
+    html += `</div>`;
+
+    el.innerHTML = html;
+}
+
+// Auto-refresh every 60 seconds
+loadAll();
+setInterval(loadAll, 60000);
+</script>
+</body>
+</html>
