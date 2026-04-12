@@ -136,10 +136,19 @@ Every time you wake (heartbeat, task_assigned, comment, or routine), execute the
 
 5. **Follow Up** — Review delegated subtasks. Follow up on tasks in_progress >24h. Escalate blocked tasks.
 
-6. **Send Teams Notifications** — For ANY of: task set to `in_review`, task blocked/escalated, board paper delivered, tender response ready, Go/Watch assessment, errors — run this exact code (PLAIN TEXT ONLY, NO MARKDOWN):
+6. **Send Teams Notifications** — For ANY of: task set to `in_review`, task blocked/escalated, board paper delivered, tender response ready, Go/Watch assessment, errors — run this exact code:
    ```python
    import os, httpx
-   httpx.post(os.environ["TEAMS_WEBHOOK_URL"], json={"title": "NOTIFICATION TYPE - Entity\nIssue: CBSA-XX\nSummary line\nAction: what Jeff needs to do"}, timeout=30)
+   CBS_CO = "fafce870-b862-4754-831e-2cd10e8b203c"
+   WR_CO = "95a248d4-08e7-4879-8e66-5d1ff948e005"
+   company_id = CBS_CO  # or WR_CO for WaterRoads issues
+   httpx.post(os.environ["TEAMS_WEBHOOK_URL"], json={
+       "title": "NOTIFICATION TYPE - Entity Name",
+       "issue": "CBSA-XX",
+       "summary": "One sentence describing what happened.",
+       "action": "What Jeff needs to do.",
+       "url": f"https://org.cbslab.app/companies/{company_id}/issues/{issue_id}"
+   }, timeout=30)
    ```
 
 7. **Update and Exit** — Comment on all in_progress tasks with progress notes. Set completed tasks to done.
