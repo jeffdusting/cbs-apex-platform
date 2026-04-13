@@ -1,5 +1,57 @@
 # Project River — Task Log
 
+## Email Task Intake — Google Apps Script
+
+**Date:** 13 April 2026
+**Status:** OPERATIONAL
+**Test:** CBSA-30 created from email jeff@cbs.com.au → rivertasks@cbs.com.au → processed to done
+
+---
+
+### Architecture
+
+```
+Jeff/Sarah → email rivertasks@cbs.com.au
+    ↓ (M365 forward rule)
+rivertasks@waterroads.com.au (Gmail)
+    ↓ (Google Apps Script, 5-min polling)
+Paperclip API (/companies/{id}/issues)
+    ↓
+CBS Executive or WR Executive (based on [RIVER-CBS] / [RIVER-WR] tag)
+    ↓
+Executes (<$10) or plans (>$10) → Teams Adaptive Card + HTML email with Paperclip link
+```
+
+### Components
+
+| Component | Location | Owner |
+|---|---|---|
+| Shared mailbox | rivertasks@cbs.com.au (M365) | Jeff |
+| Forward rule | M365 Outlook Web settings | Jeff |
+| Gmail address | rivertasks@waterroads.com.au | Jeff (Google Workspace) |
+| Apps Script | https://script.google.com (River Email Intake) | Jeff |
+| Trigger | 5-minute time-driven | Apps Script |
+| Paperclip auth | Script Property PAPERCLIP_COOKIE | Jeff (refresh monthly) |
+
+### Why not Microsoft Power Automate
+
+The Teams notification webhook (HTTP trigger) works. The email trigger does not — it never fires in this tenant. Cause unknown, likely licensing/policy. Google Apps Script bypasses this entirely.
+
+### Files
+
+- `scripts/river-email-intake.gs` — Google Apps Script source (repo copy)
+- `docs/email-intake-setup.md` — setup guide
+
+### Cookie Maintenance
+
+Session cookie expires eventually. When Apps Script runs start failing with 401:
+1. Log into org.cbslab.app, grab fresh session token
+2. Apps Script → Project Settings → Script Properties → update PAPERCLIP_COOKIE
+
+Calendar reminder set for monthly refresh.
+
+---
+
 ## Sprint 3 — Tender Qualification Scorecard
 
 **Date:** 10 April 2026

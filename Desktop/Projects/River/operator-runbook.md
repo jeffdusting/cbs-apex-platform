@@ -886,4 +886,37 @@ Agents retain context across heartbeat runs. Confirmed during Day 0 testing:
 
 ---
 
-*This runbook covers Sprint 1 operations (updated Day 4, 10 April 2026). For issues not covered here, check the Paperclip documentation or contact the platform administrator.*
+## 22. Email Task Intake (Google Apps Script)
+
+Jeff and Sarah submit tasks by emailing rivertasks@cbs.com.au with a subject tag `[RIVER-CBS]` or `[RIVER-WR]`. Emails forward to rivertasks@waterroads.com.au (Gmail). Google Apps Script polls every 5 minutes and creates Paperclip issues via API.
+
+### Monitoring
+
+- **Execution log:** https://script.google.com → River Email Intake → Executions (left sidebar)
+- **Failed runs:** Apps Script emails you by default when a run throws an exception
+- **Healthy cadence:** a run every 5 minutes, each typically logs "Found 0 unprocessed River email threads" unless a new task has arrived
+
+### Common issues
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Apps Script runs failing with 401/403 | Paperclip session cookie expired | Refresh cookie in Script Properties |
+| Emails arriving at Gmail but no Paperclip issue | Sender not in AUTHORISED_SENDERS list | Add address to the script, redeploy |
+| Flow firing but wrong entity | Missing or wrong subject tag | Remind sender to use `[RIVER-CBS]` or `[RIVER-WR]` |
+| Duplicate issues from same email | River-Processed label not applied | Check Gmail label exists; re-run `checkInbox` manually |
+
+### Cookie refresh (monthly)
+
+1. Log into org.cbslab.app in your browser
+2. DevTools (F12) → Application → Cookies → copy `__Secure-better-auth.session_token` value
+3. Apps Script → Project Settings → Script Properties → edit `PAPERCLIP_COOKIE`
+4. Value: `__Secure-better-auth.session_token=<new_token>`
+5. Save
+
+### Disabling
+
+To stop processing: Triggers → three dots on the 5-minute trigger → **Disable**. Emails still arrive in Gmail but aren't processed.
+
+---
+
+*This runbook covers Sprint 1 operations (updated Day 4, 10 April 2026; email intake added 13 April 2026). For issues not covered here, check the Paperclip documentation or contact the platform administrator.*
