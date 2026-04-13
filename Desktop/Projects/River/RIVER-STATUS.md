@@ -1,7 +1,29 @@
 # Project River — Status
 
-**Current Day:** Complete (Sprint 1 finished 10 April 2026)
-**Git Tag:** river-sprint-1-complete
+**Current Day:** Sprint 3 Complete + Post-Sprint Enhancements
+**Git Tag:** river-sprint-3 (Sprint 3) — enhancements on main
+**Last Updated:** 13 April 2026
+
+## Post-Sprint 3 Enhancements (11-13 April 2026)
+
+| Enhancement | Status |
+|---|---|
+| CBS Executive budget $25→$100, heartbeat 6h→2h | LIVE |
+| Tender Coordination budget $20→$90, heartbeat 4h→2h | LIVE |
+| Shipley methodology KB (4 documents ingested) | LIVE |
+| Competitor profiles (5 competitors with win themes) | LIVE |
+| tender-workflow skill (Bronze/Silver/Gold) | LIVE |
+| tender-register (Supabase dedup + decision recording) | LIVE |
+| Tender source expansion (5 portals — email scanning) | LIVE |
+| Manager review dashboard (monitoring/manager-dashboard.html) | LIVE |
+| Teams notifications (Adaptive Card + HTML email with deep links) | LIVE |
+| Email task submission via rivertasks@cbs.com.au | LIVE (Google Apps Script) |
+| Google Apps Script cookie expiry alerting | LIVE |
+| agent-recruitment skill (CEO can create specialist agents) | LIVE |
+| token-efficiency skill | LIVE |
+| graph-mail-read skill | LIVE |
+| competitor-analysis skill | LIVE |
+| All 12 AGENTS.md with embedded heartbeat protocol | LIVE |
 
 ---
 

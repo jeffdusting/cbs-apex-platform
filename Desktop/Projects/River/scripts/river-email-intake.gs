@@ -183,8 +183,63 @@ function createPaperclipIssue(company_id, agent_id, title, description, priority
         return JSON.parse(text);
     } else {
         Logger.log(`Paperclip API error ${status}: ${text.substring(0, 300)}`);
+        // If auth failure, alert
+        if (status === 401 || status === 403) {
+            alertCookieExpired(status, text);
+        }
         return null;
     }
+}
+
+function alertCookieExpired(status, responseText) {
+    // Send a Teams notification (via the existing webhook) and email
+    const webhook = PropertiesService.getScriptProperties().getProperty('TEAMS_WEBHOOK_URL');
+    if (webhook) {
+        try {
+            UrlFetchApp.fetch(webhook, {
+                method: 'post',
+                contentType: 'application/json',
+                payload: JSON.stringify({
+                    title: 'RIVER COOKIE EXPIRED - Action Required',
+                    issue: 'N/A',
+                    summary: `Paperclip session cookie expired (HTTP ${status}). Email intake paused.`,
+                    action: 'Log into org.cbslab.app, copy __Secure-better-auth.session_token, update PAPERCLIP_COOKIE in Apps Script Properties.',
+                    url: 'https://script.google.com',
+                }),
+                muteHttpExceptions: true,
+            });
+        } catch (e) {
+            Logger.log(`Failed to send Teams alert: ${e.message}`);
+        }
+    }
+
+    // Also email Jeff directly (failsafe)
+    try {
+        MailApp.sendEmail({
+            to: 'jeff@cbs.com.au',
+            subject: 'RIVER: Paperclip cookie expired — email intake paused',
+            body: `The Google Apps Script for River email intake received HTTP ${status} from the Paperclip API, indicating the session cookie has expired.\n\n` +
+                  `Emails are still arriving but not being processed into Paperclip issues.\n\n` +
+                  `To fix (2 minutes):\n` +
+                  `1. Log into https://org.cbslab.app\n` +
+                  `2. DevTools (F12) → Application → Cookies → copy __Secure-better-auth.session_token value\n` +
+                  `3. Go to https://script.google.com → River Email Intake → Project Settings → Script Properties\n` +
+                  `4. Edit PAPERCLIP_COOKIE → set to "__Secure-better-auth.session_token=<value>"\n` +
+                  `5. Save\n\n` +
+                  `The script will resume on its next 5-minute run.\n\n` +
+                  `Response detail: ${responseText.substring(0, 300)}`,
+        });
+    } catch (e) {
+        Logger.log(`Failed to send email alert: ${e.message}`);
+    }
+
+    // Throttle — don't send alerts more than once per hour
+    const lastAlert = PropertiesService.getScriptProperties().getProperty('LAST_COOKIE_ALERT');
+    const now = new Date().getTime();
+    if (lastAlert && (now - parseInt(lastAlert)) < 3600000) {
+        return;
+    }
+    PropertiesService.getScriptProperties().setProperty('LAST_COOKIE_ALERT', now.toString());
 }
 
 function setIssueStatus(issue_id, status, cookie) {

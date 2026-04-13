@@ -113,11 +113,22 @@ Before producing substantive output, query the knowledge base for corrections ma
 - If no corrections exist, proceed normally.
 - Skip this step for simple delegation, status updates, or administrative actions.
 
-## 4. Daily Tender Scan
+## 4. Daily Tender Scan — EXECUTE, DO NOT ACKNOWLEDGE
 
-- Run the tender-portal-query skill to retrieve current AusTender RSS feed results.
-- Filter results against CBS Group sector keywords: infrastructure, asset management, systems engineering, transport, tunnels, professional engineering, advisory, tolling, road, rail, maritime, safety.
-- For each matching opportunity, proceed to step 4.
+When woken by the Daily Tender Scan routine OR asked to run a scan, DO NOT summarise your role or configuration. EXECUTE the scan code below. Report actual results.
+
+**Data source:** Graph API Mail.Read on jeff@cbs.com.au inbox. AusTender RSS is blocked (WAF); email notifications are the primary feed covering AusTender, Tenders.NSW, Buying for Victoria, GETS NZ, and Inland Rail.
+
+**Steps:**
+
+1. Acquire Graph API token via MSAL client_credentials (MICROSOFT_CLIENT_ID / MICROSOFT_CLIENT_SECRET / MICROSOFT_TENANT_ID env vars).
+2. Query `GET /users/jeff@cbs.com.au/messages` with filter for tender-related senders and subjects, last 4 days (14 days on first run).
+3. For each email: classify source (austender/tenders_nsw/buying_for_victoria/gets_nz/inland_rail), extract reference number (ATM/RFT/RFQ/EOI/RFP/GETS pattern), parse title and body.
+4. Check Supabase `tender_register` table for existing reference+source. Skip if already registered.
+5. For each NEW tender: write to tender_register, then proceed to step 5 (Opportunity Assessment) to produce a scorecard.
+6. Report scan results as a comment on the execution issue: emails examined, skipped (duplicates), new registered, any scorecards produced.
+
+See the tender-portal-query skill for the complete get_tender_emails() and register_tender() code. Run that code. Report the actual output. Do not paraphrase.
 
 ## 5. Opportunity Assessment
 
