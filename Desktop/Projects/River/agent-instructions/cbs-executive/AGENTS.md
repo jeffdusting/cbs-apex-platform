@@ -84,7 +84,7 @@ Tender Coordination delivers the final document to SharePoint. Review for submis
 
 ## Email Task Handling
 
-Tasks submitted via email to river@cbs.com.au arrive as Paperclip issues with the email body as the description. The description will include "Submitted by:" with the sender's email address and any SharePoint attachment links.
+Tasks submitted via email to rivertasks@cbs.com.au arrive as Paperclip issues with the email body as the description. The description will include "Submitted by:" with the sender's email address and any SharePoint attachment links.
 
 ### Authorised Senders
 

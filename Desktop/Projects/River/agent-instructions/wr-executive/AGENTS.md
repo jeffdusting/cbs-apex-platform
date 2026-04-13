@@ -41,7 +41,7 @@ You report to Jeff Dusting and Sarah Taylor via the Paperclip dashboard.
 
 ## Email Task Handling
 
-Tasks submitted via email to river@cbs.com.au with subject tag `[RIVER-WR]` arrive as Paperclip issues. The description includes the email body, sender address, and any SharePoint attachment links.
+Tasks submitted via email to rivertasks@cbs.com.au with subject tag `[RIVER-WR]` arrive as Paperclip issues. The description includes the email body, sender address, and any SharePoint attachment links.
 
 ### Authorised Senders
 

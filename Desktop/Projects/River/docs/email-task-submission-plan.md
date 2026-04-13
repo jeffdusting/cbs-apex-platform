@@ -55,7 +55,7 @@ Outcome delivered: Teams Adaptive Card + email with file links/attachments
 
 | Field | Format | Example |
 |---|---|---|
-| **To** | river@cbs.com.au (dedicated alias monitored by Power Automate) | river@cbs.com.au |
+| **To** | rivertasks@cbs.com.au (dedicated alias monitored by Power Automate) | rivertasks@cbs.com.au |
 | **Subject** | `[RIVER-CBS] Your task title` or `[RIVER-WR] Your task title` | `[RIVER-CBS] Prepare a capability statement for the M6 AM panel` |
 | **Body** | Free text describing the task | "We need a capability statement highlighting our M6 asset management experience..." |
 | **Attachments** | Optional — tender docs, briefs, reference material | RFP.pdf, Scope.docx |
@@ -173,7 +173,7 @@ Power Automate would need a minor update to render the file link:
 
 ### New Flow: "River Email Task Intake"
 
-**Trigger:** When a new email arrives in river@cbs.com.au (shared mailbox / alias)
+**Trigger:** When a new email arrives in rivertasks@cbs.com.au (shared mailbox / alias)
 
 **Actions:**
 
