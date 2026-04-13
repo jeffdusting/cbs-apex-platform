@@ -66,6 +66,31 @@ Only recruit when ALL of these are true:
 4. Clear role definition possible
 5. Jeff approves the cost and scope in the task plan
 
+## REQUIRED: Use the Agent Standards
+
+Every new agent MUST be built with the complete env var set from `scripts/agent-standards.py`. Do NOT hand-craft env vars — use `build_agent_env(role_key)` which guarantees no env var is missed.
+
+Required env vars (enforced by agent-standards.py):
+- SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (KB retrieval + tender register)
+- VOYAGE_API_KEY (query embeddings)
+- TEAMS_WEBHOOK_URL (notifications)
+- MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET, MICROSOFT_TENANT_ID (Graph API)
+
+Role-specific additions (automatically included by build_agent_env):
+- governance-cbs, governance-wr, pricing-commercial → + XERO_CLIENT_ID, XERO_CLIENT_SECRET
+
+## Post-Creation Validation
+
+After creating any agent, run:
+```bash
+python scripts/validate-agent-env.py
+```
+
+This audits all agents and reports any missing env vars. If any are missing:
+```bash
+python scripts/validate-agent-env.py --fix
+```
+
 ## Recruitment API Pattern
 
 Creating a new agent via the Paperclip API:
@@ -109,7 +134,14 @@ def create_agent(
     Returns:
         Created agent object or None on failure
     """
+    from agent_standards import build_agent_env
+
     cwd_name = name.lower().replace(" ", "-")
+
+    # CRITICAL: use build_agent_env() — do NOT hand-craft env
+    # role_key is used for role-specific env vars (e.g. Xero credentials)
+    role_key = name.lower().replace(" ", "-")  # or pass explicitly
+    env = build_agent_env(role_key)
 
     payload = {
         "name": name,
@@ -125,15 +157,7 @@ def create_agent(
             "dangerouslySkipPermissions": True,
             "graceSec": 15,
             "timeoutSec": 0,
-            "env": {
-                "SUPABASE_URL": {"type": "plain", "value": os.environ["SUPABASE_URL"]},
-                "SUPABASE_SERVICE_ROLE_KEY": {"type": "secret", "value": os.environ["SUPABASE_SERVICE_ROLE_KEY"]},
-                "VOYAGE_API_KEY": {"type": "plain", "value": os.environ["VOYAGE_API_KEY"]},
-                "TEAMS_WEBHOOK_URL": {"type": "plain", "value": os.environ["TEAMS_WEBHOOK_URL"]},
-                "MICROSOFT_CLIENT_ID": {"type": "plain", "value": os.environ["MICROSOFT_CLIENT_ID"]},
-                "MICROSOFT_CLIENT_SECRET": {"type": "secret", "value": os.environ["MICROSOFT_CLIENT_SECRET"]},
-                "MICROSOFT_TENANT_ID": {"type": "plain", "value": os.environ["MICROSOFT_TENANT_ID"]},
-            },
+            "env": env,
             "promptTemplate": prompt_template or "",
         },
         "runtimeConfig": {

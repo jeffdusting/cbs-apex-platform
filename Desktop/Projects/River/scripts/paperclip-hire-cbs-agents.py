@@ -1,17 +1,28 @@
 #!/usr/bin/env python3
 """Project River — CBS Agent Hiring Script (Task 1.10)
 
-Creates all 9 CBS Group agents using the direct creation endpoint
-(board operator path). Sets up org chart hierarchy, writes instruction
-bundles, and syncs skills.
+LEGACY — DO NOT RUN WITHOUT REVIEW.
 
-Usage:
+This script was used for initial Day 1 deployment. Running it again will:
+- Attempt to create agents that already exist (will fail with duplicates)
+- Use hardcoded env var list that may not match current requirements
+
+For creating NEW agents, use the agent-recruitment skill pattern with
+scripts/agent-standards.py as the single source of truth for env vars.
+
+For recreating agents after full teardown, update this script to import
+from agent_standards first:
+    from agent_standards import build_agent_env
+    env = build_agent_env(agent_role)
+
+Usage (only after review):
     source scripts/env-setup.sh
     python scripts/paperclip-hire-cbs-agents.py --company-id <cbs-company-id>
-
-    Or auto-reads from company-manifest.json:
-    python scripts/paperclip-hire-cbs-agents.py
 """
+
+import sys
+sys.exit("This is a legacy script. See docstring. Exiting to prevent accidental run.")
+
 
 import argparse
 import json

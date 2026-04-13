@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 """Project River — WaterRoads Agent Hiring Script (Task 1.11)
 
-Creates all 3 WaterRoads agents using the direct creation endpoint
-(board operator path). Sets up org chart hierarchy, writes instruction
-bundles, and syncs skills.
+LEGACY — DO NOT RUN WITHOUT REVIEW.
 
-Usage:
-    source scripts/env-setup.sh
-    python scripts/paperclip-hire-wr-agents.py --company-id <wr-company-id>
-
-    Or auto-reads from company-manifest.json:
-    python scripts/paperclip-hire-wr-agents.py
+This script was used for initial Day 3 deployment. For NEW agents, use
+the agent-recruitment skill with scripts/agent-standards.py as the
+single source of truth for env vars.
 """
+
+import sys
+sys.exit("This is a legacy script. See docstring. Exiting to prevent accidental run.")
 
 import argparse
 import json
 import os
-import sys
 
 import requests
 
