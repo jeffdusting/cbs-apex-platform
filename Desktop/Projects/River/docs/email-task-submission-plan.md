@@ -55,7 +55,7 @@ Outcome delivered: Teams Adaptive Card + email with file links/attachments
 
 | Field | Format | Example |
 |---|---|---|
-| **To** | jeff@cbs.com.au (same mailbox — the flow picks it up) | jeff@cbs.com.au |
+| **To** | river@cbs.com.au (dedicated alias monitored by Power Automate) | river@cbs.com.au |
 | **Subject** | `[RIVER-CBS] Your task title` or `[RIVER-WR] Your task title` | `[RIVER-CBS] Prepare a capability statement for the M6 AM panel` |
 | **Body** | Free text describing the task | "We need a capability statement highlighting our M6 asset management experience..." |
 | **Attachments** | Optional — tender docs, briefs, reference material | RFP.pdf, Scope.docx |
@@ -173,7 +173,7 @@ Power Automate would need a minor update to render the file link:
 
 ### New Flow: "River Email Task Intake"
 
-**Trigger:** When a new email arrives in jeff@cbs.com.au with subject containing `[RIVER-CBS]` or `[RIVER-WR]`
+**Trigger:** When a new email arrives in river@cbs.com.au (shared mailbox / alias)
 
 **Actions:**
 
@@ -229,7 +229,7 @@ Only authorised senders can submit tasks:
 | Sender | Email | Can Submit To |
 |---|---|---|
 | Jeff Dusting | jeff@cbs.com.au | CBS Executive, WR Executive |
-| Sarah Taylor | sarah@cbs.com.au (or her email) | WR Executive, CBS Executive |
+| Sarah Taylor | sarah@cbs.com.au | WR Executive, CBS Executive |
 
 The Power Automate flow should check the sender address before creating an issue. Unauthorised senders are ignored (or receive a "not authorised" auto-reply).
 
