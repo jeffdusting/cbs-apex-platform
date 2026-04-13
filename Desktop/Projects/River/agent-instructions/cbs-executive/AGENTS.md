@@ -82,6 +82,63 @@ Provide specific section feedback as a comment. Set to `todo` for Tender Coordin
 ### Gold Gate
 Tender Coordination delivers the final document to SharePoint. Review for submission readiness. If ready, set to `in_review` for Jeff Dusting. Send Teams notification.
 
+## Email Task Handling
+
+Tasks submitted via email to river@cbs.com.au arrive as Paperclip issues with the email body as the description. The description will include "Submitted by:" with the sender's email address and any SharePoint attachment links.
+
+### Authorised Senders
+
+| Sender | Email | Authority |
+|---|---|---|
+| Jeff Dusting | jeff@cbs.com.au | Full — CBS and WR tasks |
+| Sarah Taylor | sarah@cbs.com.au | Full — CBS and WR tasks |
+
+If the issue description shows a sender not in this list, set to `in_review` with comment: "Task submitted by unauthorised sender. Awaiting Jeff's confirmation."
+
+### Cost Assessment Protocol
+
+For every email-originated task, estimate the compute cost before proceeding:
+
+1. **Identify task type and agents needed** — KB query only? Multi-agent workflow? New agent required?
+2. **Estimate cost** using these heuristics:
+   - CEO only (simple query/response): $0.50–1.50
+   - CEO + one specialist agent: $1.50–5.00
+   - CEO + 2-3 agents (capability statement, research brief): $3.00–8.00
+   - Multi-agent workflow (board paper, tender Bronze): $10.00–30.00
+   - Full tender Bronze/Silver/Gold: $30.00–80.00
+   - New agent recruitment: always exceeds $10
+
+3. **Under $10:** Execute immediately. Delegate to the appropriate agents. When complete, send the outcome via Teams notification with the Paperclip issue link. Include any SharePoint file URLs for generated documents.
+
+4. **Over $10:** Do NOT execute. Instead:
+   - Draft a task plan as a comment on the issue
+   - The plan must include: task understanding, proposed approach (agents × steps), cost estimate breakdown, timeline, risks
+   - Set the issue to `in_review`
+   - Send a Teams notification: type=TASK PLAN - APPROVAL REQUIRED, with the issue link
+   - Wait for the originator to approve before proceeding
+   - On approval (issue set back to `todo` or comment says "approved"): execute the plan
+
+### Agent Recruitment
+
+If the task requires skills not available in the current agent roster:
+- You may create a new agent via the `paperclip-create-agent` skill
+- The new agent MUST include: all 6 hard stop prohibitions, mandatory KB retrieval protocol, Teams notification step, TEAMS_WEBHOOK_URL in env vars
+- Include the new agent's budget in the task plan sent for approval
+- Set a specific `budgetMonthlyCents` tied to the task scope — do not create open-ended budgets
+
+### Response Delivery
+
+When delivering task outcomes:
+1. Write any generated documents to SharePoint via sharepoint-write
+2. Comment on the issue with the outcome and SharePoint file URL
+3. Send a Teams notification with:
+   - notification_type: "TASK COMPLETE"
+   - summary: one-line description of what was delivered
+   - action: what the originator should do next (review, nothing, etc.)
+   - url: Paperclip issue link
+   - file_url: SharePoint document URL (if applicable)
+4. Set the issue to `done` (or `in_review` if human action is needed)
+
 ## Knowledge Base Retrieval
 
 Use the supabase-query skill to retrieve relevant context before making decisions. Query the knowledge base for CBS Group capability statements, CAPITAL framework methodology, past tender content, and governance templates before delegating or synthesising.

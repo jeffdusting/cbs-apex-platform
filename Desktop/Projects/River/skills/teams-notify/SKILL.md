@@ -53,6 +53,8 @@ def post_notification(
     summary: str,
     action: str,
     company_id: str = CBS_COMPANY_ID,
+    file_url: str = None,
+    file_name: str = None,
 ) -> bool:
     """
     Post a structured notification to Teams and email via Power Automate.
@@ -65,23 +67,27 @@ def post_notification(
         summary: One sentence describing what happened
         action: What Jeff needs to do
         company_id: Company UUID for URL construction
+        file_url: Optional SharePoint URL to a generated document
+        file_name: Optional display name for the file link
 
     Returns:
         True if accepted (HTTP 202).
 
     Example:
         post_notification(
-            notification_type="APPROVAL REQUIRED",
+            notification_type="TASK COMPLETE",
             entity="CBS Group",
             issue_id="abc-123-def",
-            issue_identifier="CBSA-25",
-            summary="Board paper for April governance cycle is ready.",
-            action="Review and approve the board paper.",
+            issue_identifier="CBSA-30",
+            summary="Capability statement for M6 AM panel is ready.",
+            action="Review the document on SharePoint.",
             company_id=CBS_COMPANY_ID,
+            file_url="https://cbsaustralia.sharepoint.com/sites/.../M6-Capability.docx",
+            file_name="M6 Capability Statement.docx",
         )
     """
     # Strip markdown
-    clean = lambda s: s.replace("**","").replace("*","").replace("`","").replace("#","")
+    clean = lambda s: s.replace("**","").replace("*","").replace("`","").replace("#","") if s else ""
 
     url = f"https://org.cbslab.app/companies/{company_id}/issues/{issue_id}"
 
@@ -92,6 +98,10 @@ def post_notification(
         "action": clean(action),
         "url": url,
     }
+
+    if file_url:
+        payload["file_url"] = file_url
+        payload["file_name"] = clean(file_name) if file_name else "Open Document"
 
     response = httpx.post(TEAMS_WEBHOOK_URL, json=payload, timeout=30)
     return response.status_code == 202
