@@ -99,6 +99,65 @@ Ongoing:
   Semantic search returns it, cited by source_file
 ```
 
+## Revised Plan for 31 GB Migration (SharePoint 5.2 + Dropbox 26)
+
+### Two-Tier Architecture
+
+**Tier 1 (Drive): Everything.** All 31 GB migrated to Google Drive. Complete archive. Accessible via Drive search, folder browsing, human lookup. No indexing cost — just Drive storage (free with Workspace).
+
+**Tier 2 (Supabase): Curated index.** Selected high-signal content gets embedded and indexed in Supabase. Agents semantic-search against this layer. Initial index ~5-10% of total volume.
+
+### Selective Indexing Criteria
+
+The indexer script applies these rules:
+
+| Include | Why |
+|---|---|
+| Board papers, minutes, resolutions | Governance history is core reference |
+| WR correspondence (last 2 years) | Stakeholder context, client/govt history |
+| Financial reports, models, business case | Decision basis |
+| PPP programme documents | Core operational planning |
+| Regulatory submissions | Compliance history |
+| Investor updates, DD responses | Investor context |
+| Operational content (post-Sprint 4) | Future operational reference |
+| Shipley reference (duplicated) | Methodology |
+
+| Exclude | Why |
+|---|---|
+| Drafts with track changes | Final versions exist elsewhere |
+| Photos, diagrams, images | Not text-searchable |
+| External PDFs from other firms | Reference, not WR IP |
+| Archive >5 years (unless specifically relevant) | Stale, high noise |
+| Exact duplicates (by content hash) | Dedup |
+| Temporary files (~$, .tmp) | Junk |
+
+### Migration Tooling
+
+**Bulk transfer: Google Workspace Migrate**
+Google's official free tool, designed for SharePoint and Dropbox migrations. Handles:
+- Folder structure preservation
+- Permission mapping
+- Conflict resolution
+- Rate limiting
+- Progress tracking
+
+Requirements:
+- Google Workspace admin access on waterroads.com.au
+- Dropbox Business admin access (to authorise the migration app)
+- SharePoint admin access (read permissions on WR site)
+
+Run time: 1-3 days for 31 GB (Google handles throttling).
+
+**Selective indexer: custom Apps Script**
+After bulk migration completes, Apps Script runs through the Drive hierarchy and indexes only content matching the inclusion criteria. Components:
+- File classifier (board paper, correspondence, financial, etc.)
+- Content extractor (handles .md, .docx, .xlsx, .pptx, .pdf)
+- Chunking (H2-boundary or 1000-token boundary)
+- Voyage AI embedding
+- Supabase upsert with category metadata
+
+Run time: 4-8 hours for initial curated index (~5,000-10,000 chunks).
+
 ## Implementation Phases
 
 ### Phase 1: Infrastructure (Day 1)
@@ -115,41 +174,130 @@ Ongoing:
 6. **Set up Shared Drive** "WaterRoads KB" with folder structure
 7. **Grant access:** Jeff, Sarah, service account as Content Manager
 
-### Phase 2: Content Migration (Day 2)
+### Phase 2: Bulk Content Migration (Days 2-4)
 
-1. **Export 103 WR documents** from current Supabase project
-2. **Convert to Google Docs** where appropriate (board papers, minutes, resolutions become native Docs; financial models and registers become Sheets; reference material stays as .md in Drive)
-3. **Folder placement:** migrate content to the structured folders
-4. **Duplicate Shipley content** (4 documents) into WR Drive under `/Reference/Shipley/`
-5. **Retire WR content from current Supabase** — move to `waterroads-kb-archive` schema for 30-day retention, then delete
+**2a. Set up Google Workspace Migrate (Day 2 morning)**
+1. Admin Console → Apps → Google Workspace → Workspace Migrate → Set up
+2. Install migration node on a VM (Google provides image)
+3. Configure Dropbox source connection (admin OAuth)
+4. Configure SharePoint source connection (admin OAuth)
+5. Configure Drive destination (WR Shared Drive)
 
-### Phase 3: Sync Pipeline (Day 2-3)
+**2b. Run bulk migration (Days 2-4)**
+1. Dropbox: 26 GB WaterRoads folder → `/Imported from Dropbox/` in WR Shared Drive
+2. SharePoint: 5.2 GB WaterRoads site → `/Imported from SharePoint/` in WR Shared Drive
+3. Google Workspace Migrate handles the transfer in the background over 1-3 days
+4. Preserves folder structure, file metadata, permissions where possible
 
-Build Apps Script: `wr-kb-sync.gs`
+**2c. Handle existing Supabase WR content**
+1. **Retire 103 WR docs from current Supabase** — move to `waterroads-kb-archive` schema for 30-day retention
+2. Content is NOT lost — it will be re-indexed from Drive if the corresponding files exist there
+3. If any WR Supabase content has NO counterpart in Drive/SharePoint/Dropbox (agent-generated content), export to Drive first
+
+**2d. Duplicate Shipley reference content**
+- Copy 4 Shipley documents from CBS Supabase into WR Drive under `/Reference/Shipley/`
+
+### Phase 3a: Initial Selective Indexer (Day 4-5)
+
+One-off bulk indexer that classifies every file in the Drive and embeds high-signal content:
 
 ```javascript
-// Runs every 30 min
+// One-off: index all priority content after bulk migration
+function initialBulkIndex() {
+    const rootFolder = DriveApp.getFolderById(WR_DRIVE_ROOT_ID);
+    const files = walkFolder(rootFolder);  // recursive file list
+
+    for (const file of files) {
+        const classification = classifyFile(file);
+        if (classification.index) {
+            const content = extractContent(file);  // handles .md, .docx, .xlsx, .pptx, .pdf
+            const chunks = chunkContent(content);  // H2-boundary or 1000-token
+            for (const chunk of chunks) {
+                const embedding = voyageEmbed(chunk);
+                upsertSupabase({
+                    source_file: file.getName(),
+                    drive_file_id: file.getId(),
+                    entity: 'waterroads',
+                    category: classification.category,
+                    content: chunk,
+                    embedding: embedding,
+                });
+            }
+        }
+    }
+}
+
+function classifyFile(file) {
+    const path = getFilePath(file);
+    const name = file.getName().toLowerCase();
+    const mime = file.getMimeType();
+    const age = daysSinceModified(file);
+
+    // Exclusion rules
+    if (name.startsWith('~$') || name.startsWith('.')) return {index: false};
+    if (mime.startsWith('image/') || mime.startsWith('video/')) return {index: false};
+    if (name.includes('draft') && name.includes('track')) return {index: false};
+    if (age > 1825 /* 5 years */) return {index: false};  // too old
+
+    // Inclusion rules by folder
+    if (path.includes('Board Papers') || path.includes('Minutes') || path.includes('Resolutions'))
+        return {index: true, category: 'governance'};
+    if (path.includes('PPP') || path.includes('NSW Government'))
+        return {index: true, category: 'ppp'};
+    if (path.includes('Financial') || path.includes('Business Case'))
+        return {index: true, category: 'financial'};
+    if (path.includes('Investor'))
+        return {index: true, category: 'investor'};
+    if (path.includes('Regulatory') || path.includes('Environmental'))
+        return {index: true, category: 'regulatory'};
+    if (path.includes('Correspondence') && age < 730 /* 2 years */)
+        return {index: true, category: 'correspondence'};
+    if (path.includes('Shipley') || path.includes('Reference'))
+        return {index: true, category: 'methodology'};
+
+    // Default: don't index (leaves content in Drive for human browsing)
+    return {index: false};
+}
+```
+
+### Phase 3b: Ongoing Sync Pipeline (Day 5)
+
+Apps Script: `wr-kb-sync.gs` — runs every 30 min, handles new/modified files:
+
+```javascript
 function syncKnowledgeBase() {
     const lastSync = PropertiesService.getScriptProperties().getProperty('LAST_SYNC') || '2026-01-01T00:00:00Z';
     const files = findModifiedFiles(lastSync);
 
     for (const file of files) {
-        if (isInApprovedFolder(file)) {
-            const content = extractContent(file);  // Docs, Sheets, or raw text
-            const embedding = voyageEmbed(content);
-            upsertSupabase(file, content, embedding);
+        const classification = classifyFile(file);
+        if (classification.index) {
+            const content = extractContent(file);
+            const chunks = chunkContent(content);
+            // Delete old chunks for this file, re-insert
+            deleteByDriveFileId(file.getId());
+            for (const chunk of chunks) {
+                const embedding = voyageEmbed(chunk);
+                upsertSupabase({source_file: file.getName(), drive_file_id: file.getId(), ...});
+            }
         }
     }
+
+    // Handle deletions
+    handleDriveDeletions();
 
     PropertiesService.getScriptProperties().setProperty('LAST_SYNC', new Date().toISOString());
 }
 ```
 
 Components:
-- `findModifiedFiles(since)` — query Drive for files modified after last sync
-- `extractContent(file)` — handle Doc, Sheet, PDF, .md files
-- `voyageEmbed(content)` — chunk (H2-boundary, ~1000 tokens) + embed via Voyage API
-- `upsertSupabase(file, content, embedding)` — write to WR Supabase, keyed on Drive file ID
+- `walkFolder(folder)` — recursive depth-first traversal
+- `findModifiedFiles(since)` — Drive API search with `modifiedTime > since`
+- `classifyFile(file)` — inclusion/exclusion logic (same as initial indexer)
+- `extractContent(file)` — handles all 5 formats via Drive's export API
+- `chunkContent(content)` — H2-boundary or 1000-token chunks with 200-token overlap
+- `voyageEmbed(content)` — Voyage AI voyage-3.5, input_type=document
+- `upsertSupabase(record)` — write to WR Supabase with drive_file_id as unique key
 
 ### Phase 4: Agent Reconfiguration (Day 3)
 
@@ -239,26 +387,53 @@ Update 3 WR agents:
 
 ## Cost
 
+### One-Time
+
+| Component | Cost |
+|---|---|
+| Google Workspace Migrate | $0 (free tool) |
+| Initial Voyage AI embedding (~5-10% of 31 GB indexable) | $20-100 |
+| Developer time (you approved budget) | (already accounted) |
+| **Total one-time** | **$20-100** |
+
+### Ongoing Monthly
+
 | Component | Monthly |
 |---|---|
 | Google Cloud project | $0 (free tier) |
-| Supabase WR project | $0 (free tier, keeps active via sync) or $25 (Pro) |
-| Voyage AI embeddings | ~$1-2 (additional embedding cost for WR volume) |
+| Supabase WR project — Pro plan recommended (database size may exceed free tier with 5-10K chunks) | $25 |
+| Voyage AI embeddings (new/modified content only) | $1-5 |
 | Apps Script | $0 (included in Workspace) |
-| Google Drive storage | $0 (included in Workspace) |
-| **Total additional cost** | **$1-27/month** |
+| Google Drive storage | $0 (included in Workspace) — 31 GB fits well within 5 TB Business Standard allocation |
+| **Total additional ongoing** | **$26-30/month** |
+
+### File Format Support
+
+| Format | Extraction Method | Quality | Notes |
+|---|---|---|---|
+| .md | Direct text read | Perfect | Native format |
+| .docx | Drive export as plain text | Very good | Loses heading hierarchy, preserves body |
+| .xlsx | Drive export per sheet as CSV | Good | Formulas flattened to values; multi-sheet iteration required |
+| .pptx | Drive export as plain text | Good | Speaker notes included; images lost |
+| .pdf (text-based) | Drive built-in extraction | Very good | Works well for native PDFs |
+| .pdf (scanned) | Drive OCR fallback | Moderate | May need Cloud Document AI for complex scans (~$1.50/1000 pages) |
+| Google Docs/Sheets/Slides | Native Apps Script API | Perfect | Richest extraction |
 
 ## Timeline
 
 | Phase | Days | Deliverable |
 |---|---|---|
-| 1. Infrastructure | 1 | Google Cloud + Supabase + Drive set up |
-| 2. Content migration | 1 | All WR content in Drive, retired from shared Supabase |
-| 3. Sync pipeline | 1-2 | Apps Script sync running every 30 min |
-| 4. Agent reconfig | 1 | 3 WR agents pointing at new stack |
-| 5. Testing | 0.5 | End-to-end validation |
-| 6. Documentation | 0.5 | Committed and pushed |
-| **Total** | **5 days** | Full migration |
+| 1. Infrastructure setup | 1 | Google Cloud + Supabase + Drive structure |
+| 2a. Google Workspace Migrate setup | 0.5 | Migration tool configured |
+| 2b. Bulk migration (31 GB) | 1-3 (runs in background) | All content in Drive |
+| 2c. Supabase WR retire + Shipley duplicate | 0.5 | Current Supabase entity=waterroads archived |
+| 3a. Initial selective indexer | 1 | 5-10K curated chunks in WR Supabase |
+| 3b. Ongoing sync pipeline | 1 | 30-min sync trigger running |
+| 4. Agent reconfig (3 WR agents) | 1 | New env vars, new skills, updated AGENTS.md |
+| 5. Testing | 0.5 | Semantic search, live edit, sync, dedup validated |
+| 6. Documentation | 0.5 | RIVER-STATUS, runbook, Sarah's briefing updated |
+| **Total active days** | **7 days** | Full migration |
+| **Elapsed time** | **~10 days** | Allowing for background bulk migration |
 
 ## Rollback Plan
 
