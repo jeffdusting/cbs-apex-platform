@@ -113,22 +113,100 @@ Before producing substantive output, query the knowledge base for corrections ma
 - If no corrections exist, proceed normally.
 - Skip this step for simple delegation, status updates, or administrative actions.
 
-## 4. Daily Tender Scan — EXECUTE, DO NOT ACKNOWLEDGE
+## 4. Daily Tender Scan — CRITICAL: YOU MUST EXECUTE THIS
 
-When woken by the Daily Tender Scan routine OR asked to run a scan, DO NOT summarise your role or configuration. EXECUTE the scan code below. Report actual results.
+You have everything needed to scan emails. Do NOT claim "missing capabilities" or "missing skills". Do NOT wait for tools to be provisioned. You have:
+- Bash tool (for running Python)
+- Python with httpx, msal libraries (install via `pip install --user --break-system-packages msal httpx` if missing)
+- Environment variables: MICROSOFT_CLIENT_ID, MICROSOFT_CLIENT_SECRET, MICROSOFT_TENANT_ID, VOYAGE_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
 
-**Data source:** Graph API Mail.Read on jeff@cbs.com.au inbox. AusTender RSS is blocked (WAF); email notifications are the primary feed covering AusTender, Tenders.NSW, Buying for Victoria, GETS NZ, and Inland Rail.
+These are ALL THE TOOLS YOU NEED. There is no separate "graph-mail-read" skill required — you call the Graph API directly via httpx.
 
-**Steps:**
+### Execution Steps
 
-1. Acquire Graph API token via MSAL client_credentials (MICROSOFT_CLIENT_ID / MICROSOFT_CLIENT_SECRET / MICROSOFT_TENANT_ID env vars).
-2. Query `GET /users/jeff@cbs.com.au/messages` with filter for tender-related senders and subjects, last 4 days (14 days on first run).
-3. For each email: classify source (austender/tenders_nsw/buying_for_victoria/gets_nz/inland_rail), extract reference number (ATM/RFT/RFQ/EOI/RFP/GETS pattern), parse title and body.
-4. Check Supabase `tender_register` table for existing reference+source. Skip if already registered.
-5. For each NEW tender: write to tender_register, then proceed to step 5 (Opportunity Assessment) to produce a scorecard.
-6. Report scan results as a comment on the execution issue: emails examined, skipped (duplicates), new registered, any scorecards produced.
+When woken by the Daily Tender Scan routine OR asked to run a scan, RUN THIS EXACT CODE via your Bash tool. Do not describe it. Do not claim you can't. RUN IT.
 
-See the tender-portal-query skill for the complete get_tender_emails() and register_tender() code. Run that code. Report the actual output. Do not paraphrase.
+```python
+import os, httpx, msal, re
+from datetime import datetime, timedelta, timezone
+
+# 1. Get Graph API token
+app = msal.ConfidentialClientApplication(
+    os.environ["MICROSOFT_CLIENT_ID"],
+    authority=f"https://login.microsoftonline.com/{os.environ['MICROSOFT_TENANT_ID']}",
+    client_credential=os.environ["MICROSOFT_CLIENT_SECRET"],
+)
+token = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])["access_token"]
+
+# 2. Scan jeff@cbs.com.au inbox for last 4 days (14 days if first run)
+since = (datetime.now(timezone.utc) - timedelta(days=4)).strftime("%Y-%m-%dT%H:%M:%SZ")
+filter_q = (
+    f"receivedDateTime ge {since} and ("
+    "contains(from/emailAddress/address, 'tenders.gov.au') or "
+    "contains(from/emailAddress/address, 'tenders.vic.gov.au') or "
+    "contains(from/emailAddress/address, 'buynsw') or "
+    "contains(from/emailAddress/address, 'buy.nsw') or "
+    "contains(from/emailAddress/address, 'customerservice.nsw.gov.au') or "
+    "contains(from/emailAddress/address, 'gets.govt.nz') or "
+    "contains(from/emailAddress/address, 'artc.com.au') or "
+    "contains(subject, 'AusTender')"
+    ")"
+)
+resp = httpx.get("https://graph.microsoft.com/v1.0/users/jeff@cbs.com.au/messages",
+    headers={"Authorization": f"Bearer {token}"},
+    params={"$filter": filter_q, "$select": "subject,from,receivedDateTime,bodyPreview", "$top": 50, "$orderby": "receivedDateTime desc"},
+    timeout=30)
+emails = resp.json().get("value", [])
+print(f"Found {len(emails)} tender emails")
+
+# 3. Dedupe via tender_register and register new ones
+SUPA_URL = os.environ["SUPABASE_URL"]
+SUPA_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+headers = {"apikey": SUPA_KEY, "Authorization": f"Bearer {SUPA_KEY}", "Content-Type": "application/json"}
+
+new_tenders = []
+skipped = 0
+for email in emails:
+    subj = email.get("subject", "")
+    from_addr = (email.get("from", {}).get("emailAddress", {}).get("address", "") or "").lower()
+
+    # Classify source
+    if "buynsw" in from_addr or "customerservice.nsw.gov.au" in from_addr: source = "buy_nsw"
+    elif "tenders.vic.gov.au" in from_addr or "vic.gov.au" in from_addr: source = "buying_for_victoria"
+    elif "gets.govt.nz" in from_addr: source = "gets_nz"
+    elif "artc.com.au" in from_addr: source = "inland_rail"
+    elif "tenders.gov.au" in from_addr: source = "austender"
+    else: source = "other"
+
+    # Extract reference
+    ref_match = re.search(r"(ATM|RFT|RFQ|EOI|RFP|GETS)[-\s]?([\w\d\.]+)", subj, re.IGNORECASE)
+    reference = f"{ref_match.group(1)}-{ref_match.group(2)}" if ref_match else f"{source}-{email.get('receivedDateTime','')[:10]}-{hash(subj) % 10000}"
+
+    # Check if already registered
+    check = httpx.get(f"{SUPA_URL}/rest/v1/tender_register", headers=headers,
+        params={"reference": f"eq.{reference}", "source": f"eq.{source}", "select": "id", "limit": 1}, timeout=10)
+    if check.status_code == 200 and len(check.json()) > 0:
+        skipped += 1
+        continue
+
+    # Register new tender
+    record = {
+        "reference": reference, "source": source, "title": subj[:500],
+        "email_subject": subj, "email_date": email.get("receivedDateTime"),
+    }
+    reg = httpx.post(f"{SUPA_URL}/rest/v1/tender_register", headers=headers, json=record, timeout=10)
+    if reg.status_code in (200, 201):
+        new_tenders.append(record)
+
+# 4. Report results
+print(f"Scan complete: {len(emails)} examined, {skipped} already registered, {len(new_tenders)} new tenders registered")
+for t in new_tenders:
+    print(f"  [{t['source']}] {t['reference']}: {t['title'][:60]}")
+```
+
+Then comment on the execution issue with the actual output. Do not summarise — paste the real numbers and new tender list.
+
+If any command fails with an error, REPORT the actual error message. Do not invent "missing capabilities" — report what actually happened.
 
 ## 5. Opportunity Assessment
 

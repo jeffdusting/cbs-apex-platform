@@ -44,7 +44,7 @@ Government tender portals send email notifications to Jeff Dusting's inbox when 
 | Source | Portal | Email Sender Pattern | Jurisdictions |
 |---|---|---|---|
 | AusTender | tenders.gov.au | `*tenders.gov.au`, `*austender*` | Australian Federal Government |
-| Tenders.NSW | tenders.nsw.gov.au | `*tenders.nsw.gov.au`, `*nsw.gov.au*tender*` | NSW State Government |
+| Tenders.NSW / buy.NSW | buy.nsw.gov.au | `buy.nsw@customerservice.nsw.gov.au`, `noreply.buynsw@customerservice.nsw.gov.au`, `tenders.nsw.gov.au` | NSW State Government |
 | Buying for Victoria | buying.vic.gov.au | `*tenders.vic.gov.au`, `*buying.vic.gov.au` | Victorian State Government |
 | GETS NZ | gets.govt.nz | `*gets.govt.nz`, `*GETS*` | New Zealand Government |
 | Inland Rail | inlandrail.artc.com.au | `*inlandrail*`, `*artc.com.au*` | ARTC Inland Rail Programme |
@@ -96,8 +96,11 @@ def get_tender_emails(token: str, days_back: int = 1, max_results: int = 20) -> 
         # AusTender (Federal)
         "contains(from/emailAddress/address, 'tenders.gov.au') or "
         "contains(from/emailAddress/address, 'austender') or "
-        # Tenders.NSW
+        # Tenders.NSW / buy.NSW
         "contains(from/emailAddress/address, 'tenders.nsw.gov.au') or "
+        "contains(from/emailAddress/address, 'buynsw') or "
+        "contains(from/emailAddress/address, 'buy.nsw') or "
+        "contains(from/emailAddress/address, 'customerservice.nsw.gov.au') or "
         # Buying for Victoria (sender: noreply@tenders.vic.gov.au)
         "contains(from/emailAddress/address, 'tenders.vic.gov.au') or "
         "contains(from/emailAddress/address, 'buying.vic.gov.au') or "
@@ -170,8 +173,8 @@ def parse_tender_from_email(email: dict) -> dict | None:
         source = "gets_nz"
     elif "inlandrail" in from_addr or "artc.com.au" in from_addr:
         source = "inland_rail"
-    elif "tenders.nsw.gov.au" in from_addr or "nsw.gov.au" in from_addr:
-        source = "tenders_nsw"
+    elif "buynsw" in from_addr or "buy.nsw" in from_addr or "customerservice.nsw.gov.au" in from_addr or "tenders.nsw.gov.au" in from_addr:
+        source = "buy_nsw"
     else:
         source = "austender"
 
