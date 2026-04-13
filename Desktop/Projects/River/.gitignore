@@ -3,3 +3,4 @@ scripts/env-setup.sh
 credentials-raw.txt
 .env
 *.key
+.secrets/
