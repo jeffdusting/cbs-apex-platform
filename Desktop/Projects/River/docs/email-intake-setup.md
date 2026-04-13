@@ -29,26 +29,25 @@ CBS/WR Executive processes the task on next heartbeat
 
 ## Setup Steps
 
-### 1. Choose or create the Gmail intake address
+### 1. Confirm the Gmail intake address
 
-Options:
-- Existing Google Workspace address at waterroads.com.au (e.g., `rivertasks@waterroads.com.au`)
-- Jeff's personal gmail with filters
-
-Decision needed: which address receives the emails?
+**Address:** `rivertasks@waterroads.com.au` (Google Workspace)
 
 ### 2. Set up forwarding from rivertasks@cbs.com.au
 
-In Microsoft 365 (where the shared mailbox lives):
-1. Open Outlook Web → open the rivertasks@cbs.com.au shared mailbox
-2. Settings → View all Outlook settings → Mail → Forwarding
-3. Enable forwarding to the Gmail address
-4. Keep a copy of forwarded messages (for audit)
+In Microsoft 365:
+1. Open Outlook Web → click your profile picture → **Open another mailbox** → type `rivertasks@cbs.com.au`
+2. Settings gear (top right) → **View all Outlook settings**
+3. **Mail** → **Forwarding**
+4. Tick **Enable forwarding**
+5. **Forward my email to:** `rivertasks@waterroads.com.au`
+6. Tick **Keep a copy of forwarded messages** (for audit trail)
+7. **Save**
 
 ### 3. Create the Google Apps Script project
 
 1. Go to https://script.google.com
-2. Sign in with the Gmail account that will receive the forwarded emails
+2. Sign in with the `rivertasks@waterroads.com.au` Google account (or an account with access to that mailbox)
 3. **+ New project**
 4. Rename to `River Email Intake`
 5. Delete the default Code.gs content
