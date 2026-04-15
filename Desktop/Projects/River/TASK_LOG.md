@@ -1332,8 +1332,9 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 **Git Tag:** stage4-P7-wr-reconfig
 
 - **Agents updated locally:** WR Executive (`00fb11a2`), Governance WR (`10adea58`), Office Management WR (`9594ef21`). All three AGENTS.md now carry explicit WR Supabase guidance — project ID `imbskgjkqvadnazzhbiw`, `filter_entity="waterroads"`, `match_threshold=0.3`, plus the cross-entity isolation warning.
-- **Paperclip API PATCH:** NOT yet deployed in this session — `PAPERCLIP_SESSION_COOKIE` was not available (cookie expires after hours, Claude Code cannot refresh it). A single combined script `scripts/wr-agent-reconfig.py` handles the `adapterConfig` PATCH + skills sync + verification. Operator instructions recorded at `stage4/P7-OPERATOR-DEPLOY.md`.
-- **wr-drive-read skill:** Created at `skills/wr-drive-read/SKILL.md`. Uses the WR service account (`river-wr-agent@river-waterroads-kb.iam.gserviceaccount.com`) with Drive read scope. Supports PDF (pdfplumber), DOCX (python-docx), XLSX (openpyxl, incl. sheet titles), PPTX (python-pptx, incl. speaker notes), Google Docs/Sheets/Slides (export), and plain text/markdown/csv. Assigned to all three WR agents by the deploy script.
+- **Paperclip API PATCH:** DEPLOYED. Jeff supplied the session cookie; `scripts/wr-agent-reconfig.py` ran successfully. All three WR agents now show `SUPABASE_URL=https://imbskgjkqvadnazzhbiw.supabase.co` and the updated promptTemplate (wr_strings_present=True). Operator instructions at `Stage4/P7-OPERATOR-DEPLOY.md` remain useful for future cookie-dependent operations.
+- **wr-drive-read skill:** Created at `skills/wr-drive-read/SKILL.md`. Uses the WR service account (`river-wr-agent@river-waterroads-kb.iam.gserviceaccount.com`) with Drive read scope. Supports PDF (pdfplumber), DOCX (python-docx), XLSX (openpyxl, incl. sheet titles), PPTX (python-pptx, incl. speaker notes), Google Docs/Sheets/Slides (export), and plain text/markdown/csv. Registered on the WR company at the Paperclip level (was previously unregistered) and assigned to all three WR agents.
+- **WR company skill registration:** Before this phase, WR company had ONLY the four built-in Paperclip skills registered (paperclip, paperclip-create-agent, paperclip-create-plugin, para-memory-files). The deploy script now also registers and populates `supabase-query`, `sharepoint-write`, `teams-notify`, `wr-drive-read`, and `xero-read` as WR-company-scoped skills with their full local `SKILL.md` content pushed via the `PATCH /api/companies/{cid}/skills/{sid}/files` endpoint.
 - **Entity isolation verification:** PASS. Data-layer row counts: WR Supabase = 16,786 waterroads + 0 cbs-group (clean); CBS Supabase = 1,149 cbs-group + 98 waterroads legacy seed rows. Semantic isolation gate: CBS query on WR Supabase returns 0 cbs-group rows ✓. Warning surfaced: the 98 waterroads rows on CBS Supabase are legacy seed data (pre-WR-Supabase); they do not cause runtime leakage because WR agents now query WR Supabase exclusively, but they should be considered for cleanup in a future phase.
 
 ### Files Created
@@ -1356,9 +1357,9 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 |---|---|---|
 | 7.1 Verify WR Supabase connectivity | DONE | 16,786 documents, match_documents RPC accepts match_threshold. prompt_templates table exists but empty (no WR templates seeded — not a P7 concern). |
 | 7.2 Update local AGENTS.md | DONE | All three WR agents updated with the WR Supabase guidance block. |
-| 7.3 Deploy via Paperclip API PATCH | PENDING OPERATOR | Script committed; requires fresh `PAPERCLIP_SESSION_COOKIE`. See `stage4/P7-OPERATOR-DEPLOY.md`. |
-| 7.4 Create wr-drive-read skill | DONE | Full SKILL.md at `skills/wr-drive-read/`. |
-| 7.5 Assign skills to WR agents | PENDING OPERATOR | Deploy script's skills/sync step covers this. |
+| 7.3 Deploy via Paperclip API PATCH | DONE | All 3 agents verified: SUPABASE_URL on WR Supabase, promptTemplate contains WR retrieval guidance. |
+| 7.4 Create wr-drive-read skill | DONE | Full SKILL.md at `skills/wr-drive-read/`, registered on WR company and populated. |
+| 7.5 Assign skills to WR agents | DONE | desiredSkills set via `POST /api/agents/{id}/skills/sync` with fully-qualified keys. See verification output below. |
 | 7.6 Entity isolation verification | DONE | Passes at the WR-facing layer. 98 legacy waterroads rows on CBS Supabase flagged as a cleanup follow-up. |
 
 ### Gate Verification
@@ -1368,18 +1369,31 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 - PASS: office-management-wr contains `WR_SUPABASE_URL`
 - PASS: `skills/wr-drive-read/SKILL.md` exists
 - PASS: entity isolation test (0 cbs-group rows on WR Supabase; 0 cbs-group rows returned from WR Supabase for a CBS-shaped query)
+- PASS: Paperclip deploy — all 3 agents show updated SUPABASE_URL, promptTemplate contains `filter_entity="waterroads"` and `match_threshold=0.3`, `wr-drive-read` is in desiredSkills.
+
+### Final Skill Assignments (Paperclip desiredSkills)
+
+| Agent | Desired Skills |
+|---|---|
+| WR Executive | paperclip (×4 builtins), supabase-query, wr-drive-read, sharepoint-write, teams-notify |
+| Governance WR | paperclip (×4 builtins), supabase-query, wr-drive-read, xero-read, sharepoint-write, teams-notify |
+| Office Management WR | paperclip (×4 builtins), supabase-query, wr-drive-read, sharepoint-write |
 
 ### Surprising / Non-Obvious Findings
 
 - **98 waterroads rows live on CBS Supabase.** These are legacy seed chunks from `waterroads-business-case-part{02,04,07,...}.md` loaded when WR didn't have its own Supabase project. They pose no runtime risk now (WR agents no longer query CBS) but leave a data-hygiene tail — the CBS project can return WR-entity rows to any caller that filters by `entity='waterroads'`. Recommend deleting these rows in a dedicated cleanup phase, or migrating them to WR Supabase if the content differs from the current WR KB (source_files don't match WR's current KB file layout).
 - **WR `match_documents` RPC returns 0 hits for some short queries due to IVFFlat recall degradation at lists=40.** The P5 finding (`scripts/wr-ivfflat-rebuild.sql` prepared but not applied) is live: the specific query "WaterRoads PPP ferry Rhodes Barangaroo" lands in a dead cluster and returns zero hits even at `match_threshold=-1.0`. Adjacent queries (shorter, or different phrasing) return full result sets. The isolation test was updated to use a P5-validated query. **Action for P9 verification:** apply `scripts/wr-ivfflat-rebuild.sql` against WR Supabase before running the P9 adversarial critique; retrieval quality numbers will be understated until then.
 - **WR `match_documents` signature differs from CBS.** WR version accepts `match_threshold` (per the TASK 7.2 spec) and was verified to reject vector-dimension mismatch correctly. CBS version historically did not accept `match_threshold` — the isolation script falls back gracefully for cross-project semantic queries.
-- **No `PAPERCLIP_API_KEY` or `PAPERCLIP_SESSION_COOKIE` in this session.** Both env-setup.sh (commit-safe checked-in file) and `.secrets/wr-env.sh` lack the cookie; the pattern is that the operator refreshes it per-session from the browser. Every Paperclip-API phase from here forward needs the same operator step.
+- **No `PAPERCLIP_API_KEY` or `PAPERCLIP_SESSION_COOKIE` in this session.** Both env-setup.sh (commit-safe checked-in file) and `.secrets/wr-env.sh` lack the cookie; the pattern is that the operator refreshes it per-session from the browser. Every Paperclip-API phase from here forward needs the same operator step. (Resolved this session — Jeff supplied the cookie mid-run; deploy completed.)
+- **Paperclip `env` binding validator rejects `{"type":"secret", "value":"..."}`.** All live bindings — including actual secrets like SUPABASE_SERVICE_ROLE_KEY — use `{"type":"plain", "value":"..."}`. The script was initially written to mark the key as a secret; fixed to preserve whatever shape the existing binding uses.
+- **Paperclip skills/sync payload field is `desiredSkills`, not `skills`.** Skills are identified by fully-qualified keys (`paperclipai/paperclip/<name>` for built-ins, `company/<cid>/<slug>` or `local/<short_id>/<slug>` for company-managed). The initial `{"skills": [...]}` payload returns a 400 validation error.
+- **Skill registration requires two API calls.** `POST /api/companies/{cid}/skills` with `{slug, name}` creates the skill with placeholder markdown; the real content is then pushed via `PATCH /api/companies/{cid}/skills/{sid}/files` with `{path:"SKILL.md", content: <markdown>}`. No single-call "create with content" endpoint exists.
+- **CBS company never registered the hyper-agent-v1 skills (`feedback-loop`, `trace-capture`, `self-check`) at the Paperclip level.** They exist as local files in `skills/` but are not mounted on any agent. This means CBS agents referencing these skills in their AGENTS.md are effectively invoking skills that are not runtime-available. This is a hyper-agent-v1 carry-over gap, not a P7 regression — WR agents are in the same state as CBS on this dimension.
 
 ### Known Issues / Open Work
 
 - **Apply `scripts/wr-ivfflat-rebuild.sql` on WR Supabase.** Outstanding from P5. Affects retrieval quality across all WR queries with narrow or atypical phrasing.
-- **Operator to run `scripts/wr-agent-reconfig.py`** after refreshing the Paperclip session cookie. See `stage4/P7-OPERATOR-DEPLOY.md`.
 - **Legacy waterroads rows on CBS Supabase (98 rows).** Consider deletion or migration in a future cleanup phase.
+- **Register hyper-agent-v1 skills on both CBS and WR companies.** `feedback-loop`, `trace-capture`, and `self-check` exist only as local files; neither company has them registered at the Paperclip level. Until this is resolved, agents referencing these skills produce outputs that skip the skills' behaviour (self-check scoring, trace emission, feedback retrieval).
 
 **Next phase:** P9 (Verification + Critique) — all prior phases are now tagged. P9 requires all phases complete; P7 is complete locally but the Paperclip deploy is pending operator cookie refresh, so the P9 independent verification should explicitly check whether the Paperclip-side adapterConfig changes have actually landed before drawing conclusions about live retrieval behaviour.

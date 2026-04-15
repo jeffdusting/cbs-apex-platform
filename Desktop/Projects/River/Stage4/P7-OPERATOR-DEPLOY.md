@@ -1,10 +1,6 @@
 # S4-P7 Operator Deployment — WR Agent Reconfiguration
 
-**Status at hand-off:** Code and configuration committed. The Paperclip
-`adapterConfig` PATCH and `skills/sync` POST require a live
-`PAPERCLIP_SESSION_COOKIE`, which was not available in the automation session
-(Claude Code cannot mint or refresh the cookie). Jeff runs the script below
-after refreshing.
+**Status:** DEPLOYED on 2026-04-16. Jeff supplied a fresh session cookie mid-session; `scripts/wr-agent-reconfig.py` ran successfully against all three WR agents. Each agent verified: `SUPABASE_URL` on WR Supabase, `promptTemplate` contains WR retrieval guidance (`filter_entity="waterroads"` + `match_threshold=0.3`), `wr-drive-read` present in `desiredSkills`. This runbook is retained for future Paperclip-API operations that need the same cookie-refresh + script-run pattern.
 
 ## What has already been done (committed, no operator action needed)
 
