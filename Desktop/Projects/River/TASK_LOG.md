@@ -749,7 +749,7 @@ Gate verification: PASS — all skills, templates, and docs present.
 |---|---|
 | 0.1 Integrate CA approval toggle into dashboard | DONE — `approveCaSend()` function + updated `ca_drafted` case |
 | 0.2 Integrate Evaluator tab into dashboard | DONE — tabbed view with summary bar, score distribution, evaluations table, blocked work |
-| 0.3 Generate Evaluator calibration document | DONE — 10 placeholder outputs (Supabase API access denied; Jeff to paste from Paperclip dashboard) |
+| 0.3 Generate Evaluator calibration document | DONE — 10 real outputs from Paperclip (CBSA-48, 47, 18, 43, 27, 34, 35, 23, 25, 20). Jeff to score. |
 | 0.4 Wire monitoring agent to Teams webhook | DONE — `teams-notify` skill added to `create-monitoring-agent.py`. Agent not yet created (run `--execute`). AGENTS.md already has inline Teams posting. |
 | 0.5 Create Mail.ReadWrite upgrade instructions | DONE — `docs/hyper-agent-v1/MAIL_READWRITE_UPGRADE.md` |
 | 0.6 Update BACKLOG.md | DONE — WhatsApp + Slack future notification channels added |
@@ -776,7 +776,7 @@ Gate verification: PASS — all skills, templates, and docs present.
 
 ### Known Issues
 
-- Calibration doc has placeholder slots — Jeff must paste 10 real agent outputs from Paperclip dashboard
+- Calibration doc populated with 10 real outputs — Jeff needs to score each output (6 dimensions, 1-5)
 - Monitoring agent not yet created on Paperclip — run `python3 scripts/create-monitoring-agent.py --execute`
 - Evaluator and trace ingestion routines not yet registered — run the registration scripts
 
