@@ -1,0 +1,166 @@
+{
+  "mode": "dry-run",
+  "rows_before": 19301,
+  "layer1_rows_to_delete": 914,
+  "layer1_pattern_counts": {
+    "water_roads_webflow_handoff 3": 34,
+    "water_roads_webflow_handoff 2": 30,
+    "water_roads_webflow_handoff 9": 40,
+    "water_roads_webflow_handoff 7": 36,
+    "water_roads_webflow_handoff 5": 34,
+    "water_roads_webflow_handoff 4": 34,
+    "water_roads_icons_final copy": 4,
+    "water_roads_webflow_handoff copy": 30,
+    "water_roads_webflow_handoff 8": 36,
+    "water_roads_webflow_handoff 6": 34,
+    "00.02 LGG Advisory copy": 301,
+    "00.02 LGG Advisory copy 2": 301
+  },
+  "layer2_hash_groups_affected": 1213,
+  "layer2_rows_to_delete": 1601,
+  "rows_kept_by_sharepoint_preference": 423,
+  "total_rows_to_delete": 2515,
+  "sample_deletions": [
+    {
+      "id": 5130,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/INVESTORS_PAGE_COMPLETE_UPDATE.md"
+    },
+    {
+      "id": 5131,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/INVESTORS_PAGE_COMPLETE_UPDATE.md"
+    },
+    {
+      "id": 5132,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/INVESTORS_PAGE_COMPLETE_UPDATE.md"
+    },
+    {
+      "id": 5133,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/INVESTORS_PAGE_UPDATE.md"
+    },
+    {
+      "id": 5134,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/README.md"
+    },
+    {
+      "id": 5135,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/QUICK_REFERENCE.md"
+    },
+    {
+      "id": 5136,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/QUICK_REFERENCE.md"
+    },
+    {
+      "id": 5137,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md"
+    },
+    {
+      "id": 5138,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md"
+    },
+    {
+      "id": 5139,
+      "reason": "layer1_folder_replica",
+      "pattern": "/water_roads_webflow_handoff 3/",
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md"
+    },
+    {
+      "id": 1173,
+      "reason": "layer2_hash_duplicate",
+      "hash": "4077bad32e1fd5e4",
+      "winner_id": 1134,
+      "source_file": "Imported from SharePoint/Water Roads - Internal VDR/Old/06. Manufacturer Agreements/Vessev/07_Draft_Contract_DRAFT_F.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 3803,
+      "reason": "layer2_hash_duplicate",
+      "hash": "4077bad32e1fd5e4",
+      "winner_id": 1134,
+      "source_file": "Imported from Dropbox/02 PROJECTS/02.01 Sydney Pilot/02.01.01 Tender/Tender Documents/Responses/Artemis Response/07_Draft_Contract_DRAFT- ATL Comments-cp.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 4336,
+      "reason": "layer2_hash_duplicate",
+      "hash": "4077bad32e1fd5e4",
+      "winner_id": 1134,
+      "source_file": "Imported from Dropbox/02 PROJECTS/02.01 Sydney Pilot/02.01.01 Tender/Tender Documents/RFT Rev F/Transmittal Set/07_Draft_Contract_DRAFT_F.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 1174,
+      "reason": "layer2_hash_duplicate",
+      "hash": "fbe328cdaaf75fbf",
+      "winner_id": 1135,
+      "source_file": "Imported from SharePoint/Water Roads - Internal VDR/Old/06. Manufacturer Agreements/Vessev/07_Draft_Contract_DRAFT_F.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 3804,
+      "reason": "layer2_hash_duplicate",
+      "hash": "fbe328cdaaf75fbf",
+      "winner_id": 1135,
+      "source_file": "Imported from Dropbox/02 PROJECTS/02.01 Sydney Pilot/02.01.01 Tender/Tender Documents/Responses/Artemis Response/07_Draft_Contract_DRAFT- ATL Comments-cp.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 4337,
+      "reason": "layer2_hash_duplicate",
+      "hash": "fbe328cdaaf75fbf",
+      "winner_id": 1135,
+      "source_file": "Imported from Dropbox/02 PROJECTS/02.01 Sydney Pilot/02.01.01 Tender/Tender Documents/RFT Rev F/Transmittal Set/07_Draft_Contract_DRAFT_F.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 1175,
+      "reason": "layer2_hash_duplicate",
+      "hash": "324d139ec64b9e0f",
+      "winner_id": 1136,
+      "source_file": "Imported from SharePoint/Water Roads - Internal VDR/Old/06. Manufacturer Agreements/Vessev/07_Draft_Contract_DRAFT_F.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 3805,
+      "reason": "layer2_hash_duplicate",
+      "hash": "324d139ec64b9e0f",
+      "winner_id": 1136,
+      "source_file": "Imported from Dropbox/02 PROJECTS/02.01 Sydney Pilot/02.01.01 Tender/Tender Documents/Responses/Artemis Response/07_Draft_Contract_DRAFT- ATL Comments-cp.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 4338,
+      "reason": "layer2_hash_duplicate",
+      "hash": "324d139ec64b9e0f",
+      "winner_id": 1136,
+      "source_file": "Imported from Dropbox/02 PROJECTS/02.01 Sydney Pilot/02.01.01 Tender/Tender Documents/RFT Rev F/Transmittal Set/07_Draft_Contract_DRAFT_F.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    },
+    {
+      "id": 1176,
+      "reason": "layer2_hash_duplicate",
+      "hash": "667a3495903e71f4",
+      "winner_id": 1137,
+      "source_file": "Imported from SharePoint/Water Roads - Internal VDR/Old/06. Manufacturer Agreements/Vessev/07_Draft_Contract_DRAFT_F.pdf",
+      "winner_source_file": "Imported from SharePoint/Water Roads - Internal VDR/05. Manufacturer Agreements - Supplier Proposed not Executed/Vessev/07_Draft_Contract_DRAFT_F.pdf"
+    }
+  ],
+  "rows_deleted": 0
+}

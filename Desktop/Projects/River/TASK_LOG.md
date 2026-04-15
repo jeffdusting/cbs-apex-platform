@@ -1031,3 +1031,99 @@ Gate verification: PASS — all skills, templates, and docs present.
 - **Re-ingest from disk to validate idempotency** — trivial but deferred to avoid perturbing the now-clean state mid-programme. P6 can run a single-file double-ingest as a regression guard.
 
 **Next phase:** P5 (WR Verify) — requires P3 (WR Dedup) which is executing in parallel. P6 (CBS Verify) depends on this phase and is now unblocked; P5/P6 can run in either order. Per bootstrap rule (first option listed): **P5**. If P3 is not yet complete, run **P6** first.
+
+---
+
+## S4-P3: WR Dedup + Reorg
+
+**Date:** 15 April 2026
+**Status:** COMPLETE (ran in parallel with P2/P4 in a separate session — CBS and WR Supabase instances and artefact namespaces were fully isolated; selective `git add` used to avoid clobbering the other session's uncommitted work)
+**Git Tag:** stage4-P3-wr-dedup-reorg
+
+### Summary
+
+| Metric | Value |
+|---|---:|
+| Rows before | 19,301 |
+| Rows deleted (dedup) | 2,515 (13.0%) |
+| Rows after | 16,786 |
+| Layer 1 — folder-replica deletes | 914 |
+| Layer 2 — byte-identical hash collapse | 1,601 |
+| Hash groups where SharePoint preference activated | 423 |
+| Drive files moved (reorg) | 4,636 |
+| Drive move errors | 0 |
+| Drive-only files moved (no Supabase rows) | 2,554 |
+| Indexed files moved (Supabase rows updated) | 2,080 |
+| Supabase `source_file` rows updated | 16,722 |
+| Residual loose-at-root files → `Archive/Unclassified` | 20 |
+| Empty subfolders + staging roots trashed | 734 |
+| `Imported from …` rows remaining | 0 / 0 / 0 |
+
+### Files Created
+
+- `scripts/wr-kb-dedup.py` — content-hash dedup. Layer 1 folder-replica deletes + Layer 2 hash-collapse with SharePoint-master preference. `--dry-run`, `--batch-size`, `--report`.
+- `scripts/wr-drive-reorg.py` — Drive reorg via `files.update(addParents, removeParents)` (preserves `drive_file_id`). Longest-prefix rule matching; creates missing canonical folders. `--dry-run`, `--source-prefix`, `--mapping`, `--log`.
+- `scripts/wr-update-source-paths.py` — PATCH `documents.source_file` for every moved file, keyed by `drive_file_id`.
+- `scripts/wr-cleanup-import-folders.py` — residual leaf collection → `Archive/Unclassified`, plus deepest-first trash of emptied staging subtrees.
+- `Stage4/data/wr-path-mapping.json` — 30 rule prefix → canonical mapping (6 flagged ambiguous), folders-to-create list, Drive folder-id cache.
+- `Stage4/data/wr-dedup-dryrun.json`, `wr-dedup-results.json`, `wr-reorg-dryrun.json`, `wr-reorg-moves.json`, `wr-source-path-updates.json`, `wr-cleanup-residuals.json`.
+
+### Decisions (reconciled against WR-DISCOVERY-SUMMARY §8 open questions)
+
+1. **TARGET-KB-STRUCTURE drift — resolved as Option A (evolve target to match Drive + additions).** Kept `Operational` (not renamed to `Operations`); kept `Regulatory`, `Stakeholder Engagement`, `Correspondence`, `Templates`. Created new top-levels `Commercial`, `HR` (+`HR/ESOP`), `Legal`, `Marketing`, `Technical` (+`Technical/Environmental`), plus `Archive/Unclassified`, `Archive/BluePath Statistical Data`, `Archive/Items 1 and 2`.
+2. **LGG canonical master** — SharePoint `00.02 LGG Advisors Master` wins (SharePoint preference rule). Dropbox LGG Advisory copy / copy 2 trees deleted by Layer 1 (602 rows).
+3. **`Items 1 and 2`** — moved to `Archive/Items 1 and 2` (3 rows survived dedup of 5 original email-intake rows).
+4. **BluePath statistical CSVs** — files moved to `Archive/BluePath Statistical Data`. **Not deleted** from Supabase in P3 (Layer 3 per the plan is a re-index exclusion, handled by P5/P7). Flagged `exclude_from_index: true` in the path-mapping rule.
+5. **Strategic Partnerships** — mapped to new `Commercial/` (P1 flagged ambiguous; chose Commercial over Stakeholder Engagement because partnerships are contractual rather than regulator/community touchpoints).
+
+### Target Distribution (from reorg log)
+
+| Target canonical | Files moved |
+|---|---:|
+| Archive/Unclassified | 1,332 (+20 residuals) |
+| Investor Relations/Updates | 909 |
+| Reference/Industry Standards | 598 |
+| Commercial | 478 |
+| Operational | 331 |
+| Marketing | 238 |
+| PPP/Programme Documents | 238 |
+| Governance | 129 |
+| Investor Relations/Data Room | 124 |
+| Technical | 99 |
+| Financial/Business Case | 39 |
+| Technical/Environmental | 38 |
+| Financial/Financial Model | 26 |
+| Archive/BluePath Statistical Data | 22 |
+| Regulatory | 15 |
+| HR/ESOP | 11 |
+| Archive/Items 1 and 2 | 5 |
+| Stakeholder Engagement | 4 |
+
+### Gate Verification
+
+- PASS: `scripts/wr-kb-dedup.py` compiles
+- PASS: `scripts/wr-drive-reorg.py` compiles
+- PASS: `stage4/data/wr-dedup-results.json` present
+- PASS: `stage4/data/wr-path-mapping.json` present
+- PASS: Post-dedup WR rows: `0-0/16786`
+
+### Parallel-Execution Risk Assessment and Mitigations
+
+- **Risk identified:** `git add -A` at commit time could sweep up the parallel session's in-flight CBS artefacts into this phase's commit; TASK_LOG.md append could race.
+- **Mitigations applied:** Selective `git add` naming only P3-owned paths; TASK_LOG.md re-read immediately before append; read-only access to CBS namespace throughout. No `.git/index.lock` collision observed.
+- **Outcome:** Parallel session committed first (tag `stage4-P2-cbs-discovery`, then P4) — this session's work committed cleanly with no reconciliation required.
+
+### Surprising / Non-Obvious Findings
+
+- Only **2,080 of 4,636 Drive files** had Supabase rows (45%). The remaining 2,554 files were Drive-only — present in `Imported from …` folders but never ingested. The reorg moves them anyway so the staging folders could be trashed; these files are now available for future ingest in canonical locations.
+- **914 Layer-1 folder-replica deletions matched the P1 projection exactly**, but Layer-2 hash-collapse removed 1,601 rows vs the 1,588 projected (P1 had not accounted for Layer-1 removing rows that would otherwise have been the earliest-created winner in a hash group). Final total 2,515 is 13.0% — identical to the projected 13.0%.
+- **Two Supabase PATCH 502s were false-negatives** (the first returned 502 from Cloudflare but the row had in fact been updated server-side). Retry on both returned 200 with the expected row counts.
+- **Shared-drive trash is fast** — 734 folder trashes completed in a single pass with no rate-limit pushback; the Drive API appears to fast-path empty-folder trash.
+
+### Known Issues / Open Work for P5
+
+- **Re-index not performed.** 16,786 rows now reference canonical `source_file` paths, but their embeddings were generated from the original content — no re-embed required. Category labels on rows still reflect the source (e.g. `water_roads_internal_vdr`); P5/P7 should decide whether to normalise categories to match the new folder taxonomy.
+- **BluePath exclusion is paper-only at the moment.** Files are in `Archive/`; `exclude_from_index: true` is set in the path-mapping rule but no ingest-skip enforcement exists yet. P7 (WR agent reconfiguration) should add the path prefix to the indexer ignore list before the next full re-ingest.
+- **Four of the five original `email-intake/Items 1 and 2` rows** did not survive dedup (duplicates collapsed) — three remain under `Archive/Items 1 and 2/`. Acceptable; operator triage was already anticipated.
+
+**Next phase:** P5 (WR Verify) — depends on this phase only. P6 (CBS Verify) is also available (depends on P4 which is complete). Per bootstrap rule (first option listed): **P5**.

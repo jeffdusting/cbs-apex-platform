@@ -1,0 +1,280 @@
+{
+  "description": "Mapping from WR Drive import-prefix source paths to canonical target folders. Informed by stage4/WR-DISCOVERY-SUMMARY.md §4.2 and stage4/data/wr-canonical-folders.json. 'target_drive_folder_id' is null for folders that must be created by the reorg script.",
+  "shared_drive_id": "0AFIfqhhhv9HjUk9PVA",
+  "structure_reconciliation_choice": "Option A — evolve target to match Drive + additions. Keep Operational (do not rename to Operations). Keep Regulatory, Stakeholder Engagement, Correspondence, Templates. Add Commercial, HR, Legal, Marketing, Technical as top-level Drive folders.",
+  "source_drive_folder_ids": {
+    "Imported from Dropbox": "1FWAwVVxRXoC4JtWPbkFweaaCGVt-6gSl",
+    "Imported from SharePoint": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+    "Imported from Dropbox/00 EXTERNAL SHARE ZONES": "1cjifOJarHy6euowJKD_dzzSvjBC0l6et",
+    "Imported from Dropbox/01 RESEARCH DEVELOPMENT": "1r57hgCa45u05nYU9YMHRqfoXezG18ASz",
+    "Imported from Dropbox/02 PROJECTS": "19jVg6HG1cQ48G84rGgOkVWH_zZrFNd7p",
+    "Imported from Dropbox/03 REGULATORY COMPLIANCE": "1iKpRB5GoRh0VOOlq3TGPR9tSVmUzyoW0",
+    "Imported from Dropbox/04 STRATEGIC PARTNERSHIPS": "1j55qCT57iCKPLJnyVPdjHU0udu1o4NVj",
+    "Imported from Dropbox/05 MARKETING AND COMMUNICATION": "1gbKZIBGIQMaf8aeBaBeCOAycVzyElSzZ",
+    "Imported from Dropbox/06 COMPANY ADMINISTRATION": "1BM9uSsF_fxC7oeXiwHgOQwLCnJuDkwh2",
+    "Imported from Dropbox/07 OPERATIONS, QUALITY AND RISK MANAGEMENT": "1vE4pqLx7sIqTJNUFxumfbTiDMFcWmKOX",
+    "Imported from Dropbox/08 TECHNICAL LIBRARY": "1QbcsKRwQ_l2aixalf5MkEOUCBbd-nJH3",
+    "Imported from Dropbox/Water Road App": "1_CWDMq6t2vD4tebZIbfShK84ATMyw8Et",
+    "Imported from Dropbox/ZZ Legacy Folders Unfiled": "1Ud_WdJb8qmCI5EO7rvplDT4eCVcAPi4C",
+    "Imported from SharePoint/00.02 LGG Advisors Master": "1eKRxHWmDIJFd4pSbX6s6j_rbO8YzytRY",
+    "Imported from SharePoint/_test_pictures": "1VPRZh7uHisV282u0ogMl6Pnff6uVNuIm",
+    "Imported from SharePoint/Diligence Docs": "1zXIgO__WUub-HBU4o5ZsrC3LavxdJTT-",
+    "Imported from SharePoint/ESOP Materials": "19eQecaYHSiMvunXCVI-DfJQxfDOZeu-J",
+    "Imported from SharePoint/Financial Model": "1IvzrDqa9noRiH9CtnQVxgb6RFlS4vrv8",
+    "Imported from SharePoint/IM": "1KgOwKkf_eTJIu_xrjz5OOoZzMt7gfsb9",
+    "Imported from SharePoint/Impact (Carbon) Report": "1o3NU59WlXQOkjQvZbI-zW3iM9jVyhBux",
+    "Imported from SharePoint/Investor Proposal": "1Aq1_USsZAE35QJl_LUwuLVknXXGULIau",
+    "Imported from SharePoint/Key Stakeholders_ AU Water Roads": "11SghMqPog29Ipb4RSZCnL97Abi4RuOu7",
+    "Imported from SharePoint/Lagos_ECOWAS": "1xW7TBGo8s0HwMoNVmwIYvZunrwVs6VYY",
+    "Imported from SharePoint/Ocean Zero response materials": "1rhm5YfQtaPlblB9uPv8YDj59yX7-99g7",
+    "Imported from SharePoint/Pictures": "1UZR8R3Vu2fIVbTDvHaklkzVQ4qjBnLPy",
+    "Imported from SharePoint/RFP Responses": "1Kbfs6Bwkj8GzBCcu3mQ_hCCneK_L1hcX",
+    "Imported from SharePoint/Teaser": "1gD_KaNCwObw6KGGZZk52N9aj82W0_PBS",
+    "Imported from SharePoint/Valuation": "1FJ95A1Q5rqsW52eb7Xt6LHR0wnlVB7pc",
+    "Imported from SharePoint/Water Roads - Internal VDR": "1OqdmTpntwO0DVGnFYXWYKRfon2GAQc7j",
+    "Items 1 and 2": "1jpBK-ljSUp6Fv77MSyteblwAly3uxYeP"
+  },
+  "existing_canonical_folder_ids": {
+    "Archive": "1N7bk1gI1-RLGA_eFVoPlW3oaVgQ4oi4I",
+    "Correspondence": "1CrnAHnTKZsNxTru6tYKtvdNe2SwLIeFG",
+    "Financial": "1K4oVeRvIPsa3jQG6BPTn7vA7SNSKlrsy",
+    "Financial/Business Case": "1YlpmFv9OpefNIo0fDs6fRNZyrs3B_66C",
+    "Financial/Financial Model": "18tb7oMctiC19weRLVuv5A-uhmu5oHHsY",
+    "Financial/Monthly Reports": "1tpZ5pphwUu34YmlWAf7xUF-ElYaFasJ3",
+    "Governance": "1muttX8i-bABJ1j-VK7acxssDj7wIbzd8",
+    "Governance/Board Papers": "1UtAEa0a_L1x_ROUgC19uV51nnQbAx8C_",
+    "Governance/Minutes": "1lEL62PQqmcgm5kT9I7c2TPR4WcreKJdJ",
+    "Governance/Register": "1fRIacoJcNv4dTG3-y9SUD44sAKQc6Uz1",
+    "Governance/Resolutions": "1gzs1pEzOy96y4Wa9n_CrEZmr2lhP3cWz",
+    "Investor Relations": "1jn2veFUINgQyYzb3TJv2lFNf4oX0rbq3",
+    "Investor Relations/Cap Table": "1TWXEAjZa2OIlL0OPTUMBWuvfm97kSXBW",
+    "Investor Relations/Data Room": "1IokY0fMGRNzl3qHCZcKqzF76RMMGZch2",
+    "Investor Relations/Updates": "1lxcsloy26LRA4d5u9QoNJgNzS4plI_6b",
+    "Operational": "1rAwfp1NOl6tdCg87aSmbrT_ZFYQwD-2V",
+    "PPP": "1zJopnQtFgzNbcRb_QCuRDC6fUzdTda5O",
+    "PPP/Milestone Tracker": "1NOFZ0C3Nt6bZknRlm2d6mcJF-OhXR5aN",
+    "PPP/NSW Government Correspondence": "1XSFB6BZ6dyr81n1SXRecNxSSE12p7KJB",
+    "PPP/Programme Documents": "11PuEiUcMTlF3byx7jV0iDTNi429l5UOz",
+    "Reference": "1-yRH-OcpV7lVfKg62um7NezhpuiPtu9q",
+    "Reference/Industry Standards": "17Lt31LskwjlY7H0UXh8dRYhmqF3SNCzk",
+    "Reference/Shipley": "1qTYj-sufkJ9x0l8hXgJAwVmmyg5muIDa",
+    "Regulatory": "1ak79V8WZFgR5edO7w6aNNTN_isQ6lDXm",
+    "Regulatory/AMSA": "1a1QPUEqK1Mv9e-wJM4fa1pUzzGZXFB4M",
+    "Regulatory/Environmental": "1sg71yfWwAgXyDC3V7geEAKYzA79Rq8QX",
+    "Regulatory/Maritime Safety": "1KVPFUvgcasEt6EXS2ARKD-imWDwi5PKx",
+    "Stakeholder Engagement": "1_nKxkDri-v7CCgSZJ2GZnUKOPQn6tKVR",
+    "Stakeholder Engagement/Community": "1bIy8CBt15AiJAnODmZSwhbcijAYFV9BR",
+    "Stakeholder Engagement/Council": "1WxO_RFH73Luuwz3oeIYKjEBO1saXKE4A",
+    "Stakeholder Engagement/TfNSW": "1tt-gUxUkyVjeSebZoU1McQ6Lu6yQNiWc",
+    "Templates": "1mjC33MyUefjtsH1QtFimkH12DDXeBSp8"
+  },
+  "folders_to_create": [
+    "Commercial",
+    "HR",
+    "HR/ESOP",
+    "Legal",
+    "Marketing",
+    "Technical",
+    "Technical/Environmental",
+    "Archive/Unclassified",
+    "Archive/BluePath Statistical Data",
+    "Archive/Items 1 and 2"
+  ],
+  "mapping_rules": [
+    {
+      "source_prefix": "Imported from Dropbox/06 COMPANY ADMINISTRATION",
+      "target_canonical": "Governance",
+      "confidence": "high",
+      "rationale": "Company admin files map to governance"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/03 REGULATORY COMPLIANCE",
+      "target_canonical": "Regulatory",
+      "confidence": "high",
+      "rationale": "Direct semantic match with existing Regulatory/"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/07 OPERATIONS, QUALITY AND RISK MANAGEMENT",
+      "target_canonical": "Operational",
+      "confidence": "high",
+      "rationale": "Operations/QA/Risk maps to existing Operational/ (Option A: keep Operational name)"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/05 MARKETING AND COMMUNICATION",
+      "target_canonical": "Marketing",
+      "confidence": "high",
+      "rationale": "Creates new Marketing/ folder"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/08 TECHNICAL LIBRARY",
+      "target_canonical": "Technical",
+      "confidence": "high",
+      "rationale": "Creates new Technical/ folder"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/02 PROJECTS",
+      "target_canonical": "PPP/Programme Documents",
+      "confidence": "medium",
+      "rationale": "Most projects are the PPP programme; ambiguous for non-PPP projects — flagged"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/04 STRATEGIC PARTNERSHIPS",
+      "target_canonical": "Commercial",
+      "confidence": "medium",
+      "rationale": "Strategic partnerships → new Commercial/ (P1 flagged ambiguity with Stakeholder Engagement; choosing Commercial because partnerships are contractual/commercial in nature, stakeholder engagement is for regulator/community touchpoints)",
+      "ambiguous": true
+    },
+    {
+      "source_prefix": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.02  BluePath/Statistical Data",
+      "target_canonical": "Archive/BluePath Statistical Data",
+      "confidence": "high",
+      "rationale": "Archive Drive files; flag source_file prefix for re-index exclusion (per P1 §5 Layer 3)",
+      "exclude_from_index": true
+    },
+    {
+      "source_prefix": "Imported from Dropbox/01 RESEARCH DEVELOPMENT",
+      "target_canonical": "Reference/Industry Standards",
+      "confidence": "medium",
+      "rationale": "Non-BluePath research/development → Reference (catch-all for research outputs)"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory",
+      "target_canonical": "Investor Relations/Updates",
+      "confidence": "high",
+      "rationale": "Canonical investor-relations updates (Dropbox copies already deleted by dedup Layer 1; SharePoint master remains)"
+    },
+    {
+      "source_prefix": "Imported from Dropbox/00 EXTERNAL SHARE ZONES",
+      "target_canonical": "Investor Relations/Updates",
+      "confidence": "medium",
+      "rationale": "External share zones are investor-facing updates by default; ambiguous for non-IR content",
+      "ambiguous": true
+    },
+    {
+      "source_prefix": "Imported from Dropbox/ZZ Legacy Folders Unfiled",
+      "target_canonical": "Archive/Unclassified",
+      "confidence": "low",
+      "rationale": "Legacy/unfiled content — default to archive; P5 may surface specific files for reclassification",
+      "ambiguous": true
+    },
+    {
+      "source_prefix": "Imported from Dropbox/Water Road App",
+      "target_canonical": "Technical",
+      "confidence": "medium",
+      "rationale": "App-related content best fits Technical/; small volume"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Water Roads - Internal VDR",
+      "target_canonical": "Investor Relations/Data Room",
+      "confidence": "high",
+      "rationale": "Internal VDR = data room"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/00.02 LGG Advisors Master",
+      "target_canonical": "Investor Relations/Updates",
+      "confidence": "high",
+      "rationale": "Master LGG prospect tree"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Diligence Docs",
+      "target_canonical": "Investor Relations/Data Room",
+      "confidence": "high",
+      "rationale": "Diligence materials → data room"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/ESOP Materials",
+      "target_canonical": "HR/ESOP",
+      "confidence": "high",
+      "rationale": "ESOP → HR (creates HR/ and HR/ESOP/)"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Financial Model",
+      "target_canonical": "Financial/Financial Model",
+      "confidence": "high",
+      "rationale": "Direct match with existing canonical sub-folder"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/IM",
+      "target_canonical": "Investor Relations/Updates",
+      "confidence": "high",
+      "rationale": "Information Memorandum = investor updates"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Impact (Carbon) Report",
+      "target_canonical": "Technical/Environmental",
+      "confidence": "high",
+      "rationale": "Carbon/environmental impact → Technical/Environmental"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Investor Proposal",
+      "target_canonical": "Investor Relations/Updates",
+      "confidence": "high",
+      "rationale": "Proposal → investor updates"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Key Stakeholders_ AU Water Roads",
+      "target_canonical": "Stakeholder Engagement",
+      "confidence": "high",
+      "rationale": "Direct match"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Lagos_ECOWAS",
+      "target_canonical": "Stakeholder Engagement",
+      "confidence": "medium",
+      "rationale": "Regional engagement materials — fits stakeholder engagement"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Ocean Zero response materials",
+      "target_canonical": "PPP/Programme Documents",
+      "confidence": "medium",
+      "rationale": "RFP-style response to Ocean Zero — treat as programme document"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/RFP Responses",
+      "target_canonical": "PPP/Programme Documents",
+      "confidence": "medium",
+      "rationale": "RFP responses → programme documents (ambiguous if non-PPP RFPs appear — flag)",
+      "ambiguous": true
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Teaser",
+      "target_canonical": "Investor Relations/Updates",
+      "confidence": "high",
+      "rationale": "Teaser material = early-stage investor update"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Valuation",
+      "target_canonical": "Financial/Business Case",
+      "confidence": "high",
+      "rationale": "Valuation models → Financial/Business Case"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/_test_pictures",
+      "target_canonical": "Archive/Unclassified",
+      "confidence": "high",
+      "rationale": "Test picture folder — archive"
+    },
+    {
+      "source_prefix": "Imported from SharePoint/Pictures",
+      "target_canonical": "Archive/Unclassified",
+      "confidence": "low",
+      "rationale": "Loose pictures without context — archive by default (may be reclassified by P5)",
+      "ambiguous": true
+    },
+    {
+      "source_prefix": "Items 1 and 2",
+      "target_canonical": "Archive/Items 1 and 2",
+      "confidence": "low",
+      "rationale": "Top-level Drive folder of unknown provenance — archived for traceability (5 email-intake rows reference it)",
+      "ambiguous": true
+    }
+  ],
+  "unmapped_prefixes_to_flag_during_reorg": [
+    "Any file under Imported from … not matching a prefix above must be logged by the reorg script and left in place (moved to Archive/Unclassified at the end of TASK 3.5)."
+  ],
+  "notes": [
+    "Rule ordering matters: the reorg script must match longer prefixes before shorter ones (e.g. '01 RESEARCH DEVELOPMENT/01.02  BluePath/Statistical Data' must be tested before '01 RESEARCH DEVELOPMENT').",
+    "Folder replicas (LGG Advisory copy*, water_roads_webflow_handoff N) were deleted from Supabase in TASK 3.1. The Drive folders themselves remain; TASK 3.5 handles residual import folders.",
+    "Only Supabase-referenced files need source_file updates (TASK 3.4). Drive-only files (not indexed by Paperclip) may still be moved by the reorg; their Drive IDs just do not appear in the Supabase documents table."
+  ]
+}

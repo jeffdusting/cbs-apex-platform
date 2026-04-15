@@ -1,0 +1,83 @@
+{
+  "residual_leaf_count": 20,
+  "residuals_moved": 20,
+  "supabase_rows_updated_for_residuals": 24,
+  "emptied_folders_trashed": 734,
+  "root_walk_summary_before": {
+    "Imported from Dropbox": {
+      "leaves": 1,
+      "subfolders": 627
+    },
+    "Imported from SharePoint": {
+      "leaves": 19,
+      "subfolders": 104
+    },
+    "Items 1 and 2": {
+      "leaves": 0,
+      "subfolders": 0
+    }
+  },
+  "sample_residuals": [
+    {
+      "id": "1PItj3KT7YQ6LAfwN3srjKUYnOis3iJTn",
+      "name": "Water_Roads_Cap_Table_Scenarios (1).docx",
+      "path": "Imported from Dropbox/Water_Roads_Cap_Table_Scenarios (1).docx",
+      "parent_id": "1FWAwVVxRXoC4JtWPbkFweaaCGVt-6gSl"
+    },
+    {
+      "id": "1w8f0avHvQnB99WjaoyDVXlMC9yVVTE1Q",
+      "name": "Fleet_Funding_\u2014_Source_of_Funds_Options (2).pdf",
+      "path": "Imported from SharePoint/Fleet_Funding_\u2014_Source_of_Funds_Options (2).pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "1785NFH7xSWCFSYBaVJOXWSLfMkIoVGks",
+      "name": "WREI_&_Tokenisation_Building_New_Financial_Rails_for_Climate_Infrastructure (1).pptx",
+      "path": "Imported from SharePoint/WREI_&_Tokenisation_Building_New_Financial_Rails_for_Climate_Infrastructure (1).pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "12apWf1r99KPgxnJMsnpMbdnlqQ0EYaj_",
+      "name": "WaterRoads_Investor Position_260313.pptx",
+      "path": "Imported from SharePoint/WaterRoads_Investor Position_260313.pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "1NqIFu00H0Rx3v8-cHUgQpVEKCn0AnPFb",
+      "name": "WaterRoads_Investor Position_260313.pdf",
+      "path": "Imported from SharePoint/WaterRoads_Investor Position_260313.pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "1suNWdX9ZAzTE5GqCDl8cujwN-4v_5OL-",
+      "name": "WaterRoads_Proposal Summary.pptx",
+      "path": "Imported from SharePoint/WaterRoads_Proposal Summary.pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "1AtWo1sCRMIdU639b7wms9PSbOqkI20Yl",
+      "name": "Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pptx",
+      "path": "Imported from SharePoint/Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "1sd0XyxfCOuhBwclIZ1Wc_3Nh5BNAdgdV",
+      "name": "Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pdf",
+      "path": "Imported from SharePoint/Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "1hMQVS_Lqpf4E-1r_9jJCc9zHpCoK5TtM",
+      "name": "Water_Roads_\u2014_Revenue_Definition_Clause.docx",
+      "path": "Imported from SharePoint/Water_Roads_\u2014_Revenue_Definition_Clause.docx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    },
+    {
+      "id": "1zs2dgGc7QHCw2ZHQlKGAMNE73vWugmX8",
+      "name": "A$15M_Series_A_Milestones_and_Artefacts.docx",
+      "path": "Imported from SharePoint/A$15M_Series_A_Milestones_and_Artefacts.docx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD"
+    }
+  ],
+  "errors": []
+}

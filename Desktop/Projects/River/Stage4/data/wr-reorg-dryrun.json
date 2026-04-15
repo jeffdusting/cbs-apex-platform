@@ -1,0 +1,357 @@
+{
+  "mode": "dry-run",
+  "source_prefixes_walked": [
+    "Imported from Dropbox",
+    "Imported from SharePoint",
+    "Items 1 and 2"
+  ],
+  "source_prefix_filter": [],
+  "planned_move_count": 4636,
+  "unmapped_count": 20,
+  "target_distribution": {
+    "Investor Relations/Updates": 909,
+    "Governance": 129,
+    "Technical": 99,
+    "Reference/Industry Standards": 598,
+    "Archive/BluePath Statistical Data": 22,
+    "Marketing": 238,
+    "Regulatory": 15,
+    "Archive/Unclassified": 1332,
+    "PPP/Programme Documents": 238,
+    "Operational": 331,
+    "Commercial": 478,
+    "Stakeholder Engagement": 4,
+    "Financial/Financial Model": 26,
+    "Financial/Business Case": 39,
+    "Technical/Environmental": 38,
+    "Investor Relations/Data Room": 124,
+    "HR/ESOP": 11,
+    "Archive/Items 1 and 2": 5
+  },
+  "sample_planned": [
+    {
+      "file_id": "1axGqRKZtNtYq5v1zqnl_OFFacpUOTe8S",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy.zip",
+      "source_parent_id": "1cjifOJarHy6euowJKD_dzzSvjBC0l6et",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "medium",
+      "rule_ambiguous": true,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1ifKHWNWL-PJDr0l_G2WT1ecdJObGILpP",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/README.md",
+      "source_parent_id": "1cjifOJarHy6euowJKD_dzzSvjBC0l6et",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "medium",
+      "rule_ambiguous": true,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1eFAmhAE_O7RNzqvDNXlNjWP5wCp1CvHK",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/LGG Advisors_Water Roads_Letter of Support_signed.pdf",
+      "source_parent_id": "1NHVttXOQ5lJ1u2tirtCoW8COH_CsageZ",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1QJWkV1i_6GWmvdkOVUt-X077PNtcswu6",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/waterroads_action_plan.md",
+      "source_parent_id": "1NHVttXOQ5lJ1u2tirtCoW8COH_CsageZ",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1h6-G3qoEN11iwh08jldjEuMHzF2GFG-e",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/waterroads_action_plan.html",
+      "source_parent_id": "1NHVttXOQ5lJ1u2tirtCoW8COH_CsageZ",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1i3Pms1j5O58wjB1PCk06ci5hJt3iIFQk",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/Water Roads Investment Analysis Comprehensive Assessment - consolidated 24 Sep 25.md",
+      "source_parent_id": "1NHVttXOQ5lJ1u2tirtCoW8COH_CsageZ",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1kYRBxPc0izKcT8VYyJamMftZYoRVt25w",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads Teaser 10.27.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1xNl12jisYz8sV_g1xy-oatbFnSkwnU6H",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 10.27_Draft.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "15RyTacvhsLLhoPlFmcQzUXEzXD4SOjrC",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads Teaser 10.22.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "17cPVUcV9ol9rB5Q8XAx4CQvSBknmTths",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 10.21_Draft.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1Y8wpqA2OpdWsFaV3DmyEHy-iXfHdGXT_",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads Teaser 10.21_Draft.v1.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "14mM4kMOenzpeJNbi7qkwxqLpIvpMJHdV",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 10.08_Draft.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1CfG1vxzJlokkf5DAQA8f1ycz5Nx4s9Uh",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/Water_Roads_Paths_to_Exit.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1iJ9R73ZNaEcOimEoxlvLaRAjHzGQQ97m",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 10.08_Draft.pdf",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1ttVE81ufGXgej3-cQsedG8LQ-X7cjwEv",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 2.15_Strategic StoryLine Draft.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1zUOdeFSN8af3j7maqWcrkRPeKA7_rqGO",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 2.15_Draft (JD ST Updates).pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1e_ZxYtfgqKGv18nMGkwTzWDGHHtmB-xU",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/Water_Roads_Transforming_Lagos_Mobility (3).pdf",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1ynj_V8opo5JDmoRtY8DUQzKhpyX7IIGT",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/Water_Roads_Transforming_Lagos_Mobility (3).pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1xEEZNjDdwocXICkmyx_7DcGOoi7pZMzI",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 2.15_Draft.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    },
+    {
+      "file_id": "1f8xoW_8PxoyxbV6hYa2zXFGoVTBJhi4Q",
+      "source_path": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory/00.02.03 Outbound Comms Materials/WaterRoads IM 10.01_Draft.pptx",
+      "source_parent_id": "1ZlpZn8aFklF3gZhV1mVMu388KQ5bkWT2",
+      "target_canonical": "Investor Relations/Updates",
+      "rule_confidence": "high",
+      "rule_ambiguous": false,
+      "exclude_from_index": false
+    }
+  ],
+  "sample_unmapped": [
+    {
+      "id": "1PItj3KT7YQ6LAfwN3srjKUYnOis3iJTn",
+      "name": "Water_Roads_Cap_Table_Scenarios (1).docx",
+      "path": "Imported from Dropbox/Water_Roads_Cap_Table_Scenarios (1).docx",
+      "parent_id": "1FWAwVVxRXoC4JtWPbkFweaaCGVt-6gSl",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "1w8f0avHvQnB99WjaoyDVXlMC9yVVTE1Q",
+      "name": "Fleet_Funding_\u2014_Source_of_Funds_Options (2).pdf",
+      "path": "Imported from SharePoint/Fleet_Funding_\u2014_Source_of_Funds_Options (2).pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/pdf"
+    },
+    {
+      "id": "1785NFH7xSWCFSYBaVJOXWSLfMkIoVGks",
+      "name": "WREI_&_Tokenisation_Building_New_Financial_Rails_for_Climate_Infrastructure (1).pptx",
+      "path": "Imported from SharePoint/WREI_&_Tokenisation_Building_New_Financial_Rails_for_Climate_Infrastructure (1).pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    },
+    {
+      "id": "12apWf1r99KPgxnJMsnpMbdnlqQ0EYaj_",
+      "name": "WaterRoads_Investor Position_260313.pptx",
+      "path": "Imported from SharePoint/WaterRoads_Investor Position_260313.pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    },
+    {
+      "id": "1NqIFu00H0Rx3v8-cHUgQpVEKCn0AnPFb",
+      "name": "WaterRoads_Investor Position_260313.pdf",
+      "path": "Imported from SharePoint/WaterRoads_Investor Position_260313.pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/pdf"
+    },
+    {
+      "id": "1suNWdX9ZAzTE5GqCDl8cujwN-4v_5OL-",
+      "name": "WaterRoads_Proposal Summary.pptx",
+      "path": "Imported from SharePoint/WaterRoads_Proposal Summary.pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    },
+    {
+      "id": "1AtWo1sCRMIdU639b7wms9PSbOqkI20Yl",
+      "name": "Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pptx",
+      "path": "Imported from SharePoint/Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    },
+    {
+      "id": "1sd0XyxfCOuhBwclIZ1Wc_3Nh5BNAdgdV",
+      "name": "Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pdf",
+      "path": "Imported from SharePoint/Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/pdf"
+    },
+    {
+      "id": "1hMQVS_Lqpf4E-1r_9jJCc9zHpCoK5TtM",
+      "name": "Water_Roads_\u2014_Revenue_Definition_Clause.docx",
+      "path": "Imported from SharePoint/Water_Roads_\u2014_Revenue_Definition_Clause.docx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "1zs2dgGc7QHCw2ZHQlKGAMNE73vWugmX8",
+      "name": "A$15M_Series_A_Milestones_and_Artefacts.docx",
+      "path": "Imported from SharePoint/A$15M_Series_A_Milestones_and_Artefacts.docx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "1liJO7KZaYEbhyV48Gck0zphC9_YkInOz",
+      "name": "WaterRoads_Funding requirement_SD_06032026.pptx",
+      "path": "Imported from SharePoint/WaterRoads_Funding requirement_SD_06032026.pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    },
+    {
+      "id": "1EnYOEdIFCvLeuCIJFiCNsZylyRjerSyb",
+      "name": "Screenshot 2026-03-05 at 5.00.03\u202fpm.png",
+      "path": "Imported from SharePoint/Screenshot 2026-03-05 at 5.00.03\u202fpm.png",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "image/png"
+    },
+    {
+      "id": "1BU8NsHukHHh5ZF3eigr-SCjH8C3eAXtR",
+      "name": "Simanta_Sarah_tokenization.pdf",
+      "path": "Imported from SharePoint/Simanta_Sarah_tokenization.pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/pdf"
+    },
+    {
+      "id": "1U7jvXuOeAwHQGAbNygNzwhs_R742_5Vn",
+      "name": "Screenshot 2026-03-05 at 10.20.35\u202fam.png",
+      "path": "Imported from SharePoint/Screenshot 2026-03-05 at 10.20.35\u202fam.png",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "image/png"
+    },
+    {
+      "id": "1ORcojVefOzIRQjMzlknv6oVrslvfKu4q",
+      "name": "Comprehensive Summary_ Aytas Capital and Simanta Das.md",
+      "path": "Imported from SharePoint/Comprehensive Summary_ Aytas Capital and Simanta Das.md",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "text/markdown"
+    },
+    {
+      "id": "18eEIfg_JTT1Kp_O6hWKW1e5hnnUlIC85",
+      "name": "LGG Advisors_Water Roads_Letter of Support_signed.pdf",
+      "path": "Imported from SharePoint/LGG Advisors_Water Roads_Letter of Support_signed.pdf",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/pdf"
+    },
+    {
+      "id": "16E3UdAU_N5wHEgfrBaP5WphEf6ElDrtf",
+      "name": "WaterRoads_CapTable_2026 (2).xlsx",
+      "path": "Imported from SharePoint/WaterRoads_CapTable_2026 (2).xlsx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "id": "1Ub-CZV9AJuumwdpOX-fWWQxr0YO4ggrM",
+      "name": "WR_SeriesA_Valuation_Strategy_LGG (1).docx",
+      "path": "Imported from SharePoint/WR_SeriesA_Valuation_Strategy_LGG (1).docx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    {
+      "id": "1vZ9RmOaisykROXwGZa_DgMpp1GCyr7Yb",
+      "name": "WaterRoads_CapTable_2026.xlsx",
+      "path": "Imported from SharePoint/WaterRoads_CapTable_2026.xlsx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "id": "117TZ7sKKVNB7njgvK-Gipg9p2r-lIdp1",
+      "name": "WR_Board_OwnThePlatform (1).pptx",
+      "path": "Imported from SharePoint/WR_Board_OwnThePlatform (1).pptx",
+      "parent_id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "mime_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    }
+  ],
+  "moves": [],
+  "errors": []
+}
