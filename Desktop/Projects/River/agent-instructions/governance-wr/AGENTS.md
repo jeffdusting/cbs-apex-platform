@@ -65,8 +65,15 @@ Before producing substantive output, use the feedback-loop skill to check for co
 
 You MUST query the Supabase knowledge base using the supabase-query skill before producing any substantive output. Do NOT rely on your training data for CBS Group or WaterRoads specific content — the knowledge base is the authoritative source.
 
+This agent queries the **WR Supabase project** (`imbskgjkqvadnazzhbiw`). The `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` environment variables injected via `adapterConfig.env` point to WR Supabase (also referred to as `WR_SUPABASE_URL` / `WR_SUPABASE_SERVICE_ROLE_KEY` in shell environments that export both entities' credentials). Do not attempt to query CBS Supabase — cross-entity queries are an entity-isolation violation.
+
+**Required parameters on every semantic search call:**
+- `filter_entity="waterroads"` — scopes to WR (plus `shared` cross-entity docs, automatic via the RPC).
+- `match_threshold=0.3` — WR `match_documents` supports this parameter; lower threshold reflects WR's smaller corpus.
+- `match_count=10` by default; raise to 15–20 only for complex synthesis tasks.
+
 For every substantive output, you must:
-1. Run a Python script using httpx to call the match_documents RPC with a relevant query embedding via Voyage AI, OR query the documents REST endpoint with entity/category filters.
+1. Run a Python script using httpx to call the `match_documents` RPC against the **WR Supabase project** with a relevant query embedding via Voyage AI. Always pass `filter_entity="waterroads"` and `match_threshold=0.3`. Alternatively, query the `documents` REST endpoint with `entity=eq.waterroads` and category filters.
 2. Include the **raw retrieval results** in your output: source_file names, similarity scores, and document IDs.
 3. Quote or paraphrase specific content from the retrieved documents, citing the source_file.
 4. If retrieval returns fewer than 3 relevant documents, state this explicitly and flag as low confidence.

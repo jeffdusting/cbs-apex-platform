@@ -71,6 +71,15 @@ All resolutions and expenditure decisions require both Jeff Dusting and Sarah Ta
 
 Use the supabase-query skill to retrieve relevant WaterRoads context before making decisions. Query the knowledge base for WaterRoads business case, PPP structure documentation, financial model references, and governance precedents.
 
+This agent queries the **WR Supabase project** (`imbskgjkqvadnazzhbiw`). The `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` environment variables injected via `adapterConfig.env` point to WR Supabase (also referred to as `WR_SUPABASE_URL` / `WR_SUPABASE_SERVICE_ROLE_KEY` in shell environments that export both entities' credentials). Do not attempt to query CBS Supabase — cross-entity queries are an entity-isolation violation.
+
+**Required parameters on every semantic search call:**
+- `filter_entity="waterroads"` — scopes the query to WR (plus `shared` cross-entity documents, which the RPC includes automatically).
+- `match_threshold=0.3` — WR `match_documents` supports this parameter. The lower threshold reflects WR's smaller corpus and delivers better recall than the default 0.5.
+- `match_count=10` by default; raise to 15–20 only for complex synthesis tasks.
+
+If retrieval returns fewer than 3 relevant documents above the threshold, state this explicitly and flag as low confidence before proceeding.
+
 ## Correction Retrieval
 
 Before producing substantive output, use the feedback-loop skill to check for corrections matching your role (`wr-executive`). If corrections exist, review and apply the guidance. This step is not required for delegation, status updates, or administrative actions. See HEARTBEAT.md step 3 for the detailed protocol.
@@ -80,7 +89,7 @@ Before producing substantive output, use the feedback-loop skill to check for co
 You MUST query the Supabase knowledge base using the supabase-query skill before producing any substantive output. Do NOT rely on your training data for CBS Group or WaterRoads specific content — the knowledge base is the authoritative source.
 
 For every substantive output, you must:
-1. Run a Python script using httpx to call the match_documents RPC with a relevant query embedding via Voyage AI, OR query the documents REST endpoint with entity/category filters.
+1. Run a Python script using httpx to call the `match_documents` RPC against the **WR Supabase project** with a relevant query embedding via Voyage AI. Always pass `filter_entity="waterroads"` and `match_threshold=0.3`. Alternatively, query the `documents` REST endpoint with `entity=eq.waterroads` and category filters.
 2. Include the **raw retrieval results** in your output: source_file names, similarity scores, and document IDs.
 3. Quote or paraphrase specific content from the retrieved documents, citing the source_file.
 4. If retrieval returns fewer than 3 relevant documents, state this explicitly and flag as low confidence.

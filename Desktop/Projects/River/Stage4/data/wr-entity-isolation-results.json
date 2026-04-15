@@ -1,0 +1,65 @@
+{
+  "run_at": "2026-04-16T08:09:40.637681",
+  "wr_supabase_url": "https://imbskgjkqvadnazzhbiw.supabase.co",
+  "cbs_supabase_url": "https://eptugqwlgsmwhnubbqsk.supabase.co",
+  "row_counts": {
+    "cbs_supabase": {
+      "cbs-group": 1149,
+      "waterroads": 98
+    },
+    "wr_supabase": {
+      "cbs-group": 0,
+      "waterroads": 16786
+    }
+  },
+  "results": [
+    {
+      "query": "Water Roads PPP financial model assumptions and revenue projections",
+      "label": "wr_query",
+      "filter_entity": "waterroads",
+      "wr_supabase": {
+        "count": 10,
+        "top_sim": 0.5832,
+        "top_source": "Archive/Unclassified/WaterRoads_Proposal Summary.pptx",
+        "top_entity": "waterroads",
+        "entities": {
+          "waterroads": 10
+        }
+      },
+      "cbs_supabase": {
+        "count": 10,
+        "top_sim": 0.5544,
+        "top_source": "waterroads-ppp-structure.md",
+        "top_entity": "waterroads",
+        "entities": {
+          "waterroads": 10
+        }
+      }
+    },
+    {
+      "query": "CAPITAL framework tunnel asset management",
+      "label": "cbs_query",
+      "filter_entity": "cbs-group",
+      "wr_supabase": {
+        "count": 0,
+        "top_sim": null,
+        "entities": {},
+        "top_source": null
+      },
+      "cbs_supabase": {
+        "count": 10,
+        "top_sim": 0.6411,
+        "top_source": "cbs-group-capital-methodology-part03.md",
+        "top_entity": "shared",
+        "entities": {
+          "shared": 7,
+          "cbs-group": 3
+        }
+      }
+    }
+  ],
+  "failures": [],
+  "warnings": [
+    "CBS Supabase contains 98 waterroads rows (legacy seed data; WR agents now query WR Supabase only so this does not cause runtime leakage, but the rows should be considered for cleanup in a future phase)."
+  ]
+}

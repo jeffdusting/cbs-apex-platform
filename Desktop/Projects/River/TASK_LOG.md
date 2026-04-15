@@ -1322,3 +1322,64 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 - Consider a few-shot prompting approach that gives the evaluator worked examples of Jeff's 1/2/3/4/5 per dimension, rather than descriptions only.
 
 **Next phase:** P7 (WR Reconfig) remains outstanding and is the prerequisite for P9. P9 (Verification + Critique) depends on *all* prior phases complete, so P7 must run before P9. If P7 is not yet complete in a parallel session (check `git tag | grep stage4-P7`), run **P7** next; otherwise **P9**.
+
+---
+
+## S4-P7: WR Agent Reconfiguration
+
+**Date:** 16 April 2026
+**Status:** COMPLETE — local changes committed; Paperclip API deploy pending operator cookie refresh
+**Git Tag:** stage4-P7-wr-reconfig
+
+- **Agents updated locally:** WR Executive (`00fb11a2`), Governance WR (`10adea58`), Office Management WR (`9594ef21`). All three AGENTS.md now carry explicit WR Supabase guidance — project ID `imbskgjkqvadnazzhbiw`, `filter_entity="waterroads"`, `match_threshold=0.3`, plus the cross-entity isolation warning.
+- **Paperclip API PATCH:** NOT yet deployed in this session — `PAPERCLIP_SESSION_COOKIE` was not available (cookie expires after hours, Claude Code cannot refresh it). A single combined script `scripts/wr-agent-reconfig.py` handles the `adapterConfig` PATCH + skills sync + verification. Operator instructions recorded at `stage4/P7-OPERATOR-DEPLOY.md`.
+- **wr-drive-read skill:** Created at `skills/wr-drive-read/SKILL.md`. Uses the WR service account (`river-wr-agent@river-waterroads-kb.iam.gserviceaccount.com`) with Drive read scope. Supports PDF (pdfplumber), DOCX (python-docx), XLSX (openpyxl, incl. sheet titles), PPTX (python-pptx, incl. speaker notes), Google Docs/Sheets/Slides (export), and plain text/markdown/csv. Assigned to all three WR agents by the deploy script.
+- **Entity isolation verification:** PASS. Data-layer row counts: WR Supabase = 16,786 waterroads + 0 cbs-group (clean); CBS Supabase = 1,149 cbs-group + 98 waterroads legacy seed rows. Semantic isolation gate: CBS query on WR Supabase returns 0 cbs-group rows ✓. Warning surfaced: the 98 waterroads rows on CBS Supabase are legacy seed data (pre-WR-Supabase); they do not cause runtime leakage because WR agents now query WR Supabase exclusively, but they should be considered for cleanup in a future phase.
+
+### Files Created
+
+- `scripts/wr-agent-reconfig.py` — combined adapterConfig PATCH + skills sync + verification script. Requires `PAPERCLIP_SESSION_COOKIE` + `WR_SUPABASE_URL`/`WR_SUPABASE_SERVICE_ROLE_KEY`. Supports `--dry-run`.
+- `scripts/wr-entity-isolation-test.py` — runs row-count + cross-entity semantic-search verification. Produces `stage4/data/wr-entity-isolation-results.json`.
+- `skills/wr-drive-read/SKILL.md` — full-content Drive reader for WR agents.
+- `stage4/P7-OPERATOR-DEPLOY.md` — operator-facing instructions for the cookie refresh + script run + manual verification checklist.
+- `stage4/data/wr-entity-isolation-results.json` — entity isolation test artefact.
+
+### Files Modified
+
+- `agent-instructions/wr-executive/AGENTS.md` — WR Supabase guidance block (project ID, filter_entity, match_threshold, isolation warning). Added to both "Knowledge Base Retrieval" and "Mandatory KB Retrieval Protocol" sections so the guidance is surfaced at both decision points.
+- `agent-instructions/governance-wr/AGENTS.md` — same guidance block added to "Mandatory KB Retrieval Protocol".
+- `agent-instructions/office-management-wr/AGENTS.md` — same guidance block added to "Mandatory KB Retrieval Protocol".
+
+### Task Status
+
+| Task | Status | Notes |
+|---|---|---|
+| 7.1 Verify WR Supabase connectivity | DONE | 16,786 documents, match_documents RPC accepts match_threshold. prompt_templates table exists but empty (no WR templates seeded — not a P7 concern). |
+| 7.2 Update local AGENTS.md | DONE | All three WR agents updated with the WR Supabase guidance block. |
+| 7.3 Deploy via Paperclip API PATCH | PENDING OPERATOR | Script committed; requires fresh `PAPERCLIP_SESSION_COOKIE`. See `stage4/P7-OPERATOR-DEPLOY.md`. |
+| 7.4 Create wr-drive-read skill | DONE | Full SKILL.md at `skills/wr-drive-read/`. |
+| 7.5 Assign skills to WR agents | PENDING OPERATOR | Deploy script's skills/sync step covers this. |
+| 7.6 Entity isolation verification | DONE | Passes at the WR-facing layer. 98 legacy waterroads rows on CBS Supabase flagged as a cleanup follow-up. |
+
+### Gate Verification
+
+- PASS: wr-executive contains `WR_SUPABASE_URL`
+- PASS: governance-wr contains `WR_SUPABASE_URL`
+- PASS: office-management-wr contains `WR_SUPABASE_URL`
+- PASS: `skills/wr-drive-read/SKILL.md` exists
+- PASS: entity isolation test (0 cbs-group rows on WR Supabase; 0 cbs-group rows returned from WR Supabase for a CBS-shaped query)
+
+### Surprising / Non-Obvious Findings
+
+- **98 waterroads rows live on CBS Supabase.** These are legacy seed chunks from `waterroads-business-case-part{02,04,07,...}.md` loaded when WR didn't have its own Supabase project. They pose no runtime risk now (WR agents no longer query CBS) but leave a data-hygiene tail — the CBS project can return WR-entity rows to any caller that filters by `entity='waterroads'`. Recommend deleting these rows in a dedicated cleanup phase, or migrating them to WR Supabase if the content differs from the current WR KB (source_files don't match WR's current KB file layout).
+- **WR `match_documents` RPC returns 0 hits for some short queries due to IVFFlat recall degradation at lists=40.** The P5 finding (`scripts/wr-ivfflat-rebuild.sql` prepared but not applied) is live: the specific query "WaterRoads PPP ferry Rhodes Barangaroo" lands in a dead cluster and returns zero hits even at `match_threshold=-1.0`. Adjacent queries (shorter, or different phrasing) return full result sets. The isolation test was updated to use a P5-validated query. **Action for P9 verification:** apply `scripts/wr-ivfflat-rebuild.sql` against WR Supabase before running the P9 adversarial critique; retrieval quality numbers will be understated until then.
+- **WR `match_documents` signature differs from CBS.** WR version accepts `match_threshold` (per the TASK 7.2 spec) and was verified to reject vector-dimension mismatch correctly. CBS version historically did not accept `match_threshold` — the isolation script falls back gracefully for cross-project semantic queries.
+- **No `PAPERCLIP_API_KEY` or `PAPERCLIP_SESSION_COOKIE` in this session.** Both env-setup.sh (commit-safe checked-in file) and `.secrets/wr-env.sh` lack the cookie; the pattern is that the operator refreshes it per-session from the browser. Every Paperclip-API phase from here forward needs the same operator step.
+
+### Known Issues / Open Work
+
+- **Apply `scripts/wr-ivfflat-rebuild.sql` on WR Supabase.** Outstanding from P5. Affects retrieval quality across all WR queries with narrow or atypical phrasing.
+- **Operator to run `scripts/wr-agent-reconfig.py`** after refreshing the Paperclip session cookie. See `stage4/P7-OPERATOR-DEPLOY.md`.
+- **Legacy waterroads rows on CBS Supabase (98 rows).** Consider deletion or migration in a future cleanup phase.
+
+**Next phase:** P9 (Verification + Critique) — all prior phases are now tagged. P9 requires all phases complete; P7 is complete locally but the Paperclip deploy is pending operator cookie refresh, so the P9 independent verification should explicitly check whether the Paperclip-side adapterConfig changes have actually landed before drawing conclusions about live retrieval behaviour.
