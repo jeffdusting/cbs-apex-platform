@@ -107,6 +107,28 @@
 
 ---
 
+## P5: Integration + Verification (hyper-agent-v1)
+
+**Date:** 15 April 2026
+**Status:** COMPLETE
+**Git Tag:** hyper-agent-v1-P5-integration-verification
+
+**Created:**
+- `scripts/create-evaluator-routine.py` — register async evaluator routine (2h cron)
+- `scripts/create-trace-ingestion-routine.py` — register trace ingestion routine (2h, offset 30min)
+- `scripts/test-evaluator-e2e.py` — end-to-end smoke test
+- `scripts/evaluator-dashboard-component.html` — evaluator metrics panel
+- `docs/hyper-agent-v1/VERIFICATION_REPORT.md` — independent verification report
+
+**Updated:** BACKLOG.md, RIVER-STATUS.md
+
+**E2E smoke test result:** 8 PASS, 0 FAIL, 0 SKIP
+**Verification verdict:** PASS
+
+**Programme status:** COMPLETE — ready for human activation steps
+
+---
+
 ## Email Task Intake — Google Apps Script
 
 **Date:** 13 April 2026
