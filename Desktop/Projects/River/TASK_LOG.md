@@ -749,7 +749,7 @@ Gate verification: PASS — all skills, templates, and docs present.
 |---|---|
 | 0.1 Integrate CA approval toggle into dashboard | DONE — `approveCaSend()` function + updated `ca_drafted` case |
 | 0.2 Integrate Evaluator tab into dashboard | DONE — tabbed view with summary bar, score distribution, evaluations table, blocked work |
-| 0.3 Generate Evaluator calibration document | DONE — 10 real outputs from Paperclip (CBSA-48, 47, 18, 43, 27, 34, 35, 23, 25, 20). Jeff to score. |
+| 0.3 Generate Evaluator calibration document | DONE — 10 real outputs from Paperclip. Jeff scored 9/10. Excel matrix at `docs/hyper-agent-v1/EVALUATOR_CALIBRATION_SCORING.xlsx` |
 | 0.4 Wire monitoring agent to Teams webhook | DONE — `teams-notify` skill added to `create-monitoring-agent.py`. Agent not yet created (run `--execute`). AGENTS.md already has inline Teams posting. |
 | 0.5 Create Mail.ReadWrite upgrade instructions | DONE — `docs/hyper-agent-v1/MAIL_READWRITE_UPGRADE.md` |
 | 0.6 Update BACKLOG.md | DONE — WhatsApp + Slack future notification channels added |
@@ -774,9 +774,37 @@ Gate verification: PASS — all skills, templates, and docs present.
 | `scripts/create-monitoring-agent.py` | Modified — added `teams-notify` to skills list |
 | `BACKLOG.md` | Modified — added future notification channels section |
 
+### Calibration Results (Jeff's Scores — 15 April 2026)
+
+| # | Issue | Agent Role | Composite | Result |
+|---|---|---|---|---|
+| 1 | CBSA-48 | Tender Intelligence | 4.05 | PASS |
+| 2 | CBSA-47 | Tender Intelligence | (partial — 2 dims missing) | — |
+| 3 | CBSA-18 | Tender Coordination | 2.30 | FAIL |
+| 4 | CBSA-43 | Governance CBS | 3.15 | FAIL |
+| 5 | CBSA-27 | CBS Executive | 3.70 | PASS |
+| 6 | CBSA-34 | Compliance | 3.00 | FAIL |
+| 7 | CBSA-35 | Compliance | 2.55 | FAIL |
+| 8 | CBSA-23 | Technical Writing | 2.05 | FAIL |
+| 9 | CBSA-25 | Pricing and Commercial | 2.00 | FAIL |
+| 10 | CBSA-20 | Research CBS | 1.00 | FAIL |
+
+**Overall:** 2/9 PASS (22%), avg composite 2.64, pass threshold 3.5
+
+**Dimension averages:** KB Grounding 3.2, Instruction Adherence 2.6, Completeness 2.5, Actionability 2.8, Factual Discipline 2.5, Risk Handling 1.1
+
+**Key founder feedback from notes:**
+- Risk handling is consistently poor (avg 1.1) — agents present recommendations without caveats
+- Over-reliance on CAPITAL framework — agents assume client specified it when not the case
+- Agents assigning tasks to humans instead of delegating to other agents or creating new agents
+- Missing verification loops in plans
+- Shallow analysis and inadequate rigour (CBSA-20)
+- No proactive path to identify and capture missing material (CBSA-27)
+- No connection to solution design for effort allocation (CBSA-25)
+
 ### Known Issues
 
-- Calibration doc populated with 10 real outputs — Jeff needs to score each output (6 dimensions, 1-5)
+- CBSA-47 partially scored (KB Grounding and Instruction Adherence not scored) — no attempt to delegate blockers
 - Monitoring agent not yet created on Paperclip — run `python3 scripts/create-monitoring-agent.py --execute`
 - Evaluator and trace ingestion routines not yet registered — run the registration scripts
 
