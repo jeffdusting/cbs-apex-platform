@@ -1,6 +1,7 @@
 {
-  "source": "/Users/jeffdusting/Desktop/Projects/River/docs/hyper-agent-v1/EVALUATOR_CALIBRATION.md",
-  "parsed_at": "2026-04-15T14:00:57.938247",
+  "source": "/Users/jeffdusting/Desktop/Projects/River/docs/hyper-agent-v1/EVALUATOR_CALIBRATION_SCORING.xlsx",
+  "source_type": "xlsx",
+  "parsed_at": "2026-04-16T07:38:44.865103",
   "pass_threshold": 3.5,
   "weights": {
     "KB Grounding": 0.25,
@@ -10,5 +11,194 @@
     "Factual Discipline": 0.15,
     "Risk Handling": 0.1
   },
-  "outputs": []
+  "outputs": [
+    {
+      "output_number": 1,
+      "issue": "CBSA-48",
+      "agent_role": "Tender Intelligence",
+      "task_type": "Opportunity extraction from digest",
+      "date": "2026-04-14",
+      "scores": {
+        "KB Grounding": 4,
+        "Instruction Adherence": 5,
+        "Completeness": 5,
+        "Actionability": 5,
+        "Factual Discipline": 3,
+        "Risk Handling": 1
+      },
+      "composite": 4.05,
+      "pass": true,
+      "dimensions_scored": 6,
+      "notes": "CBS capabilities should be extended to include asset management, safety assurance, project management. We should create an explicit list for this type of task.  Assessmenthod includes team availability - this is not know to agent and should be removed.  CAPITAL should not be an explicit criteria, the underlying commercial asset management and other dimensions hsould be understood and applied as criteria"
+    },
+    {
+      "output_number": 2,
+      "issue": "CBSA-47",
+      "agent_role": "Tender Intelligence",
+      "task_type": "Daily tender report / heartbeat",
+      "date": "2026-04-14",
+      "scores": {
+        "Completeness": 1,
+        "Actionability": 1,
+        "Factual Discipline": 3,
+        "Risk Handling": 1
+      },
+      "composite": 1.55,
+      "pass": false,
+      "dimensions_scored": 4,
+      "notes": "no attempt to delegate blockers to other agents to fix or escalate to CEO agent - this should be fixed.   This report should be emailed to the governance board members for review - it was not.   There was a pasued agent but no action taken."
+    },
+    {
+      "output_number": 3,
+      "issue": "CBSA-18",
+      "agent_role": "Tender Coordination",
+      "task_type": "Tender response assembly (Silver gate)",
+      "date": "2026-04-13",
+      "scores": {
+        "KB Grounding": 3,
+        "Instruction Adherence": 2,
+        "Completeness": 2,
+        "Actionability": 2,
+        "Factual Discipline": 3,
+        "Risk Handling": 1
+      },
+      "composite": 2.3,
+      "pass": false,
+      "dimensions_scored": 6,
+      "notes": "agent should not be assigning tasks to humans, if work needs to be done by experts, then a new agent should be created with those skills."
+    },
+    {
+      "output_number": 4,
+      "issue": "CBSA-43",
+      "agent_role": "Governance CBS",
+      "task_type": "Agent governance framework",
+      "date": "2026-04-15",
+      "scores": {
+        "KB Grounding": 3,
+        "Instruction Adherence": 4,
+        "Completeness": 3,
+        "Actionability": 3,
+        "Factual Discipline": 4,
+        "Risk Handling": 1
+      },
+      "composite": 3.15,
+      "pass": false,
+      "dimensions_scored": 6,
+      "notes": "should have had a verification loop in this plan to make sure changes were effective post implementation"
+    },
+    {
+      "output_number": 5,
+      "issue": "CBSA-27",
+      "agent_role": "CBS Executive",
+      "task_type": "Strategic decision \u2014 compliance gaps",
+      "date": "2026-04-13",
+      "scores": {
+        "KB Grounding": 4,
+        "Instruction Adherence": 5,
+        "Completeness": 4,
+        "Actionability": 2,
+        "Factual Discipline": 4,
+        "Risk Handling": 2
+      },
+      "composite": 3.7,
+      "pass": true,
+      "dimensions_scored": 6,
+      "notes": "need to have a proactive path that identifies missing material and kicks off a process to capture material and related material for future tasks."
+    },
+    {
+      "output_number": 6,
+      "issue": "CBSA-34",
+      "agent_role": "Compliance",
+      "task_type": "Systems engineering standards package",
+      "date": "2026-04-14",
+      "scores": {
+        "KB Grounding": 4,
+        "Instruction Adherence": 2,
+        "Completeness": 2,
+        "Actionability": 5,
+        "Factual Discipline": 3,
+        "Risk Handling": 1
+      },
+      "composite": 3.0,
+      "pass": false,
+      "dimensions_scored": 6,
+      "notes": "over weight on Capital - it is not the answer to everything, als no agent defined to develop the required diagrams"
+    },
+    {
+      "output_number": 7,
+      "issue": "CBSA-35",
+      "agent_role": "Compliance",
+      "task_type": "Asset management standards package",
+      "date": "2026-04-13",
+      "scores": {
+        "KB Grounding": 4,
+        "Instruction Adherence": 2,
+        "Completeness": 3,
+        "Actionability": 3,
+        "Factual Discipline": 1,
+        "Risk Handling": 1
+      },
+      "composite": 2.55,
+      "pass": false,
+      "dimensions_scored": 6,
+      "notes": "assumes client specified capital - this is not the case."
+    },
+    {
+      "output_number": 8,
+      "issue": "CBSA-23",
+      "agent_role": "Technical Writing",
+      "task_type": "Methodology and experience section",
+      "date": "2026-04-11",
+      "scores": {
+        "KB Grounding": 4,
+        "Instruction Adherence": 1,
+        "Completeness": 1,
+        "Actionability": 3,
+        "Factual Discipline": 1,
+        "Risk Handling": 1
+      },
+      "composite": 2.05,
+      "pass": false,
+      "dimensions_scored": 6,
+      "notes": "assumes client specified capital - this is not the case - should map to client requirements for the tender"
+    },
+    {
+      "output_number": 9,
+      "issue": "CBSA-25",
+      "agent_role": "Pricing and Commercial",
+      "task_type": "Fee schedule and value proposition",
+      "date": "2026-04-10",
+      "scores": {
+        "KB Grounding": 2,
+        "Instruction Adherence": 1,
+        "Completeness": 3,
+        "Actionability": 3,
+        "Factual Discipline": 2,
+        "Risk Handling": 1
+      },
+      "composite": 2.0,
+      "pass": false,
+      "dimensions_scored": 6,
+      "notes": "no connection to the solution design team for the % allocation of effort - or reference to the explicit client requirement"
+    },
+    {
+      "output_number": 10,
+      "issue": "CBSA-20",
+      "agent_role": "Research CBS",
+      "task_type": "KB retrieval verification",
+      "date": "2026-04-10",
+      "scores": {
+        "KB Grounding": 1,
+        "Instruction Adherence": 1,
+        "Completeness": 1,
+        "Actionability": 1,
+        "Factual Discipline": 1,
+        "Risk Handling": 1
+      },
+      "composite": 1.0,
+      "pass": false,
+      "dimensions_scored": 6,
+      "notes": "analysis was very shallow and inaduate level of rigour for this task, it has skewed a great deal of conclusions"
+    }
+  ]
 }

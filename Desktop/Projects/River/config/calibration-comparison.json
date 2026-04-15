@@ -1,0 +1,447 @@
+[
+  {
+    "output_number": 1,
+    "issue": "CBSA-48",
+    "agent_role": "Tender Intelligence",
+    "task_type": "Opportunity extraction from digest",
+    "human_scores": {
+      "KB Grounding": 4,
+      "Instruction Adherence": 5,
+      "Completeness": 5,
+      "Actionability": 5,
+      "Factual Discipline": 3,
+      "Risk Handling": 1
+    },
+    "human_composite": 4.05,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 3.0,
+      "Instruction Adherence": 4.0,
+      "Completeness": 4.0,
+      "Actionability": 4.0,
+      "Factual Discipline": 2.0,
+      "Risk Handling": 3.0
+    },
+    "evaluator_composite": 3.35,
+    "evaluator_composite_full_6": 3.35,
+    "delta_per_dimension": {
+      "KB Grounding": -1.0,
+      "Instruction Adherence": -1.0,
+      "Completeness": -1.0,
+      "Actionability": -1.0,
+      "Factual Discipline": -1.0,
+      "Risk Handling": 2.0
+    },
+    "composite_delta": -0.7,
+    "pass_fail_agreement": false,
+    "evaluator_rationale": "The output follows a clear protocol structure and provides actionable recommendations, but contains concerning fabricated elements including future dates (2026), specific tender numbers, and organisations that appear invented. Knowledge base references are mentioned but lack specific citations to ground the capability assessments. The assessment methodology is well-structured but the underlying data appears largely fabricated.",
+    "evaluator_suggestions": [
+      "Replace all fabricated data with actual retrieved content from the knowledge base or clearly mark examples as hypothetical",
+      "Provide specific citations to KB documents rather than general mentions of retrieval results",
+      "Use realistic dates and verifiable tender references, or explicitly state when using placeholder data",
+      "Include direct quotes or specific passages from KB documents to ground capability assessments"
+    ],
+    "evaluation_duration_seconds": 6.89,
+    "evaluator_tokens_used": 1978
+  },
+  {
+    "output_number": 2,
+    "issue": "CBSA-47",
+    "agent_role": "Tender Intelligence",
+    "task_type": "Daily tender report / heartbeat",
+    "human_scores": {
+      "Completeness": 1,
+      "Actionability": 1,
+      "Factual Discipline": 3,
+      "Risk Handling": 1
+    },
+    "human_composite": 1.55,
+    "human_dims_scored": 4,
+    "evaluator_scores": {
+      "KB Grounding": 2.0,
+      "Instruction Adherence": 4.0,
+      "Completeness": 4.5,
+      "Actionability": 4.5,
+      "Factual Discipline": 3.0,
+      "Risk Handling": 4.0
+    },
+    "evaluator_composite": 4.0,
+    "evaluator_composite_full_6": 3.5,
+    "delta_per_dimension": {
+      "Completeness": 3.5,
+      "Actionability": 3.5,
+      "Factual Discipline": 0.0,
+      "Risk Handling": 3.0
+    },
+    "composite_delta": 2.45,
+    "pass_fail_agreement": false,
+    "evaluator_rationale": "The output follows a clear heartbeat protocol structure with comprehensive sections and actionable items, but lacks any references to knowledge base content or retrieval evidence. While the information appears factual, the absence of KB grounding and some specific details (like exact financial figures) reduce confidence in the claims made.",
+    "evaluator_suggestions": [
+      "Include specific citations to KB documents or data sources that support the task statuses and budget figures reported",
+      "Reference retrieved content from tender databases or project management systems to ground claims about deadlines and approval statuses",
+      "Provide more specific financial details or explicitly state when such information is unavailable or requires verification"
+    ],
+    "evaluation_duration_seconds": 6.65,
+    "evaluator_tokens_used": 1715
+  },
+  {
+    "output_number": 3,
+    "issue": "CBSA-18",
+    "agent_role": "Tender Coordination",
+    "task_type": "Tender response assembly (Silver gate)",
+    "human_scores": {
+      "KB Grounding": 3,
+      "Instruction Adherence": 2,
+      "Completeness": 2,
+      "Actionability": 2,
+      "Factual Discipline": 3,
+      "Risk Handling": 1
+    },
+    "human_composite": 2.3,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 4.0,
+      "Instruction Adherence": 4.5,
+      "Completeness": 4.5,
+      "Actionability": 4.5,
+      "Factual Discipline": 3.5,
+      "Risk Handling": 2.5
+    },
+    "evaluator_composite": 4.03,
+    "evaluator_composite_full_6": 4.03,
+    "delta_per_dimension": {
+      "KB Grounding": 1.0,
+      "Instruction Adherence": 2.5,
+      "Completeness": 2.5,
+      "Actionability": 2.5,
+      "Factual Discipline": 0.5,
+      "Risk Handling": 1.5
+    },
+    "composite_delta": 1.73,
+    "pass_fail_agreement": false,
+    "evaluator_rationale": "The output demonstrates strong adherence to tender coordination protocols with comprehensive task delegation and clear actionable steps. KB content is well-referenced through specific projects and frameworks, though some claims about competitive advantages could use stronger grounding. The main weakness is limited risk handling - no identification of tender response risks, potential challenges, or escalation triggers despite this being a critical coordination function.",
+    "evaluator_suggestions": [
+      "Add specific risk identification for tender response assembly (e.g., resource conflicts, deadline pressures, coordination failures between agents)",
+      "Include escalation triggers for when subtask outputs don't meet quality thresholds or deadlines",
+      "Strengthen grounding of competitive advantage claims with specific KB evidence or flag as assumptions requiring validation"
+    ],
+    "evaluation_duration_seconds": 6.88,
+    "evaluator_tokens_used": 2122
+  },
+  {
+    "output_number": 4,
+    "issue": "CBSA-43",
+    "agent_role": "Governance CBS",
+    "task_type": "Agent governance framework",
+    "human_scores": {
+      "KB Grounding": 3,
+      "Instruction Adherence": 4,
+      "Completeness": 3,
+      "Actionability": 3,
+      "Factual Discipline": 4,
+      "Risk Handling": 1
+    },
+    "human_composite": 3.15,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 1.0,
+      "Instruction Adherence": 1.0,
+      "Completeness": 1.0,
+      "Actionability": 1.0,
+      "Factual Discipline": 2.0,
+      "Risk Handling": 1.0
+    },
+    "evaluator_composite": 1.15,
+    "evaluator_composite_full_6": 1.15,
+    "delta_per_dimension": {
+      "KB Grounding": -2.0,
+      "Instruction Adherence": -3.0,
+      "Completeness": -2.0,
+      "Actionability": -2.0,
+      "Factual Discipline": -2.0,
+      "Risk Handling": 0.0
+    },
+    "composite_delta": -2.0,
+    "pass_fail_agreement": true,
+    "evaluator_rationale": "The agent output is completely inadequate, consisting of only a single line that appears to be a task title rather than any actual deliverable. No KB content was retrieved or referenced, no protocol steps were followed, and none of the required deliverables (Parts A-D) were produced. The output shows no evidence of understanding the comprehensive governance framework task requirements.",
+    "evaluator_suggestions": [
+      "Follow the complete heartbeat protocol from AGENTS.md including KB retrieval, analysis, and structured output generation",
+      "Produce all four required deliverables: comprehensive attribute list, audit report, updated scripts, and scheduled routine",
+      "Ground all recommendations in retrieved KB content from existing scripts and documentation",
+      "Provide specific, actionable steps with clear owners and timelines for each governance requirement",
+      "Include risk assessment and escalation criteria for non-compliant agents",
+      "Generate the required markdown documentation files and script updates as specified"
+    ],
+    "evaluation_duration_seconds": 7.14,
+    "evaluator_tokens_used": 2497
+  },
+  {
+    "output_number": 5,
+    "issue": "CBSA-27",
+    "agent_role": "CBS Executive",
+    "task_type": "Strategic decision \u2014 compliance gaps",
+    "human_scores": {
+      "KB Grounding": 4,
+      "Instruction Adherence": 5,
+      "Completeness": 4,
+      "Actionability": 2,
+      "Factual Discipline": 4,
+      "Risk Handling": 2
+    },
+    "human_composite": 3.7,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 3.0,
+      "Instruction Adherence": 4.5,
+      "Completeness": 4.0,
+      "Actionability": 4.5,
+      "Factual Discipline": 4.0,
+      "Risk Handling": 5.0
+    },
+    "evaluator_composite": 4.03,
+    "evaluator_composite_full_6": 4.03,
+    "delta_per_dimension": {
+      "KB Grounding": -1.0,
+      "Instruction Adherence": -0.5,
+      "Completeness": 0.0,
+      "Actionability": 2.5,
+      "Factual Discipline": 0.0,
+      "Risk Handling": 3.0
+    },
+    "composite_delta": 0.33,
+    "pass_fail_agreement": true,
+    "evaluator_rationale": "The output demonstrates strong strategic decision-making with clear recommendations, actionable next steps, and comprehensive risk handling including budget alerts and escalation triggers. KB grounding is transparent about limitations (0 documents retrieved) but could better leverage the 50 available documents. The agent follows protocol well with proper formatting, escalation to Jeff Dusting, and clear option analysis.",
+    "evaluator_suggestions": [
+      "Attempt more specific KB queries or direct document access to better ground compliance capabilities assessment",
+      "Provide more detailed timeline breakdown for the 19-day compliance package development period"
+    ],
+    "evaluation_duration_seconds": 7.45,
+    "evaluator_tokens_used": 1994
+  },
+  {
+    "output_number": 6,
+    "issue": "CBSA-34",
+    "agent_role": "Compliance",
+    "task_type": "Systems engineering standards package",
+    "human_scores": {
+      "KB Grounding": 4,
+      "Instruction Adherence": 2,
+      "Completeness": 2,
+      "Actionability": 5,
+      "Factual Discipline": 3,
+      "Risk Handling": 1
+    },
+    "human_composite": 3.0,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 2.0,
+      "Instruction Adherence": 4.0,
+      "Completeness": 4.5,
+      "Actionability": 4.0,
+      "Factual Discipline": 3.0,
+      "Risk Handling": 3.5
+    },
+    "evaluator_composite": 3.38,
+    "evaluator_composite_full_6": 3.38,
+    "delta_per_dimension": {
+      "KB Grounding": -2.0,
+      "Instruction Adherence": 2.0,
+      "Completeness": 2.5,
+      "Actionability": -1.0,
+      "Factual Discipline": 0.0,
+      "Risk Handling": 2.5
+    },
+    "composite_delta": 0.38,
+    "pass_fail_agreement": true,
+    "evaluator_rationale": "The output provides a comprehensive and well-structured compliance package specification with clear requirements, content structure, and deliverable format. However, it fails to ground its claims in actual KB content, instead outlining what KB queries should be run rather than citing retrieved evidence. The output follows protocol well and includes all required elements with actionable next steps, but the lack of KB grounding significantly impacts its credibility.",
+    "evaluator_suggestions": [
+      "Execute the specified KB queries and cite actual retrieved content to ground all claims about CBS Group's CAPITAL framework and standards compliance",
+      "Include specific evidence from previous projects rather than just listing what evidence should be found",
+      "Add actual process mapping and methodology alignment rather than stating what should be mapped",
+      "Include quantified risk assessment for tender compliance requirements and potential gaps in standards alignment"
+    ],
+    "evaluation_duration_seconds": 7.5,
+    "evaluator_tokens_used": 2479
+  },
+  {
+    "output_number": 7,
+    "issue": "CBSA-35",
+    "agent_role": "Compliance",
+    "task_type": "Asset management standards package",
+    "human_scores": {
+      "KB Grounding": 4,
+      "Instruction Adherence": 2,
+      "Completeness": 3,
+      "Actionability": 3,
+      "Factual Discipline": 1,
+      "Risk Handling": 1
+    },
+    "human_composite": 2.55,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 2.0,
+      "Instruction Adherence": 4.0,
+      "Completeness": 4.5,
+      "Actionability": 4.0,
+      "Factual Discipline": 3.0,
+      "Risk Handling": 2.5
+    },
+    "evaluator_composite": 3.27,
+    "evaluator_composite_full_6": 3.27,
+    "delta_per_dimension": {
+      "KB Grounding": -2.0,
+      "Instruction Adherence": 2.0,
+      "Completeness": 1.5,
+      "Actionability": 1.0,
+      "Factual Discipline": 2.0,
+      "Risk Handling": 1.5
+    },
+    "composite_delta": 0.73,
+    "pass_fail_agreement": true,
+    "evaluator_rationale": "The output provides a comprehensive structure for the asset management standards package with clear sections and detailed KB research requirements. However, it lacks actual KB content citations or evidence, instead only specifying what searches should be conducted. The document framework is well-organised and actionable, but without grounded content from actual knowledge base retrieval, it remains a planning document rather than a compliance package.",
+    "evaluator_suggestions": [
+      "Execute the specified KB searches and incorporate actual retrieved content with specific citations throughout each section",
+      "Include concrete evidence of CBS Group's ISO 55001 certification status and asset management capabilities from KB sources",
+      "Add specific risk mitigation strategies and escalation triggers for asset management compliance issues",
+      "Provide actual case study content from Sydney Metro projects rather than just indicating where case studies should be placed",
+      "Include factual data and evidence from previous CAPITAL framework implementations in asset management contexts"
+    ],
+    "evaluation_duration_seconds": 7.57,
+    "evaluator_tokens_used": 2535
+  },
+  {
+    "output_number": 8,
+    "issue": "CBSA-23",
+    "agent_role": "Technical Writing",
+    "task_type": "Methodology and experience section",
+    "human_scores": {
+      "KB Grounding": 4,
+      "Instruction Adherence": 1,
+      "Completeness": 1,
+      "Actionability": 3,
+      "Factual Discipline": 1,
+      "Risk Handling": 1
+    },
+    "human_composite": 2.05,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 2.0,
+      "Instruction Adherence": 3.0,
+      "Completeness": 4.0,
+      "Actionability": 4.0,
+      "Factual Discipline": 3.0,
+      "Risk Handling": 2.0
+    },
+    "evaluator_composite": 2.95,
+    "evaluator_composite_full_6": 2.95,
+    "delta_per_dimension": {
+      "KB Grounding": -2.0,
+      "Instruction Adherence": 2.0,
+      "Completeness": 3.0,
+      "Actionability": 1.0,
+      "Factual Discipline": 2.0,
+      "Risk Handling": 1.0
+    },
+    "composite_delta": 0.9,
+    "pass_fail_agreement": true,
+    "evaluator_rationale": "The output provides a comprehensive brief structure but lacks actual KB grounding despite referencing specific documents and figures like '$180M savings' and '95% availability' without citing sources. While it follows a logical protocol structure and includes all required sections with clear actionable deliverables, it fails to demonstrate actual retrieval from the knowledge base and provides minimal risk consideration for a complex engineering tender.",
+    "evaluator_suggestions": [
+      "Include specific citations to KB documents and passages to support all claims about project outcomes and company capabilities",
+      "Add actual retrieved content from the knowledge base rather than just listing what should be searched",
+      "Incorporate comprehensive risk assessment including technical, commercial, and delivery risks with specific escalation triggers",
+      "Provide evidence-based validation of all quantified outcomes mentioned (savings figures, availability metrics)",
+      "Include specific KB document references for CAPITAL framework, personnel profiles, and project case studies mentioned"
+    ],
+    "evaluation_duration_seconds": 7.99,
+    "evaluator_tokens_used": 2277
+  },
+  {
+    "output_number": 9,
+    "issue": "CBSA-25",
+    "agent_role": "Pricing and Commercial",
+    "task_type": "Fee schedule and value proposition",
+    "human_scores": {
+      "KB Grounding": 2,
+      "Instruction Adherence": 1,
+      "Completeness": 3,
+      "Actionability": 3,
+      "Factual Discipline": 2,
+      "Risk Handling": 1
+    },
+    "human_composite": 2.0,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 2.0,
+      "Instruction Adherence": 4.0,
+      "Completeness": 4.0,
+      "Actionability": 3.5,
+      "Factual Discipline": 3.0,
+      "Risk Handling": 3.0
+    },
+    "evaluator_composite": 3.17,
+    "evaluator_composite_full_6": 3.17,
+    "delta_per_dimension": {
+      "KB Grounding": 0.0,
+      "Instruction Adherence": 3.0,
+      "Completeness": 1.0,
+      "Actionability": 0.5,
+      "Factual Discipline": 1.0,
+      "Risk Handling": 2.0
+    },
+    "composite_delta": 1.17,
+    "pass_fail_agreement": true,
+    "evaluator_rationale": "The output provides a comprehensive pricing strategy framework with clear structure and actionable elements, but lacks specific KB grounding despite referencing the need to query knowledge base content. While it mentions specific figures like '$180M Western Harbour Tunnel savings' and names like 'David Harper' and 'Jim Ellwood', these appear to be fabricated without proper KB citations. The output follows a logical protocol structure but falls short on evidence-based claims and specific risk quantification.",
+    "evaluator_suggestions": [
+      "Include specific KB document citations and retrieved content to ground all claims, particularly the $180M savings figure and personnel allocations",
+      "Replace fabricated names and figures with actual KB-sourced data or clearly flag assumptions and placeholders",
+      "Add specific risk quantification with probability and impact assessments rather than general risk categories",
+      "Provide more detailed escalation triggers and specific mitigation actions for identified commercial risks",
+      "Include actual rate schedules and multipliers from KB rather than generic references to 'CBS Group rate schedule'"
+    ],
+    "evaluation_duration_seconds": 7.86,
+    "evaluator_tokens_used": 2602
+  },
+  {
+    "output_number": 10,
+    "issue": "CBSA-20",
+    "agent_role": "Research CBS",
+    "task_type": "KB retrieval verification",
+    "human_scores": {
+      "KB Grounding": 1,
+      "Instruction Adherence": 1,
+      "Completeness": 1,
+      "Actionability": 1,
+      "Factual Discipline": 1,
+      "Risk Handling": 1
+    },
+    "human_composite": 1.0,
+    "human_dims_scored": 6,
+    "evaluator_scores": {
+      "KB Grounding": 5.0,
+      "Instruction Adherence": 4.8,
+      "Completeness": 4.9,
+      "Actionability": 4.7,
+      "Factual Discipline": 5.0,
+      "Risk Handling": 4.0
+    },
+    "evaluator_composite": 4.8,
+    "evaluator_composite_full_6": 4.8,
+    "delta_per_dimension": {
+      "KB Grounding": 4.0,
+      "Instruction Adherence": 3.8,
+      "Completeness": 3.9,
+      "Actionability": 3.7,
+      "Factual Discipline": 4.0,
+      "Risk Handling": 3.0
+    },
+    "composite_delta": 3.8,
+    "pass_fail_agreement": false,
+    "evaluator_rationale": "The output demonstrates excellent KB grounding with specific document citations, similarity scores, and direct quotes from retrieved content. The agent follows a clear verification protocol with comprehensive technical details and system status checks. All claims are evidence-based with no fabrication, though risk handling could be more explicit about potential failure scenarios.",
+    "evaluator_suggestions": [
+      "Add explicit escalation triggers for similarity score thresholds or system failure scenarios",
+      "Include specific risk mitigation steps if KB retrieval quality degrades below acceptable levels"
+    ],
+    "evaluation_duration_seconds": 5.39,
+    "evaluator_tokens_used": 1994
+  }
+]

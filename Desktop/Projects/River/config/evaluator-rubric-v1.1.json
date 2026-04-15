@@ -1,0 +1,79 @@
+{
+    "version_tag": "v1.1",
+    "pass_threshold": 3.8,
+    "dimensions": [
+        {
+            "name": "kb_grounding",
+            "weight": 0.30,
+            "description": "Did the output cite or ground its claims in retrieved KB content? Depth of retrieval matters — shallow or perfunctory queries do not count as grounded.",
+            "scoring_guide": {
+                "1": "No KB content referenced. Output appears entirely fabricated or based on general knowledge only. Includes cases where retrieval was attempted but analysis is too shallow to demonstrate grounding.",
+                "2": "Mentions KB content exists but does not cite specific documents or passages.",
+                "3": "References KB content but citations are vague or incomplete. Some claims ungrounded.",
+                "4": "Most claims grounded in specific KB documents with named retrieval queries and result counts. Minor gaps in citation.",
+                "5": "All substantive claims grounded in cited KB content. Retrieval evidence clear: specific documents, passages, and similarity signals cited."
+            }
+        },
+        {
+            "name": "instruction_adherence",
+            "weight": 0.20,
+            "description": "Did the output follow the agent's AGENTS.md protocol, including delegation expectations (do not assign tasks to humans where a suitable agent exists or should be created)?",
+            "scoring_guide": {
+                "1": "Output ignores the heartbeat/protocol entirely or produces ad hoc content. Includes cases where the agent assigns work to humans that should be delegated to an existing or newly-created agent.",
+                "2": "Follows some protocol steps but skips mandatory sections, checks, or delegation responsibilities.",
+                "3": "Follows the protocol structure but misses nuances, ordering requirements, or escalation paths.",
+                "4": "Follows the protocol with minor deviations that do not affect output quality or delegation outcome.",
+                "5": "Strict adherence to all protocol steps, formatting, structure, and delegation expectations."
+            }
+        },
+        {
+            "name": "completeness",
+            "weight": 0.15,
+            "description": "Were all required sections, fields, or steps present, including escalations and verification loops?",
+            "scoring_guide": {
+                "1": "Major sections or required fields missing. Includes cases where blockers are reported but not escalated or delegated for resolution.",
+                "2": "Several required elements missing or stub-only. No verification loop for effectiveness of changes.",
+                "3": "Most required elements present but some are thin, placeholder, or lack follow-through mechanisms.",
+                "4": "All required elements present with adequate detail, including closure of open threads.",
+                "5": "All required elements present with thorough detail, no gaps, and explicit verification that outputs meet their intent."
+            }
+        },
+        {
+            "name": "actionability",
+            "weight": 0.10,
+            "description": "Can a human act on the output without asking follow-up questions? Does it connect to dependent agents/teams where required?",
+            "scoring_guide": {
+                "1": "Output is vague, abstract, or requires significant clarification. No linkage to dependent agents/teams where such linkage is required.",
+                "2": "Some actionable content but key details missing (who, when, how, what source).",
+                "3": "Actionable for someone with context but missing specifics for delegation or downstream handoff.",
+                "4": "Clear actions with owners, deadlines, next steps, and named dependent agents. Minor gaps.",
+                "5": "Fully self-contained: a reader can execute every recommendation without further input, and downstream agent handoffs are wired explicitly."
+            }
+        },
+        {
+            "name": "factual_discipline",
+            "weight": 0.20,
+            "description": "Did the output avoid fabrication, unstated assumptions, or claims beyond the evidence in retrieved material or client requirements?",
+            "scoring_guide": {
+                "1": "Contains fabricated data, invented references, or false claims. Includes cases where the output assumes client requirements (e.g., a specific framework) that the client has not specified.",
+                "2": "Mixes factual content with unattributed speculation or assumptions presented as fact.",
+                "3": "Mostly factual but includes hedged speculation without flagging it.",
+                "4": "Factual claims are accurate and sourced. Speculation clearly flagged. Assumptions about client requirements are declared explicitly.",
+                "5": "All claims are evidence-based. Uncertainty explicitly stated. No assumptions about unspecified client requirements. No fabrication."
+            }
+        },
+        {
+            "name": "risk_handling",
+            "weight": 0.05,
+            "description": "Were risks, caveats, and escalation triggers flagged appropriately? Scored strictly — most agent outputs do not currently meet the bar for 4 or above.",
+            "scoring_guide": {
+                "1": "No risk awareness. Recommendations presented without caveats, without identifying escalation triggers, and without flagging blockers or paused state.",
+                "2": "Acknowledges risk exists but does not specify, quantify, or assign an escalation owner.",
+                "3": "Identifies key risks but does not flag escalation triggers or mitigations.",
+                "4": "Identifies risks with concrete mitigations. Explicit escalation triggers present for high-impact items.",
+                "5": "Comprehensive risk handling: risks identified, quantified where possible, mitigations assigned, escalation criteria explicit, and governance-board visibility ensured where appropriate."
+            }
+        }
+    ],
+    "notes": "v1.1 — calibrated against Jeff's manual scoring of 10 outputs (S4-P8, 2026-04-16). Adjustments: (a) Risk Handling weight halved from 0.10 to 0.05 — evaluator v1.0 showed a +1.95 bias on this dimension, indicating systematic lenience that a weight reduction partially mitigates while scoring-guide language is tightened. (b) Actionability weight reduced from 0.15 to 0.10 — bias +1.07. (c) KB Grounding weight raised from 0.25 to 0.30 — the only dimension where evaluator under-scored relative to Jeff (bias −0.56); Jeff treats shallow retrieval as ungrounded. (d) Factual Discipline weight raised from 0.15 to 0.20 — promoted because Jeff routinely penalises assumed client requirements (especially CAPITAL framework). (e) Pass threshold raised from 3.5 to 3.8 as partial compensation for residual evaluator lenience (+0.73 with new weights). (f) Scoring-guide descriptions extended to incorporate Jeff's explicit criticisms (delegation to humans, shallow retrieval, assumed frameworks, missing verification loops). Agreement remains 6–7/10 — evaluator readiness is CONDITIONAL and requires a second calibration pass after 20+ further scored outputs before unconditional activation. See docs/hyper-agent-v1/CALIBRATION_REPORT.md for full analysis."
+}

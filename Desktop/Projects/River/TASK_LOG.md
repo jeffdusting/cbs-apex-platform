@@ -1267,3 +1267,58 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 - **Category normalisation.** P7 should decide whether to rewrite category labels to match the new canonical folder taxonomy or leave category as provenance-metadata. Either choice is defensible; consistency matters for agent routing.
 
 **Next phase:** P7 (WR Reconfig) — depends on this phase only. P6 already complete (parallel session, tag `stage4-P6-cbs-verify`). P8 (Calibration) requires P6 + Jeff's scores — P6 ✓, scores pending. Per bootstrap rule (first option listed): **P7**.
+
+---
+
+## S4-P8: Evaluator Calibration
+
+**Date:** 16 April 2026
+**Status:** COMPLETE (evaluator readiness: CONDITIONAL)
+**Git Tag:** stage4-P8-calibration
+
+- **Outputs compared:** 10 (9 fully scored, 1 partial on 4 of 6 dimensions — Tender Intelligence heartbeat, where Jeff judged KB Grounding and Instruction Adherence as not applicable)
+- **Source of human scores:** `docs/hyper-agent-v1/EVALUATOR_CALIBRATION_SCORING.xlsx` (Jeff's manual scoring sheet)
+- **Evaluator model:** `claude-sonnet-4-20250514`
+- **Pass/fail agreement:** 6/10 (60%) — below the 80% target
+- **Overall bias (evaluator − human composite):** +0.878
+- **Per-dimension bias (evaluator − human):** KB Grounding −0.56, Instruction Adherence +1.20, Completeness +1.49, Actionability +1.07, Factual Discipline +0.65, Risk Handling +1.95
+- **Max single-output delta:** 3.80 (Output 10 — Research CBS / KB retrieval verification. Jeff 1.00, evaluator 4.80.)
+- **Rubric adjusted:** YES — `config/evaluator-rubric-v1.1.json` created. Weights: KB Grounding 0.25→0.30, Factual Discipline 0.15→0.20, Actionability 0.15→0.10, Risk Handling 0.10→0.05. Threshold: 3.5→3.8. Scoring-guide language extended to capture Jeff's explicit penalties (delegation to humans, shallow retrieval, assumed client frameworks, missing verification loops).
+- **Rubric activation:** v1.1 inserted to `rubric_versions` with `active=false` (deviation from the phase's auto-activate rule, for safety). v1.0 remains active. Operator approval required to flip activation once agreement ≥ 80% on an expanded calibration set.
+- **Evaluator readiness:** CONDITIONAL. Report details at `docs/hyper-agent-v1/CALIBRATION_REPORT.md`.
+
+### Files Created / Modified
+
+- `scripts/parse-calibration-scores.py` — extended to parse the xlsx scoring sheet (preferred) with markdown fallback; handles partial-scoring rows via weight normalisation.
+- `scripts/calibrate-evaluator.py` — new. Reads the scored outputs plus the full output text from `EVALUATOR_CALIBRATION.md`, submits each to Claude Sonnet 4 with the active rubric, writes comparison JSON with per-dim deltas and pass/fail agreement.
+- `config/calibration-scores.json` — regenerated from xlsx; 10 scored outputs.
+- `config/calibration-comparison.json` — new. Per-output human vs evaluator scores, deltas, agreements, rationale.
+- `config/evaluator-rubric-v1.1.json` — new. Adjusted weights, threshold, and scoring-guide language.
+- `docs/hyper-agent-v1/CALIBRATION_REPORT.md` — new. Methodology, per-output comparison, per-dimension bias, pass/fail agreement, rubric adjustment rationale, evaluator readiness conclusion, operator activation command.
+
+### Supabase Changes
+
+- Inserted row into `rubric_versions` with `version_tag='v1.1'`, `pass_threshold=3.8`, `active=false`, v1.1 weight distribution. v1.0 row unchanged.
+
+### Gate Verification
+
+- PASS: Comparison data present
+- PASS: Calibration report present
+- WARN: Pass/fail agreement 6/10 (below the 8/10 bar). Rubric adjustment (v1.1) produced and documented; activation deferred pending re-calibration.
+
+### Surprising / Non-Obvious Findings
+
+- **The evaluator is systematically lenient across 5 of 6 dimensions.** Only KB Grounding runs stricter than Jeff; the other five all over-score. Risk Handling is the most extreme (+1.95). This is a calibration shape, not a single-dimension error — weight redistribution alone cannot close the gap.
+- **Four of ten outputs (O1, O2, O3, O10) disagree by more than any rubric-arithmetic change can fix.** O10 is the most striking (Jeff 1.00, evaluator 4.80). These need scoring-guide language updates and a re-run, not just weight tweaks.
+- **Jeff's scoring notes are highly actionable.** They name specific agent behaviours the evaluator missed: assigning work to humans instead of creating new agents, assuming client specifications (CAPITAL framework), shallow retrieval passed off as grounded, blockers reported without delegation, verification loops absent. The v1.1 scoring guides now incorporate these explicitly.
+- **A grid search showed 9/10 agreement is only achievable at threshold ≥ 4.1**, which drops all of Jeff's PASS outputs below the line — mathematically close but operationally wrong. Rejected as a calibration outcome.
+- **v1.1 was deliberately inserted as inactive.** Auto-activating a rubric with residual +0.73 bias would corrupt the live correction-proposal pipeline. The report includes the exact curl commands the operator should run after re-calibration confirms alignment.
+
+### Known Issues / Open Work for P9
+
+- Re-run the evaluator against the same 10 outputs using v1.1 scoring-guide language to measure the language-only improvement isolated from weight/threshold changes.
+- Score 20+ additional live-trace outputs across Tender Intelligence, Tender Coordination, and Research CBS (the three roles with the largest disagreements). Include heartbeats, tender assemblies, and retrieval-heavy tasks.
+- Resolve the O10 disagreement specifically — the largest single-output delta in the calibration set. Either Jeff's scoring of KB retrieval-verification tasks is stricter than the current rubric reflects, or the evaluator misreads retrieval-verification outputs. One of the two must change.
+- Consider a few-shot prompting approach that gives the evaluator worked examples of Jeff's 1/2/3/4/5 per dimension, rather than descriptions only.
+
+**Next phase:** P7 (WR Reconfig) remains outstanding and is the prerequisite for P9. P9 (Verification + Critique) depends on *all* prior phases complete, so P7 must run before P9. If P7 is not yet complete in a parallel session (check `git tag | grep stage4-P7`), run **P7** next; otherwise **P9**.
