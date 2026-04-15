@@ -1,0 +1,34 @@
+{
+    "sync_evaluation": {
+        "description": "Outputs that block on evaluator score before delivery. High-value or client-facing.",
+        "trigger_conditions": [
+            {"task_type": "go_no_go_assessment", "reason": "Tender decision with financial implications"},
+            {"task_type": "board_paper", "reason": "Governance document for directors"},
+            {"task_type": "ca_fill", "reason": "Client-facing legal document"},
+            {"task_type": "executive_brief", "reason": "External stakeholder communication"},
+            {"task_type": "white_paper_draft", "reason": "Published content representing the firm"}
+        ],
+        "threshold": 3.5,
+        "on_fail": "set_in_review_and_notify"
+    },
+    "async_evaluation": {
+        "description": "Outputs scored in background. Quality data collected but delivery not blocked.",
+        "trigger_conditions": [
+            {"task_type": "tender_scan", "reason": "Internal intelligence — low reputational risk"},
+            {"task_type": "email_triage", "reason": "Internal routing — human reviews anyway"},
+            {"task_type": "interest_test", "reason": "Binary pass/fail — evaluator adds trend data"},
+            {"task_type": "kb_intake", "reason": "Content ingestion — data quality, not output quality"},
+            {"task_type": "monitoring_digest", "reason": "Internal operational signal"}
+        ],
+        "threshold": null,
+        "on_fail": "log_only"
+    },
+    "self_check_only": {
+        "description": "Outputs where only the agent's self-check runs. No external evaluation.",
+        "trigger_conditions": [
+            {"task_type": "heartbeat_idle", "reason": "No substantive output — nothing to evaluate"},
+            {"task_type": "delegation_routing", "reason": "Internal workflow step — not a deliverable"},
+            {"task_type": "status_update", "reason": "Brief acknowledgement — not substantive"}
+        ]
+    }
+}

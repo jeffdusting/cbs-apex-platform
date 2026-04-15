@@ -1,0 +1,79 @@
+{
+    "version_tag": "v1.0",
+    "pass_threshold": 3.5,
+    "dimensions": [
+        {
+            "name": "kb_grounding",
+            "weight": 0.25,
+            "description": "Did the output cite or ground its claims in retrieved KB content?",
+            "scoring_guide": {
+                "1": "No KB content referenced. Output appears entirely fabricated or based on general knowledge only.",
+                "2": "Mentions KB content exists but does not cite specific documents or passages.",
+                "3": "References KB content but citations are vague or incomplete. Some claims ungrounded.",
+                "4": "Most claims grounded in specific KB documents. Minor gaps in citation.",
+                "5": "All substantive claims grounded in cited KB content. Retrieval evidence clear."
+            }
+        },
+        {
+            "name": "instruction_adherence",
+            "weight": 0.20,
+            "description": "Did the output follow the agent's AGENTS.md protocol?",
+            "scoring_guide": {
+                "1": "Output ignores the heartbeat protocol and produces ad hoc content.",
+                "2": "Follows some protocol steps but skips mandatory sections or checks.",
+                "3": "Follows the protocol structure but misses nuances or ordering requirements.",
+                "4": "Follows the protocol with minor deviations that do not affect output quality.",
+                "5": "Strict adherence to all protocol steps, formatting requirements, and output structure."
+            }
+        },
+        {
+            "name": "completeness",
+            "weight": 0.15,
+            "description": "Were all required sections, fields, or steps present?",
+            "scoring_guide": {
+                "1": "Major sections or required fields missing.",
+                "2": "Several required elements missing or stub-only.",
+                "3": "Most required elements present but some are thin or placeholder.",
+                "4": "All required elements present with adequate detail.",
+                "5": "All required elements present with thorough detail and no gaps."
+            }
+        },
+        {
+            "name": "actionability",
+            "weight": 0.15,
+            "description": "Can a human act on the output without asking follow-up questions?",
+            "scoring_guide": {
+                "1": "Output is vague, abstract, or requires significant clarification.",
+                "2": "Some actionable content but key details missing (who, when, how).",
+                "3": "Actionable for someone with context but missing specifics for delegation.",
+                "4": "Clear actions with owners, deadlines, and next steps. Minor gaps.",
+                "5": "Fully self-contained: a reader can execute every recommendation without further input."
+            }
+        },
+        {
+            "name": "factual_discipline",
+            "weight": 0.15,
+            "description": "Did the output avoid fabrication, speculation, or claims beyond evidence?",
+            "scoring_guide": {
+                "1": "Contains fabricated data, invented references, or false claims.",
+                "2": "Mixes factual content with unattributed speculation or assumptions.",
+                "3": "Mostly factual but includes hedged speculation without flagging it.",
+                "4": "Factual claims are accurate and sourced. Speculation clearly flagged.",
+                "5": "All claims are evidence-based. Uncertainty explicitly stated. No fabrication."
+            }
+        },
+        {
+            "name": "risk_handling",
+            "weight": 0.10,
+            "description": "Were risks, caveats, and escalation triggers flagged appropriately?",
+            "scoring_guide": {
+                "1": "No risk awareness. Presents recommendations without caveats.",
+                "2": "Acknowledges risk exists but does not specify or quantify.",
+                "3": "Identifies key risks but does not flag escalation triggers or mitigations.",
+                "4": "Identifies risks with mitigations. Escalation triggers present for high-impact items.",
+                "5": "Comprehensive risk handling: identified, quantified where possible, mitigated, escalation criteria clear."
+            }
+        }
+    ],
+    "notes": "Initial rubric for tender lifecycle benchmark. Weights calibrated for professional services context where KB grounding and factual discipline are paramount. Adjust after 50+ scored outputs."
+}
