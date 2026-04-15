@@ -1,0 +1,435 @@
+{
+  "total_rows": 15655,
+  "unique_content_hashes": 1273,
+  "duplicate_hash_groups": 1259,
+  "excess_rows_removable": 14382,
+  "percentage_reduction": 91.87,
+  "category_breakdown_groups": {
+    "same_source_file_reingest": 1157,
+    "cross_source_duplicate": 102
+  },
+  "category_breakdown_excess_rows": {
+    "same_source_file_reingest": 11624,
+    "cross_source_duplicate": 2758
+  },
+  "top_15_duplicate_groups": [
+    {
+      "hash": "30d5b410f01d0dd8",
+      "count": 55,
+      "content_len": 4070,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 5,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part58.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "56f980c117605b1f",
+      "count": 55,
+      "content_len": 4579,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 5,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part58.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "69868dc17132dbd5",
+      "count": 55,
+      "content_len": 4322,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 5,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part58.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "768ec0bd0111a378",
+      "count": 55,
+      "content_len": 4420,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 5,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part58.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "85e4d2092560812e",
+      "count": 55,
+      "content_len": 4591,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 5,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part58.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "afd5ce901f9c55b2",
+      "count": 55,
+      "content_len": 4497,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 5,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part58.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "fff3d78d0b4c0bd2",
+      "count": 55,
+      "content_len": 7869,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 5,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part58.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "768d57c5d74ba483",
+      "count": 44,
+      "content_len": 4566,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "e25273245f6237c3",
+      "count": 44,
+      "content_len": 4656,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "04557e9dea91b5d7",
+      "count": 44,
+      "content_len": 7823,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "e2acaa0780b236d9",
+      "count": 44,
+      "content_len": 4582,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part03.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part49.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part50.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part62.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "9b61e57142b55871",
+      "count": 44,
+      "content_len": 7989,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part30.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part52.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part54.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part55.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "5c6365e015a20a4e",
+      "count": 44,
+      "content_len": 7933,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part30.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part52.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part54.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part55.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "22cf9982bc9f3cef",
+      "count": 44,
+      "content_len": 7980,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part43.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part44.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part45.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part46.md",
+          "rows": 11
+        }
+      ]
+    },
+    {
+      "hash": "2a895beb3f42d405",
+      "count": 44,
+      "content_len": 7896,
+      "category": "cross_source_duplicate",
+      "distinct_source_files": 4,
+      "has_email_message_id": false,
+      "sample_source_files": [
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part43.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part44.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part45.md",
+          "rows": 11
+        },
+        {
+          "source_file": "cbs-group-downer-alternate-funding-part46.md",
+          "rows": 11
+        }
+      ]
+    }
+  ]
+}

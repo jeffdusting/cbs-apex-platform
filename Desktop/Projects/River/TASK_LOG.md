@@ -888,3 +888,78 @@ Gate verification: PASS — all skills, templates, and docs present.
 - Five top-level Drive folders (`Commercial`, `HR`, `Legal`, `Marketing`, `Technical`) need to be created before reorg moves begin.
 
 **Next phase:** P2 (CBS Discovery) — runs independently of P3 (WR Dedup). Per PLAN.md parallel rules, either P2 or P3 may run next. Bootstrap rule picks the first option listed: **P2**.
+
+---
+
+## S4-P2: CBS KB Discovery
+
+**Date:** 15 April 2026
+**Programme:** stage4
+**Status:** COMPLETE — confirmation stop passed by operator ("proceed with your recommendations")
+
+### Tasks
+
+| Task | Status |
+|---|---|
+| 2.1 Quantify CBS KB (entity/category/timeline/email_message_id) | DONE — 15,655 rows / 242 files / 4 entities, 0 NULLs |
+| 2.2 Content-hash duplicate analysis + categorisation | DONE — 1,273 unique hashes, 14,382 excess rows (91.9%) |
+| 2.3 Orphan / stale content | DONE — 0 orphans, all source_file values exist on disk |
+| 2.4 match_documents threshold gap | DONE — **already implemented**, live test confirmed filtering works |
+| 2.5 Drive migration assessment | DONE — weighted 63 vs 64 (tie); recommend DEFER |
+| 2.6 Write CBS-DISCOVERY-SUMMARY.md | DONE — 300 lines, 11 sections |
+
+### Gate Verification
+
+- PASS: `Stage4/CBS-DISCOVERY-SUMMARY.md` exists (300 lines > 40 threshold)
+- PASS: `Stage4/data/cbs-audit-raw.json` exists
+- PASS: `Stage4/data/cbs-duplicate-report.json` exists
+- PASS: `Stage4/data/cbs-orphan-analysis.json` exists
+
+### Key Metrics
+
+- **Total CBS rows:** 15,655
+- **Distinct source files:** 242
+- **Unique content hashes:** 1,273
+- **Duplicate rows (removable):** 14,382 (**91.9% reduction**)
+- **Root cause:** `scripts/ingest-knowledge-base.py:159` uses raw `INSERT` with no idempotency. Mass re-ingest on 2026-04-12 created 14,229 rows on identical content (10× the original 1,422-row ingest on 2026-04-09). Email intake is NOT the cause (0 rows have `email_message_id`).
+- **match_documents threshold:** **PRESENT** (already fixed in `scripts/fix-match-documents.sql`). P4 does not need to upgrade; P4 should instead propagate `match_threshold=0.3` into agent callsites.
+- **Drive migration recommendation:** **DEFER** — weighted score essentially tied (63 vs 64); idempotency win can be achieved with a 1-line fix to the ingest script; 242 files is below the scale where Drive UI pays off; git-based review workflow is valuable for correction-driven content.
+- **Projected post-P4 row count:** ~1,273 (−91.9%)
+- **Corrections (PROTECTED):** 4 rows, all dated 2026-04-14, cbs-group entity
+
+### Files Created
+
+| File | Action |
+|---|---|
+| `Stage4/CBS-DISCOVERY-SUMMARY.md` | Created — 11-section discovery summary |
+| `Stage4/data/cbs-audit-raw.json` | Created — Task 2.1 output |
+| `Stage4/data/cbs-duplicate-report.json` | Created — Task 2.2 output |
+| `Stage4/data/cbs-orphan-analysis.json` | Created — Task 2.3 output |
+| `Stage4/scripts/fetch-cbs-documents.py` | Created — paginated CBS Supabase fetch with streamed hashing |
+| `Stage4/scripts/analyse-cbs-audit.py` | Created — generates Task 2.1-2.3 JSONs from cache |
+
+### Operator Decisions (confirmed via "proceed with your recommendations")
+
+| # | Decision | Resolution |
+|---|---|---|
+| 1 | Dedup tie-breaker when `created_at` is identical | Keep lowest `id` |
+| 2 | Category re-classification scope | Include in P4 — enhance ingest script to honour MANIFEST.md `category` field, re-ingest (now idempotent) |
+| 3 | Drive migration deferral | CONFIRMED — defer in this programme. Revisit only if CBS KB >500 files OR WR-CBS tooling unification becomes blocking |
+| 4 | 1,133 waterroads rows in CBS KB | Expected per PLAN.md (CBS agents need read access to WR content). No cross-entity leakage to fix |
+| 5 | `wr-board-papers-part02.md` 605-copies | Flag at P4 start for review — do not auto-delete from disk. Dedup will still reduce it to 1 row regardless |
+
+### Key Findings — Things PLAN.md Got Wrong
+
+- **Email intake is NOT the root cause.** PLAN.md §5 "Risks" and CBS-P0 hypothesis assumed email-intake accumulation. Actual cause is KB re-ingestion with no idempotency. The `cbs-kb-email-intake.py` script has apparently not produced any rows.
+- **`match_documents` threshold gap is ALREADY CLOSED.** PLAN.md Risk #1 and P4 spec both anticipated this work. It has been done. P4 scope should narrow accordingly.
+- **NULL entity tagging is a non-issue.** 0 NULLs found. PLAN.md expected some and flagged it as a P4 task.
+
+### Known Issues / Open Work for P4
+
+- P4 Priority 1 (BLOCKING): fix ingest script idempotency with `DELETE ... WHERE source_file = ?` before insert loop. Until this is merged, every ingest re-inflates the KB.
+- P4 Priority 2: emit `stage4/data/cbs-dedup-plan.json` dry-run BEFORE any delete operation.
+- P4 Priority 3: rebuild IVFFlat index with `lists = 36` after dedup.
+- P4 Priority 4: category normalisation via MANIFEST.md.
+- P4 Priority 5: audit agent-query callsites for `match_threshold=0.3` propagation.
+
+**Next phase:** P3 (WR Dedup) or P4 (CBS Cleanup) — both are now unblocked per PLAN.md dependency map. Per bootstrap rule (first option listed): **P3**. Recommend a fresh session; P4 is equally viable and independent.

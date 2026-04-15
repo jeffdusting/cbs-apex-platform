@@ -1,0 +1,112 @@
+{
+  "total_rows": 15655,
+  "distinct_source_files": 242,
+  "entity_distribution": {
+    "general": 55,
+    "cbs-group": 14446,
+    "shared": 21,
+    "waterroads": 1133
+  },
+  "category_distribution": {
+    "knowledge": 14228,
+    "governance": 154,
+    "ip": 170,
+    "methodology": 21,
+    "tender": 1016,
+    "financial": 57,
+    "competitor": 5,
+    "correction": 4
+  },
+  "source_classification": {
+    "kb_repo_flat": 15655
+  },
+  "top_20_source_files": [
+    {
+      "source_file": "wr-board-papers-part02.md",
+      "rows": 605
+    },
+    {
+      "source_file": "cbs-group-board-papers-part02.md",
+      "rows": 506
+    },
+    {
+      "source_file": "cbs-group-board-papers-part03.md",
+      "rows": 275
+    },
+    {
+      "source_file": "cbs-group-tender-vic-pas-panel-part03.md",
+      "rows": 219
+    },
+    {
+      "source_file": "cbs-group-tender-vic-pas-panel-part02.md",
+      "rows": 154
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part03.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part10.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part19.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part20.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part49.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part50.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part58.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part62.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part02.md",
+      "rows": 132
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part17.md",
+      "rows": 132
+    },
+    {
+      "source_file": "cbs-group-jv-egis-part07.md",
+      "rows": 132
+    },
+    {
+      "source_file": "cbs-group-tender-dhs-vic-kpi-part12.md",
+      "rows": 132
+    },
+    {
+      "source_file": "cbs-group-tender-dhs-vic-kpi-part13.md",
+      "rows": 132
+    },
+    {
+      "source_file": "cbs-group-tender-mbsc-mzf2-part02.md",
+      "rows": 132
+    },
+    {
+      "source_file": "cbs-group-tender-tfnsw-amss-part02.md",
+      "rows": 132
+    }
+  ],
+  "ingestion_timeline_by_month": {
+    "2026-04": 15655
+  },
+  "rows_with_email_message_id": 0,
+  "distinct_email_message_ids": 0,
+  "null_entity_rows": 0,
+  "null_category_rows": 0
+}

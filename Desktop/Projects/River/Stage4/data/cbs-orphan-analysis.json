@@ -1,0 +1,79 @@
+{
+  "on_disk_kb_files_indexed": 174,
+  "by_source_class": {
+    "kb_repo_flat": {
+      "total": 15655,
+      "on_disk": 15655
+    }
+  },
+  "missing_examples_by_class": {},
+  "rows_per_kb_file_distribution": {
+    "21-50": 69,
+    "11-20": 27,
+    "100+": 51,
+    "51-100": 81,
+    "1": 14
+  },
+  "top_15_most_reingested_kb_files": [
+    {
+      "source_file": "wr-board-papers-part02.md",
+      "rows": 605
+    },
+    {
+      "source_file": "cbs-group-board-papers-part02.md",
+      "rows": 506
+    },
+    {
+      "source_file": "cbs-group-board-papers-part03.md",
+      "rows": 275
+    },
+    {
+      "source_file": "cbs-group-tender-vic-pas-panel-part03.md",
+      "rows": 219
+    },
+    {
+      "source_file": "cbs-group-tender-vic-pas-panel-part02.md",
+      "rows": 154
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part03.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part10.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part19.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part20.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part49.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part50.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part58.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part62.md",
+      "rows": 143
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part02.md",
+      "rows": 132
+    },
+    {
+      "source_file": "cbs-group-downer-alternate-funding-part17.md",
+      "rows": 132
+    }
+  ]
+}
