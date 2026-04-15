@@ -22,14 +22,15 @@ The webhook accepts a JSON POST. The Power Automate flow parses the fields and p
 - **PLAIN TEXT ONLY** — use UPPERCASE for emphasis instead of bold/italic.
 - Always include the `url` field with the direct link to the issue in Paperclip.
 
-## Company IDs for URL Construction
+## Company IDs and Issue URL Prefixes
 
-| Entity | Company ID |
-|---|---|
-| CBS Group | fafce870-b862-4754-831e-2cd10e8b203c |
-| WaterRoads | 95a248d4-08e7-4879-8e66-5d1ff948e005 |
+| Entity | Company ID | Issue Prefix |
+|---|---|---|
+| CBS Group | fafce870-b862-4754-831e-2cd10e8b203c | CBSA |
+| WaterRoads | 95a248d4-08e7-4879-8e66-5d1ff948e005 | WAT |
 
-Issue URL format: `https://org.cbslab.app/companies/{companyId}/issues/{issueId}`
+Issue URL format: `https://org.cbslab.app/{issuePrefix}/issues/{issueIdentifier}`
+Example: `https://org.cbslab.app/CBSA/issues/CBSA-30`
 
 ## Posting a Notification
 
@@ -41,6 +42,10 @@ import httpx
 
 TEAMS_WEBHOOK_URL = os.environ["TEAMS_WEBHOOK_URL"]
 
+COMPANY_PREFIXES = {
+    "fafce870-b862-4754-831e-2cd10e8b203c": "CBSA",
+    "95a248d4-08e7-4879-8e66-5d1ff948e005": "WAT",
+}
 CBS_COMPANY_ID = "fafce870-b862-4754-831e-2cd10e8b203c"
 WR_COMPANY_ID = "95a248d4-08e7-4879-8e66-5d1ff948e005"
 
@@ -66,7 +71,7 @@ def post_notification(
         issue_identifier: Issue display ID (e.g. CBSA-25)
         summary: One sentence describing what happened
         action: What Jeff needs to do
-        company_id: Company UUID for URL construction
+        company_id: Company UUID for prefix lookup
         file_url: Optional SharePoint URL to a generated document
         file_name: Optional display name for the file link
 
@@ -89,7 +94,8 @@ def post_notification(
     # Strip markdown
     clean = lambda s: s.replace("**","").replace("*","").replace("`","").replace("#","") if s else ""
 
-    url = f"https://org.cbslab.app/companies/{company_id}/issues/{issue_id}"
+    prefix = COMPANY_PREFIXES.get(company_id, "CBSA")
+    url = f"https://org.cbslab.app/{prefix}/issues/{issue_identifier or issue_id}"
 
     payload = {
         "title": clean(f"{notification_type} - {entity}"),

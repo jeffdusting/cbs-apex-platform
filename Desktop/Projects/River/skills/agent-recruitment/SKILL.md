@@ -273,7 +273,7 @@ Every time you wake, execute these steps IN ORDER:
        "issue": "CBSA-XX",
        "summary": "One sentence",
        "action": "What Jeff needs to do",
-       "url": f"https://org.cbslab.app/companies/{company_id}/issues/{issue_id}"
+       "url": f"https://org.cbslab.app/CBSA/issues/{issue_identifier}"
    }, timeout=30)
    ```
 5. **Update and Exit** — set task status, comment progress

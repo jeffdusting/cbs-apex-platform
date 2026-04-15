@@ -20,6 +20,11 @@ const COMPANY_IDS = {
     WR: '95a248d4-08e7-4879-8e66-5d1ff948e005',
 };
 
+const COMPANY_PREFIXES = {
+    CBS: 'CBSA',
+    WR: 'WAT',
+};
+
 const AGENT_IDS = {
     CBS: '01273fb5-3af2-4b2e-bf92-06da5dc8eb10',
     WR: '00fb11a2-2ede-43b0-b680-9d4b12551bb8',
@@ -140,7 +145,8 @@ function processThread(thread, processedLabel, cookie) {
         setIssueStatus(issue.id, 'todo', cookie);
 
         // Reply to sender
-        const issueUrl = `${PAPERCLIP_BASE}/companies/${company_id}/issues/${issue.id}`;
+        const issuePrefix = COMPANY_PREFIXES[entity] || 'CBSA';
+        const issueUrl = `${PAPERCLIP_BASE}/${issuePrefix}/issues/${issue.identifier || issue.id}`;
         email.reply(
             `Your task has been submitted to River.\n\n` +
             `Reference: ${issue.identifier}\n` +

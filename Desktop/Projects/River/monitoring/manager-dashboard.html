@@ -385,6 +385,7 @@
 <div class="topbar">
     <h1>River <span>Review Queue</span></h1>
     <div class="topbar-right">
+        <a href="tender-dashboard.html" style="font-size:0.8rem;color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px" onmouseover="this.style.color='var(--ink)';this.style.borderBottomColor='var(--accent)'" onmouseout="this.style.color='var(--muted)';this.style.borderBottomColor='transparent'">Tender Pipeline →</a>
         <div class="topbar-meta">
             <span class="status-dot live" id="conn-dot"></span>
             <span id="conn-status">Connecting...</span>
@@ -620,7 +621,7 @@ async function toggleCard(issueId) {
         <button class="action-btn action-approve" onclick="event.stopPropagation();approveIssue('${issueId}')">Approve</button>
         <button class="action-btn action-feedback" onclick="event.stopPropagation();feedbackIssue('${issueId}')">Give Feedback</button>
         <button class="action-btn action-reject" onclick="event.stopPropagation();rejectIssue('${issueId}')">Return</button>
-        <a class="action-link" href="https://org.cbslab.app/companies/${issue?.companyId}/issues/${issueId}" target="_blank" onclick="event.stopPropagation()">Open in Paperclip ↗</a>
+        <a class="action-link" href="https://org.cbslab.app/CBSA/issues/${issue?.identifier || issueId}" target="_blank" onclick="event.stopPropagation()">Open in Paperclip ↗</a>
     </div>`;
 
     contentEl.innerHTML = html;
