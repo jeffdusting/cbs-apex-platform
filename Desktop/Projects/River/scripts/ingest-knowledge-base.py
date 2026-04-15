@@ -136,6 +136,17 @@ def main():
         chunks = chunk_text(content)
         print(f"    {len(chunks)} chunk(s), {len(content)} chars total")
 
+        # Idempotency fix (S4-P4 §8.1) — wipe any prior rows for this
+        # source_file before inserting new chunks so re-runs don't accumulate
+        # duplicates. Corrections live in a separate ingest path
+        # (ingest-correction.py) so are untouched.
+        try:
+            supabase.table("documents").delete().eq(
+                "source_file", filename
+            ).execute()
+        except Exception as e:
+            print(f"    WARNING: pre-delete failed for {filename}: {e}")
+
         for i, chunk in enumerate(chunks):
             try:
                 # Generate embedding via Voyage AI

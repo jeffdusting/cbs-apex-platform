@@ -963,3 +963,71 @@ Gate verification: PASS — all skills, templates, and docs present.
 - P4 Priority 5: audit agent-query callsites for `match_threshold=0.3` propagation.
 
 **Next phase:** P3 (WR Dedup) or P4 (CBS Cleanup) — both are now unblocked per PLAN.md dependency map. Per bootstrap rule (first option listed): **P3**. Recommend a fresh session; P4 is equally viable and independent.
+
+---
+
+## S4-P4: CBS Cleanup
+
+**Date:** 15 April 2026
+**Status:** COMPLETE (P3 being executed in parallel by a separate session)
+**Git Tag:** stage4-P4-cbs-cleanup
+
+### Summary
+
+| Metric | Value |
+|---|---|
+| Rows before | 15,655 |
+| Rows deleted | 14,382 (91.9%) |
+| Rows after | 1,273 |
+| Correction rows preserved | 4 / 4 |
+| NULL entities before → after | 0 → 0 |
+| Hash groups total | 1,273 |
+| Hash groups with duplicates | 1,259 |
+| `match_documents` live threshold test (0.3, cbs-group filter) | 200 OK, 3 rows |
+| Ingest idempotency fix applied | YES (`scripts/ingest-knowledge-base.py`) |
+
+### Files Created
+
+- `scripts/cbs-kb-dedup.py` — dedup tool (hash-group collapse, --dry-run, --preserve-categories, --report)
+- `scripts/cbs-match-documents-upgrade.sql` — canonical signature, already-applied idempotent re-run
+- `scripts/cbs-ivfflat-rebuild.sql` — rebuild IVFFlat with `lists=36` (requires manual apply in Supabase SQL Editor — `SUPABASE_DB_URL` not available in local env)
+- `stage4/data/cbs-dedup-dryrun.json` — dry-run report (matched discovery projections exactly)
+- `stage4/data/cbs-dedup-results.json` — live execution report
+- `stage4/data/cbs-match-threshold-audit.json` — callsite audit
+
+### Files Modified
+
+- `scripts/ingest-knowledge-base.py:136-148` — added `DELETE ... WHERE source_file = ?` before chunk insert loop (idempotency fix per §8.1). Non-idempotent re-ingest was the root cause of the 15,655 row inflation; fix must land before the next ingest run.
+
+### Task Status
+
+| Task | Status | Notes |
+|---|---|---|
+| 4.1 Dedup script + execute | DONE | 14,382 rows deleted; 100% match to dry-run |
+| 4.1b Ingest idempotency fix (§8.1 BLOCKING) | DONE | pre-delete per source_file |
+| 4.2 Entity tagging | N/A | 0 NULLs pre and post; 98 rows of `waterroads` entity in CBS is intentional (cross-entity sharing per PLAN.md) |
+| 4.3 `match_documents` threshold | ALREADY LIVE | SQL captured for traceability; live verification 200 OK |
+| 4.4 IVFFlat rebuild (lists=36) | SQL PREPARED | Requires manual apply in Supabase SQL Editor (`scripts/cbs-ivfflat-rebuild.sql`). Gate passes regardless — retrieval still correct under old `lists=100`, just suboptimal |
+| 4.5 Drive migration | DEFERRED | Per CBS-DISCOVERY §7.2. Trigger to re-evaluate: CBS KB > 500 files OR WR-CBS tooling unification becomes blocking |
+| 4.6 match_threshold propagation audit | DONE | Only callsite in runtime is `skills/supabase-query/SKILL.md` which already passes `match_threshold=0.5` explicitly. Empirical tuning to 0.3 deferred to P5/P6 verification |
+
+### Gate Verification
+
+- PASS: Dedup script compiles
+- PASS: Dedup results artefact present
+- PASS: match_documents SQL artefact present
+- PASS: match_documents threshold live (200 OK with `match_threshold=0.3` and `filter_entity=cbs-group`)
+- PASS: Post-dedup row count: 1,273 (projected 1,273)
+
+### Surprising / Non-Obvious Findings
+
+- The "knowledge" category bucket collapsed from 13,143 → 4 rows for `cbs-group`. The 2026-04-12 re-ingest via `ingest-knowledge-base.py` hard-codes `category='knowledge'`, but those chunks had byte-identical content to earlier 2026-04-09 rows which were properly categorised (tender/ip/governance/financial). Earliest-created-wins tie-break naturally restored correct categorisation without a separate MANIFEST.md re-ingest pass — P2 Priority 4 (category normalisation) became a no-op.
+- Dry-run and live execution produced identical row counts (14,382 deletes, 1,273 survivors), confirming the plan was complete before execution.
+
+### Open Items Deferred to Later Phases
+
+- **IVFFlat `lists=36` rebuild** — SQL is ready at `scripts/cbs-ivfflat-rebuild.sql`. Apply manually via Supabase SQL Editor before P6 so retrieval quality is measured with the correct index geometry.
+- **Empirical `match_threshold` tuning** — P6 (CBS Verify) should measure retrieval quality at 0.3, 0.5, 0.7 and select the tuned default.
+- **Re-ingest from disk to validate idempotency** — trivial but deferred to avoid perturbing the now-clean state mid-programme. P6 can run a single-file double-ingest as a regression guard.
+
+**Next phase:** P5 (WR Verify) — requires P3 (WR Dedup) which is executing in parallel. P6 (CBS Verify) depends on this phase and is now unblocked; P5/P6 can run in either order. Per bootstrap rule (first option listed): **P5**. If P3 is not yet complete, run **P6** first.

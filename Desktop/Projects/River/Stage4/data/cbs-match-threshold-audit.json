@@ -1,0 +1,22 @@
+{
+  "scope": "Audit of match_documents callsites for explicit match_threshold (S4-P4 \u00a78.5)",
+  "findings": [
+    {
+      "path": "skills/supabase-query/SKILL.md",
+      "invokes_rpc": true,
+      "mentions_threshold": true,
+      "defines_function_only": false
+    },
+    {
+      "path": "scripts/cbs-match-documents-upgrade.sql",
+      "invokes_rpc": true,
+      "mentions_threshold": true,
+      "defines_function_only": true
+    }
+  ],
+  "summary": {
+    "files_invoking_match_documents": 2,
+    "files_passing_threshold": 2,
+    "files_not_passing_threshold": 0
+  }
+}

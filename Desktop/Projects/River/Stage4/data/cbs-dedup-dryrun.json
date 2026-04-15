@@ -1,0 +1,1447 @@
+{
+  "mode": "dry-run",
+  "rows_before": 15655,
+  "hash_groups_total": 1273,
+  "hash_groups_with_duplicates": 1259,
+  "rows_to_delete": 14382,
+  "rows_preserved_by_category": 0,
+  "rows_after_projected": 1273,
+  "preserve_categories": [
+    "correction"
+  ],
+  "sample_deletions": [
+    {
+      "id": 1440,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:08:27.576101+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 2070,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:19:50.30733+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 3621,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:32:55.151445+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 4945,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:45:20.249466+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 6487,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:57:17.258783+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 7783,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:07:21.162165+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 9345,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:19:06.428528+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 10638,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:32:10.020896+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 12217,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:45:00.668471+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 14278,
+      "reason": "hash_duplicate",
+      "hash_prefix": "a3e726bdfbe8b12a",
+      "winner_id": 18,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T11:09:15.894556+00:00",
+      "winner_created_at": "2026-04-09T06:01:20.078966+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 1441,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:08:30.017407+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 2072,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:19:52.872182+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 3625,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:32:57.901829+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 4948,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:45:22.614785+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 6490,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T09:57:19.185323+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 7786,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:07:23.083225+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 9349,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:19:08.374203+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 10640,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:32:11.953907+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 12220,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T10:45:02.77662+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    },
+    {
+      "id": 14279,
+      "reason": "hash_duplicate",
+      "hash_prefix": "e6253bd25b0b4748",
+      "winner_id": 19,
+      "source_file": "MANIFEST.md",
+      "winner_source_file": "MANIFEST.md",
+      "loser_created_at": "2026-04-12T11:09:18.904488+00:00",
+      "winner_created_at": "2026-04-09T06:01:22.316896+00:00",
+      "category": "knowledge"
+    }
+  ],
+  "per_source_file_impact": {
+    "MANIFEST.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "RETRIEVAL_EVAL.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-board-papers-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-board-papers-part02.md": {
+      "before": 506,
+      "deleted": 460,
+      "after": 46
+    },
+    "cbs-group-board-papers-part03.md": {
+      "before": 275,
+      "deleted": 250,
+      "after": 25
+    },
+    "cbs-group-board-papers-part04.md": {
+      "before": 99,
+      "deleted": 90,
+      "after": 9
+    },
+    "cbs-group-board-papers-part05.md": {
+      "before": 88,
+      "deleted": 80,
+      "after": 8
+    },
+    "cbs-group-board-papers-part06.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-capability-statements-part01.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-capability-statements-part02.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-capability-statements-part03.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-capital-methodology-part01.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-capital-methodology-part02.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-capital-methodology-part03.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part02.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-downer-alternate-funding-part03.md": {
+      "before": 143,
+      "deleted": 130,
+      "after": 13
+    },
+    "cbs-group-downer-alternate-funding-part04.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part05.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part06.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part07.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part08.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part09.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part10.md": {
+      "before": 143,
+      "deleted": 130,
+      "after": 13
+    },
+    "cbs-group-downer-alternate-funding-part11.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part12.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-downer-alternate-funding-part13.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-downer-alternate-funding-part14.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part15.md": {
+      "before": 110,
+      "deleted": 100,
+      "after": 10
+    },
+    "cbs-group-downer-alternate-funding-part16.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part17.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-downer-alternate-funding-part18.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-downer-alternate-funding-part19.md": {
+      "before": 143,
+      "deleted": 130,
+      "after": 13
+    },
+    "cbs-group-downer-alternate-funding-part20.md": {
+      "before": 143,
+      "deleted": 142,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part21.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part22.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-downer-alternate-funding-part23.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-downer-alternate-funding-part24.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part25.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part26.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part27.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part28.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-downer-alternate-funding-part29.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part30.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-downer-alternate-funding-part31.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part32.md": {
+      "before": 66,
+      "deleted": 65,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part33.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part34.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-downer-alternate-funding-part35.md": {
+      "before": 66,
+      "deleted": 65,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part36.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part37.md": {
+      "before": 99,
+      "deleted": 90,
+      "after": 9
+    },
+    "cbs-group-downer-alternate-funding-part38.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-downer-alternate-funding-part39.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part40.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-downer-alternate-funding-part41.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part42.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part43.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part44.md": {
+      "before": 66,
+      "deleted": 63,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part45.md": {
+      "before": 66,
+      "deleted": 64,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part46.md": {
+      "before": 66,
+      "deleted": 65,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part47.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part48.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part49.md": {
+      "before": 143,
+      "deleted": 141,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part50.md": {
+      "before": 143,
+      "deleted": 142,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part51.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part52.md": {
+      "before": 77,
+      "deleted": 72,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part53.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part54.md": {
+      "before": 77,
+      "deleted": 74,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part55.md": {
+      "before": 77,
+      "deleted": 73,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part56.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part57.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part58.md": {
+      "before": 143,
+      "deleted": 138,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part59.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part60.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-downer-alternate-funding-part61.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part62.md": {
+      "before": 143,
+      "deleted": 142,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part63.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part64.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-downer-alternate-funding-part65.md": {
+      "before": 33,
+      "deleted": 32,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part66.md": {
+      "before": 33,
+      "deleted": 32,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part67.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part68.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part69.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part70.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part71.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part72.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-downer-alternate-funding-part73.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part74.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part75.md": {
+      "before": 99,
+      "deleted": 90,
+      "after": 9
+    },
+    "cbs-group-downer-alternate-funding-part76.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-downer-alternate-funding-part77.md": {
+      "before": 121,
+      "deleted": 120,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part78.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part79.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part80.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-downer-alternate-funding-part81.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-downer-alternate-funding-part82.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-downer-alternate-funding-part83.md": {
+      "before": 66,
+      "deleted": 65,
+      "after": 1
+    },
+    "cbs-group-downer-alternate-funding-part84.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-fee-structure-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-fee-structure-part02.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-fee-structure-part03.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-fee-structure-part04.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-fee-structure-part05.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-jv-egis-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-jv-egis-part02.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-jv-egis-part03.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-jv-egis-part04.md": {
+      "before": 77,
+      "deleted": 75,
+      "after": 2
+    },
+    "cbs-group-jv-egis-part05.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-jv-egis-part06.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-jv-egis-part07.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-jv-egis-part08.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-jv-egis-part09.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-jv-egis-part10.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-jv-egis-part11.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-jv-egis-part12.md": {
+      "before": 44,
+      "deleted": 43,
+      "after": 1
+    },
+    "cbs-group-jv-egis-part13.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-jv-egis-part14.md": {
+      "before": 33,
+      "deleted": 32,
+      "after": 1
+    },
+    "cbs-group-jv-egis-part15.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-personnel-cvs-part01.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-personnel-cvs-part02.md": {
+      "before": 88,
+      "deleted": 80,
+      "after": 8
+    },
+    "cbs-group-personnel-cvs-part03.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-personnel-cvs-part04.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-post-tender-addenda-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-post-tender-addenda-part02.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-post-tender-addenda-part03.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-specialisations-part01.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-specialisations-part02.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-specialisations-part03.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-specialisations-part04.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-tender-dhs-vic-kpi-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-tender-dhs-vic-kpi-part02.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-tender-dhs-vic-kpi-part03.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tender-dhs-vic-kpi-part04.md": {
+      "before": 110,
+      "deleted": 100,
+      "after": 10
+    },
+    "cbs-group-tender-dhs-vic-kpi-part05.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-dhs-vic-kpi-part06.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-tender-dhs-vic-kpi-part07.md": {
+      "before": 88,
+      "deleted": 87,
+      "after": 1
+    },
+    "cbs-group-tender-dhs-vic-kpi-part08.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-dhs-vic-kpi-part09.md": {
+      "before": 22,
+      "deleted": 21,
+      "after": 1
+    },
+    "cbs-group-tender-dhs-vic-kpi-part10.md": {
+      "before": 88,
+      "deleted": 87,
+      "after": 1
+    },
+    "cbs-group-tender-dhs-vic-kpi-part11.md": {
+      "before": 99,
+      "deleted": 90,
+      "after": 9
+    },
+    "cbs-group-tender-dhs-vic-kpi-part12.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-tender-dhs-vic-kpi-part13.md": {
+      "before": 132,
+      "deleted": 131,
+      "after": 1
+    },
+    "cbs-group-tender-dhs-vic-kpi-part14.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tender-dhs-vic-kpi-part15.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tender-dhs-vic-kpi-part16.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-tender-dhs-vic-kpi-part17.md": {
+      "before": 121,
+      "deleted": 114,
+      "after": 7
+    },
+    "cbs-group-tender-dhs-vic-kpi-part18.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-dhs-vic-kpi-part19.md": {
+      "before": 110,
+      "deleted": 100,
+      "after": 10
+    },
+    "cbs-group-tender-dhs-vic-kpi-part20.md": {
+      "before": 121,
+      "deleted": 120,
+      "after": 1
+    },
+    "cbs-group-tender-dhs-vic-kpi-part21.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-tender-dhs-vic-kpi-part22.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tender-dhs-vic-kpi-part23.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-mbsc-mzf2-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-tender-mbsc-mzf2-part02.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-tender-mbsc-mzf2-part03.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-tender-nz-mot-tolling-part01.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-nz-mot-tolling-part02.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-nz-mot-tolling-part03.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-nz-mot-tolling-part04.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-nz-mot-tolling-part05.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-tender-nz-mot-tolling-part06.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-tender-tfnsw-am-2025-part01.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-tfnsw-am-2025-part02.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-tender-tfnsw-amss-part01.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-tfnsw-amss-part02.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-tender-tfnsw-amss-part03.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-tfnsw-amss-part04.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-tender-tfnsw-amss-part05.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-tfnsw-amss-part06.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-tender-tfnsw-amss-part07.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-tender-tfnsw-amss-part08.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tender-tfnsw-amss-part09.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-tfnsw-amss-part10.md": {
+      "before": 110,
+      "deleted": 100,
+      "after": 10
+    },
+    "cbs-group-tender-tfnsw-amss-part11.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-tender-tfnsw-amss-part12.md": {
+      "before": 110,
+      "deleted": 101,
+      "after": 9
+    },
+    "cbs-group-tender-tfnsw-amss-part13.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-tender-tfnsw-amss-part14.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "cbs-group-tender-tfnsw-amss-part15.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-tfnsw-amss-part16.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-tender-tfnsw-amss-part17.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "cbs-group-tender-tfnsw-amss-part18.md": {
+      "before": 77,
+      "deleted": 71,
+      "after": 6
+    },
+    "cbs-group-tender-tfnsw-amss-part19.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tender-tfnsw-amss-part20.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-tfnsw-amss-part21.md": {
+      "before": 110,
+      "deleted": 100,
+      "after": 10
+    },
+    "cbs-group-tender-tfnsw-amss-part22.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-tender-tfnsw-amss-part23.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-tender-tfnsw-amss-part24.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-tender-tfnsw-amss-part25.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tender-vic-pas-panel-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-tender-vic-pas-panel-part02.md": {
+      "before": 154,
+      "deleted": 140,
+      "after": 14
+    },
+    "cbs-group-tender-vic-pas-panel-part03.md": {
+      "before": 219,
+      "deleted": 199,
+      "after": 20
+    },
+    "cbs-group-tender-vic-pas-panel-part04.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-vic-pas-panel-part05.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tender-wht-am-part01.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-tender-wht-am-part02.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-tfnsw-materials-part01.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "cbs-group-tfnsw-materials-part02.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tfnsw-materials-part03.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tolling-advisory-part01.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-tolling-advisory-part02.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-tolling-benchmark-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-tolling-benchmark-part02.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-tolling-benchmark-part03.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-white-papers-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "cbs-group-white-papers-part02.md": {
+      "before": 121,
+      "deleted": 110,
+      "after": 11
+    },
+    "cbs-group-white-papers-part03.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "cbs-group-white-papers-part04.md": {
+      "before": 88,
+      "deleted": 80,
+      "after": 8
+    },
+    "cbs-group-white-papers-part05.md": {
+      "before": 55,
+      "deleted": 50,
+      "after": 5
+    },
+    "cbs-group-white-papers-part06.md": {
+      "before": 110,
+      "deleted": 100,
+      "after": 10
+    },
+    "cbs-group-white-papers-part07.md": {
+      "before": 33,
+      "deleted": 30,
+      "after": 3
+    },
+    "cbs-group-white-papers-part08.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-white-papers-part09.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "cbs-group-white-papers-part10.md": {
+      "before": 44,
+      "deleted": 41,
+      "after": 3
+    },
+    "cbs-group-white-papers-part11.md": {
+      "before": 44,
+      "deleted": 40,
+      "after": 4
+    },
+    "manus-session-extraction-pipeline.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "waterroads-business-case-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "waterroads-business-case-part02.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "waterroads-business-case-part03.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "waterroads-business-case-part04.md": {
+      "before": 77,
+      "deleted": 70,
+      "after": 7
+    },
+    "waterroads-business-case-part05.md": {
+      "before": 66,
+      "deleted": 60,
+      "after": 6
+    },
+    "waterroads-business-case-part06.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "waterroads-business-case-part07.md": {
+      "before": 132,
+      "deleted": 120,
+      "after": 12
+    },
+    "waterroads-business-case-part08.md": {
+      "before": 22,
+      "deleted": 20,
+      "after": 2
+    },
+    "waterroads-financial-model.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "waterroads-ppp-structure.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "wr-board-papers-part01.md": {
+      "before": 11,
+      "deleted": 10,
+      "after": 1
+    },
+    "wr-board-papers-part02.md": {
+      "before": 605,
+      "deleted": 555,
+      "after": 50
+    },
+    "wr-board-papers-part03.md": {
+      "before": 88,
+      "deleted": 80,
+      "after": 8
+    },
+    "shipley-bidder-comparison.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "shipley-four-box.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "shipley-framework.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "shipley-proposal-guide.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "shipley-win-themes.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "competitor-aecom.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "competitor-jacobs.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "competitor-wsp.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "competitor-ghd.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "competitor-mott-macdonald.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "2026-04-14-all-agents-paste-script-output-verbatim.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "2026-04-14-tender-coord-shipley-belongs-in-response-not-intake.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "2026-04-14-tender-intel-emails-are-titles-only.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    },
+    "2026-04-14-tender-intel-no-fake-missing-capability.md": {
+      "before": 1,
+      "deleted": 0,
+      "after": 1
+    }
+  },
+  "rows_deleted": 0
+}
