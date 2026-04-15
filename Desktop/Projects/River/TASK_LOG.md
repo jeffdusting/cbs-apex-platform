@@ -1200,3 +1200,70 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 - Empirical match_threshold tuning — defer to P8 calibration, which will expose whether the current 0.5 skill default vs 0.3 discovery-recommended floor materially affects evaluator scores.
 
 **Next phase:** P5 (WR Verify) if a parallel session has not already produced it (check `git tag | grep stage4-P5`), otherwise **P7** (WR Reconfig) when P5 complete, or **P8** (Calibration) when P7 complete and Jeff has calibration scores ready.
+
+---
+
+## S4-P5: WR KB Verify
+
+**Date:** 16 April 2026
+**Status:** COMPLETE
+**Git Tag:** stage4-P5-wr-verify
+
+### Summary
+
+| Metric | Value |
+|---|---|
+| Final row count | 16,786 |
+| Index rebuilt | NO — SQL prepared (`scripts/wr-ivfflat-rebuild.sql`), manual apply required (no `WR_SUPABASE_DB_URL` in local env; same constraint observed in P4) |
+| Optimal `lists` | 130 (up from 40; delta 90 ≫ 10-threshold in phase spec) |
+| Retrieval test | 5 queries, 0 duplicate sources, 0 empty, 0 imported-paths in hits |
+| Top similarity range | 0.38 – 0.58 (voyage-3.5 embeddings, match_threshold=0.3) |
+| Import paths remaining in Supabase | 0 |
+
+### Files Created
+
+- `scripts/wr-ivfflat-rebuild.sql` — drop + recreate `idx_documents_embedding` at lists=130, ANALYZE, verify
+- `scripts/wr-retrieval-test.py` — 5 WR-specific queries with Voyage voyage-3.5 embeddings and match_documents RPC
+- `Stage4/data/wr-retrieval-test-results.json` — per-query hits, similarities, duplicate-source flags
+
+### Files Modified
+
+- `BACKLOG.md` — WR Phase 3.5 marked ✅ DONE with dedup statistics and residual-items list
+
+### Task Status
+
+| Task | Status | Notes |
+|---|---|---|
+| 5.1 Rebuild IVFFlat index | SQL PREPARED | Requires manual apply via Supabase SQL Editor. Retrieval still correct at lists=40 for the five canonical queries (gate passes), but recall is visibly degraded — some well-formed queries (e.g. verbatim filename strings) return 0 hits at threshold=0.3. Apply before P7 (WR Reconfig) so retrieval quality is measured with correct index geometry. |
+| 5.2 Retrieval quality tests | DONE | 5/5 pass (PPP financial, zero-emission regulatory, board resolution, ferry route demand, ESOP). |
+| 5.3 No import paths remain | DONE | 0 rows match `*Imported*` — fully migrated. |
+| 5.4 BACKLOG.md update | DONE | Phase 3.5 ✅, dedup stats, three residual items flagged (IVFFlat rebuild, BluePath enforcement, category normalisation). |
+
+### Gate Verification
+
+- PASS: 5 queries, 0 with dupes, 0 empty
+- PASS: No import paths remain (0 rows)
+
+### Retrieval Results Snapshot
+
+| Query | Top hit | Top sim |
+|---|---|---:|
+| PPP financial model | `Archive/Unclassified/WaterRoads_Proposal Summary.pptx` | 0.5832 |
+| zero-emission ferry regulatory | `Archive/Unclassified/SEC_Matters for Discussion with TfNSW.docx` | 0.5832 |
+| board resolution | `PPP/Programme Documents/04_Commercial_Terms_Sheet_DRAFT_F.docx` | 0.4411 |
+| ferry route demand | `Reference/Industry Standards/WRBP04 Validation Calibration Testing Report Rev A.md` | 0.5291 |
+| ESOP | `Archive/Unclassified/Water_Roads_Series_A_Terms_Explanatory_Note.docx` | 0.3776 |
+
+### Surprising / Non-Obvious Findings
+
+- **Top hits lean on `Archive/Unclassified/`** for three of five queries. These are the 20 loose-at-root files moved there during TASK 3.5 (no `Imported from …` subfolder classification possible). Most are high-value IR materials (WR Investor Position, Proposal Summary, Series A Terms Explanatory Note) that deserve proper classification. **Actionable for P7:** triage `Archive/Unclassified/` and re-home high-value documents into `Investor Relations/Updates` or `Financial/Business Case`.
+- **Index recall is visibly degraded at lists=40 on 16,786 rows.** Direct sanity probes for known filenames (e.g. "Coriander services agreement") return 0 rows even at `match_threshold=-1.0`. This matches pgvector IVFFlat behaviour when `lists/rows` diverges from optimal — rebuild to lists=130 resolves it. Gate passes because the prescribed 5 queries all have sufficient semantic breadth to hit a good cluster, but narrow queries suffer.
+- **Initial embedding-model mismatch** — retrieval test with `voyage-3` (not 3.5) gave cosine similarities of 0.03. After fixing to `voyage-3.5` the top sims jumped to 0.58 as expected. This is a silent failure mode — the API accepts either model, the vector dimensions match (1024), but the embedding spaces are incompatible. Worth adding a model-check to the retrieval test harness if it becomes a recurring tool.
+
+### Known Issues / Open Work for P7
+
+- **Apply `scripts/wr-ivfflat-rebuild.sql` in the WR Supabase SQL Editor.** P7 measurements will under-represent retrieval quality until this lands.
+- **Triage `Archive/Unclassified/` (1,332 + 20 files).** Many are IR materials that were moved defensively from `ZZ Legacy Folders Unfiled` and loose-at-root SharePoint paths. A short reclassification pass in P7 would sharpen IR-related queries considerably.
+- **Category normalisation.** P7 should decide whether to rewrite category labels to match the new canonical folder taxonomy or leave category as provenance-metadata. Either choice is defensible; consistency matters for agent routing.
+
+**Next phase:** P7 (WR Reconfig) — depends on this phase only. P6 already complete (parallel session, tag `stage4-P6-cbs-verify`). P8 (Calibration) requires P6 + Jeff's scores — P6 ✓, scores pending. Per bootstrap rule (first option listed): **P7**.

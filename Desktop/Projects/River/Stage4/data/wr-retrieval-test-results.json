@@ -1,0 +1,122 @@
+[
+  {
+    "query_id": "ppp_financial_model",
+    "query": "Water Roads PPP financial model assumptions and revenue projections",
+    "hits": 5,
+    "top_similarity": 0.583214521408081,
+    "has_duplicates": false,
+    "all_above_threshold": true,
+    "any_imported_path": false,
+    "source_files": [
+      "Archive/Unclassified/WaterRoads_Proposal Summary.pptx",
+      "Investor Relations/Data Room/WaterRoads_Investor Position_260313.pdf",
+      "Archive/Unclassified/WaterRoads_Investor Position_260313.pptx",
+      "Investor Relations/Updates/WaterRoads_Investor Position_260313.pptx",
+      "Investor Relations/Updates/WaterRoads_Investor Proposal_09032026.pptx"
+    ],
+    "similarities": [
+      0.583214521408081,
+      0.565562333729129,
+      0.559076070785522,
+      0.552365216753795,
+      0.544998792111947
+    ],
+    "unique_source_count": 5
+  },
+  {
+    "query_id": "zero_emission_regulatory",
+    "query": "zero-emission ferry regulatory approval AMSA maritime safety",
+    "hits": 5,
+    "top_similarity": 0.583160631343183,
+    "has_duplicates": false,
+    "all_above_threshold": true,
+    "any_imported_path": false,
+    "source_files": [
+      "Archive/Unclassified/SEC_Matters for Discussion with TfNSW.docx",
+      "Archive/Unclassified/Matters for Discussion with TfNSW. and (DPHI) docx.docx",
+      "Reference/Industry Standards/DP Standards Compliance Matrix.docx",
+      "PPP/Programme Documents/06_Requirements_Specification.docx",
+      "Reference/Industry Standards/DP Standards Compliance Matrix.md"
+    ],
+    "similarities": [
+      0.583160631343183,
+      0.579855238190607,
+      0.578138283920731,
+      0.577522373130964,
+      0.575665602167321
+    ],
+    "unique_source_count": 5
+  },
+  {
+    "query_id": "board_resolution",
+    "query": "board resolution",
+    "hits": 5,
+    "top_similarity": 0.441142681768974,
+    "has_duplicates": false,
+    "all_above_threshold": true,
+    "any_imported_path": false,
+    "source_files": [
+      "PPP/Programme Documents/04_Commercial_Terms_Sheet_DRAFT_F.docx",
+      "Archive/Unclassified/CBS Group _ Water Roads Jul - Aug Implementation Plan.pdf",
+      "Investor Relations/Data Room/04_Commercial_Terms_Sheet_DRAFT_F-2.pdf",
+      "Reference/Industry Standards/Meeting Notes - TEMPLATE.docx",
+      "Operational/WR-TRN-MOD-SOM-05_Operational_Logistics_and_Administration.md"
+    ],
+    "similarities": [
+      0.441142681768974,
+      0.425180375576019,
+      0.419587790966034,
+      0.418145537376404,
+      0.417184114456177
+    ],
+    "unique_source_count": 5
+  },
+  {
+    "query_id": "ferry_route_demand",
+    "query": "ferry route demand forecasting origin destination Sydney",
+    "hits": 5,
+    "top_similarity": 0.529082119464874,
+    "has_duplicates": false,
+    "all_above_threshold": true,
+    "any_imported_path": false,
+    "source_files": [
+      "Reference/Industry Standards/WRBP04 Validation Calibration Testing Report Rev A.md",
+      "Reference/Industry Standards/WRBP07 - Development Roadmap.md",
+      "Reference/Industry Standards/WRBP04 Validation Calibration Testing Report Rev A.pdf",
+      "Reference/Industry Standards/WRBP07 - Development Roadmap Rev B.pdf",
+      "Reference/Industry Standards/WRBP07 - Development Roadmap Rev B.docx"
+    ],
+    "similarities": [
+      0.529082119464874,
+      0.521909415721893,
+      0.5078261787995,
+      0.505465805530548,
+      0.503032058658127
+    ],
+    "unique_source_count": 5
+  },
+  {
+    "query_id": "esop",
+    "query": "Water Roads ESOP employee share option plan vesting schedule",
+    "hits": 5,
+    "top_similarity": 0.377628460839806,
+    "has_duplicates": false,
+    "all_above_threshold": true,
+    "any_imported_path": false,
+    "source_files": [
+      "Archive/Unclassified/Water_Roads_Series_A_Terms_Explanatory_Note.docx",
+      "Governance/02_Coriander_Services_Agreement.docx",
+      "Investor Relations/Data Room/WaterRoads Series A Term Sheet v3-1.docx",
+      "PPP/Programme Documents/04_Commercial_Terms_Sheet.pdf",
+      "Investor Relations/Data Room/WR - Coriander Services Agreement.docx"
+    ],
+    "similarities": [
+      0.377628460839806,
+      0.37272603078331,
+      0.351545614188389,
+      0.336234460620222,
+      0.33447339144191
+    ],
+    "unique_source_count": 5
+  }
+]
