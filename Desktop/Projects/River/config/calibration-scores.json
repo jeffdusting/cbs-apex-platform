@@ -1,0 +1,14 @@
+{
+  "source": "/Users/jeffdusting/Desktop/Projects/River/docs/hyper-agent-v1/EVALUATOR_CALIBRATION.md",
+  "parsed_at": "2026-04-15T14:00:57.938247",
+  "pass_threshold": 3.5,
+  "weights": {
+    "KB Grounding": 0.25,
+    "Instruction Adherence": 0.2,
+    "Completeness": 0.15,
+    "Actionability": 0.15,
+    "Factual Discipline": 0.15,
+    "Risk Handling": 0.1
+  },
+  "outputs": []
+}
