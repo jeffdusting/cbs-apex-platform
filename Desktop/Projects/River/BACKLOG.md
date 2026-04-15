@@ -388,6 +388,13 @@ Audit at `docs/current-state-audit/` produced 5 top architecture implications. S
 
 ---
 
+## Future Notification Channels
+
+- 🔵 WhatsApp group chat integration for monitoring digest
+- 🔵 Slack channel integration as alternative notification pathway
+
+---
+
 ## G. Deferred / Out-of-scope (for reference)
 
 - ⚪ **Portal scraping for tender details** — investigated; 3 of 4 portals have Incapsula WAFs blocking scripted access. Decided to stay with email-based discovery + manual portal viewing for documents.

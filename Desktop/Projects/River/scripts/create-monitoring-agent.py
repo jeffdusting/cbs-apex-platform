@@ -67,7 +67,7 @@ def main():
         "budgetMonthlyCents": 200,  # $2/month
     }
 
-    skills_to_assign = ["trace-capture", "self-check", "supabase-query"]
+    skills_to_assign = ["trace-capture", "self-check", "supabase-query", "teams-notify"]
 
     print("=== River Monitor Agent ===")
     print(f"  Company: CBS Group ({CBS_COMPANY_ID})")
