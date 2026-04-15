@@ -734,3 +734,50 @@ Gate verification: PASS — all skills, templates, and docs present.
 | Knowledge base | 30 |
 | Discovery summary | 1 |
 | **Total generated Day 0** | **118 files** |
+
+---
+
+## S4-P0: Completion
+
+**Date:** 15 April 2026
+**Programme:** stage4
+**Status:** COMPLETE
+
+### Tasks
+
+| Task | Status |
+|---|---|
+| 0.1 Integrate CA approval toggle into dashboard | DONE — `approveCaSend()` function + updated `ca_drafted` case |
+| 0.2 Integrate Evaluator tab into dashboard | DONE — tabbed view with summary bar, score distribution, evaluations table, blocked work |
+| 0.3 Generate Evaluator calibration document | DONE — 10 placeholder outputs (Supabase API access denied; Jeff to paste from Paperclip dashboard) |
+| 0.4 Wire monitoring agent to Teams webhook | DONE — `teams-notify` skill added to `create-monitoring-agent.py`. Agent not yet created (run `--execute`). AGENTS.md already has inline Teams posting. |
+| 0.5 Create Mail.ReadWrite upgrade instructions | DONE — `docs/hyper-agent-v1/MAIL_READWRITE_UPGRADE.md` |
+| 0.6 Update BACKLOG.md | DONE — WhatsApp + Slack future notification channels added |
+
+### Gate Verification
+
+- PASS: Evaluator tab in dashboard
+- PASS: CA approval toggle in dashboard
+- PASS: Calibration doc exists (10 outputs)
+- PASS: Parser compiles
+- PASS: Mail.ReadWrite instructions exist
+- PASS: Future channels in backlog
+
+### Files Created/Modified
+
+| File | Action |
+|---|---|
+| `monitoring/tender-dashboard.html` | Modified — CA toggle + Evaluator tab integrated |
+| `docs/hyper-agent-v1/EVALUATOR_CALIBRATION.md` | Created — rubric guide + 10 output sections |
+| `scripts/parse-calibration-scores.py` | Created — parses scored calibration doc to JSON |
+| `docs/hyper-agent-v1/MAIL_READWRITE_UPGRADE.md` | Created — Azure AD + Graph API instructions |
+| `scripts/create-monitoring-agent.py` | Modified — added `teams-notify` to skills list |
+| `BACKLOG.md` | Modified — added future notification channels section |
+
+### Known Issues
+
+- Calibration doc has placeholder slots — Jeff must paste 10 real agent outputs from Paperclip dashboard
+- Monitoring agent not yet created on Paperclip — run `python3 scripts/create-monitoring-agent.py --execute`
+- Evaluator and trace ingestion routines not yet registered — run the registration scripts
+
+**Next phase:** P1 (WR Discovery) or P2 (CBS Discovery) — either can run first
