@@ -23,6 +23,8 @@ def paperclip_headers() -> dict:
     return {
         "Cookie": f"__Secure-better-auth.session_token={PAPERCLIP_COOKIE}",
         "Content-Type": "application/json",
+        "Origin": PAPERCLIP_API_URL,
+        "Referer": f"{PAPERCLIP_API_URL}/",
     }
 
 
@@ -49,13 +51,13 @@ def main():
         "adapterConfig": {
             "model": "claude-haiku-4-5-20251001",
             "promptTemplate": prompt_template,
-            "env": [
-                {"key": "SUPABASE_URL", "value": os.environ.get("SUPABASE_URL", "")},
-                {"key": "SUPABASE_SERVICE_ROLE_KEY", "value": os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")},
-                {"key": "VOYAGE_API_KEY", "value": os.environ.get("VOYAGE_API_KEY", "")},
-                {"key": "PAPERCLIP_API_URL", "value": PAPERCLIP_API_URL},
-                {"key": "TEAMS_WEBHOOK_URL", "value": os.environ.get("TEAMS_WEBHOOK_URL", "")},
-            ],
+            "env": {
+                "SUPABASE_URL": {"type": "plain", "value": os.environ.get("SUPABASE_URL", "")},
+                "SUPABASE_SERVICE_ROLE_KEY": {"type": "plain", "value": os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")},
+                "VOYAGE_API_KEY": {"type": "plain", "value": os.environ.get("VOYAGE_API_KEY", "")},
+                "PAPERCLIP_API_URL": {"type": "plain", "value": PAPERCLIP_API_URL},
+                "TEAMS_WEBHOOK_URL": {"type": "plain", "value": os.environ.get("TEAMS_WEBHOOK_URL", "")},
+            },
         },
         "role": "general",
         "runtimeConfig": {

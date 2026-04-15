@@ -41,6 +41,8 @@ def paperclip_headers() -> dict:
     return {
         "Cookie": f"__Secure-better-auth.session_token={PAPERCLIP_COOKIE}",
         "Content-Type": "application/json",
+        "Origin": PAPERCLIP_API_URL,
+        "Referer": f"{PAPERCLIP_API_URL}/",
     }
 
 
