@@ -4,3 +4,6 @@ credentials-raw.txt
 .env
 *.key
 .secrets/
+
+# Stage4 raw caches (regenerable via Stage4/scripts/fetch-*.py)
+Stage4/data/*-cache.jsonl

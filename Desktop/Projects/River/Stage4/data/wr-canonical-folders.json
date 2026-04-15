@@ -1,0 +1,333 @@
+{
+  "shared_drive_id": "0AFIfqhhhv9HjUk9PVA",
+  "top_level_folder_count": 14,
+  "target_top_level_folders": [
+    "Archive",
+    "Commercial",
+    "Financial",
+    "Governance",
+    "HR",
+    "Investor Relations",
+    "Legal",
+    "Marketing",
+    "Operations",
+    "PPP",
+    "Reference",
+    "Technical"
+  ],
+  "observed_top_level_folders": [
+    "Archive",
+    "Correspondence",
+    "Financial",
+    "Governance",
+    "Imported from Dropbox",
+    "Imported from SharePoint",
+    "Investor Relations",
+    "Items 1 and 2",
+    "Operational",
+    "PPP",
+    "Reference",
+    "Regulatory",
+    "Stakeholder Engagement",
+    "Templates"
+  ],
+  "top_folders_matching_target": [
+    "Archive",
+    "Financial",
+    "Governance",
+    "Investor Relations",
+    "PPP",
+    "Reference"
+  ],
+  "top_folders_missing_from_target": [
+    "Commercial",
+    "HR",
+    "Legal",
+    "Marketing",
+    "Operations",
+    "Technical"
+  ],
+  "top_folders_not_in_target": [
+    "Correspondence",
+    "Imported from Dropbox",
+    "Imported from SharePoint",
+    "Items 1 and 2",
+    "Operational",
+    "Regulatory",
+    "Stakeholder Engagement",
+    "Templates"
+  ],
+  "tree": [
+    {
+      "name": "Archive",
+      "id": "1N7bk1gI1-RLGA_eFVoPlW3oaVgQ4oi4I",
+      "children": []
+    },
+    {
+      "name": "Correspondence",
+      "id": "1CrnAHnTKZsNxTru6tYKtvdNe2SwLIeFG",
+      "children": []
+    },
+    {
+      "name": "Financial",
+      "id": "1K4oVeRvIPsa3jQG6BPTn7vA7SNSKlrsy",
+      "children": [
+        {
+          "name": "Business Case",
+          "id": "1YlpmFv9OpefNIo0fDs6fRNZyrs3B_66C"
+        },
+        {
+          "name": "Financial Model",
+          "id": "18tb7oMctiC19weRLVuv5A-uhmu5oHHsY"
+        },
+        {
+          "name": "Monthly Reports",
+          "id": "1tpZ5pphwUu34YmlWAf7xUF-ElYaFasJ3"
+        }
+      ]
+    },
+    {
+      "name": "Governance",
+      "id": "1muttX8i-bABJ1j-VK7acxssDj7wIbzd8",
+      "children": [
+        {
+          "name": "Board Papers",
+          "id": "1UtAEa0a_L1x_ROUgC19uV51nnQbAx8C_"
+        },
+        {
+          "name": "Minutes",
+          "id": "1lEL62PQqmcgm5kT9I7c2TPR4WcreKJdJ"
+        },
+        {
+          "name": "Register",
+          "id": "1fRIacoJcNv4dTG3-y9SUD44sAKQc6Uz1"
+        },
+        {
+          "name": "Resolutions",
+          "id": "1gzs1pEzOy96y4Wa9n_CrEZmr2lhP3cWz"
+        }
+      ]
+    },
+    {
+      "name": "Imported from Dropbox",
+      "id": "1FWAwVVxRXoC4JtWPbkFweaaCGVt-6gSl",
+      "children": [
+        {
+          "name": "00 EXTERNAL SHARE ZONES",
+          "id": "1cjifOJarHy6euowJKD_dzzSvjBC0l6et"
+        },
+        {
+          "name": "01 RESEARCH DEVELOPMENT",
+          "id": "1r57hgCa45u05nYU9YMHRqfoXezG18ASz"
+        },
+        {
+          "name": "02 PROJECTS",
+          "id": "19jVg6HG1cQ48G84rGgOkVWH_zZrFNd7p"
+        },
+        {
+          "name": "03 REGULATORY COMPLIANCE",
+          "id": "1iKpRB5GoRh0VOOlq3TGPR9tSVmUzyoW0"
+        },
+        {
+          "name": "04 STRATEGIC PARTNERSHIPS",
+          "id": "1j55qCT57iCKPLJnyVPdjHU0udu1o4NVj"
+        },
+        {
+          "name": "05 MARKETING AND COMMUNICATION",
+          "id": "1gbKZIBGIQMaf8aeBaBeCOAycVzyElSzZ"
+        },
+        {
+          "name": "06 COMPANY ADMINISTRATION",
+          "id": "1BM9uSsF_fxC7oeXiwHgOQwLCnJuDkwh2"
+        },
+        {
+          "name": "07 OPERATIONS, QUALITY AND RISK MANAGEMENT",
+          "id": "1vE4pqLx7sIqTJNUFxumfbTiDMFcWmKOX"
+        },
+        {
+          "name": "08 TECHNICAL LIBRARY",
+          "id": "1QbcsKRwQ_l2aixalf5MkEOUCBbd-nJH3"
+        },
+        {
+          "name": "Water Road App",
+          "id": "1_CWDMq6t2vD4tebZIbfShK84ATMyw8Et"
+        },
+        {
+          "name": "ZZ Legacy Folders Unfiled",
+          "id": "1Ud_WdJb8qmCI5EO7rvplDT4eCVcAPi4C"
+        }
+      ]
+    },
+    {
+      "name": "Imported from SharePoint",
+      "id": "1TYVgA2xWZ3Fh0ejhoK_57xTP4fhsJ9QD",
+      "children": [
+        {
+          "name": "00.02 LGG Advisors Master",
+          "id": "1eKRxHWmDIJFd4pSbX6s6j_rbO8YzytRY"
+        },
+        {
+          "name": "_test_pictures",
+          "id": "1VPRZh7uHisV282u0ogMl6Pnff6uVNuIm"
+        },
+        {
+          "name": "Diligence Docs",
+          "id": "1zXIgO__WUub-HBU4o5ZsrC3LavxdJTT-"
+        },
+        {
+          "name": "ESOP Materials",
+          "id": "19eQecaYHSiMvunXCVI-DfJQxfDOZeu-J"
+        },
+        {
+          "name": "Financial Model",
+          "id": "1IvzrDqa9noRiH9CtnQVxgb6RFlS4vrv8"
+        },
+        {
+          "name": "IM",
+          "id": "1KgOwKkf_eTJIu_xrjz5OOoZzMt7gfsb9"
+        },
+        {
+          "name": "Impact (Carbon) Report",
+          "id": "1o3NU59WlXQOkjQvZbI-zW3iM9jVyhBux"
+        },
+        {
+          "name": "Investor Proposal",
+          "id": "1Aq1_USsZAE35QJl_LUwuLVknXXGULIau"
+        },
+        {
+          "name": "Key Stakeholders_ AU Water Roads",
+          "id": "11SghMqPog29Ipb4RSZCnL97Abi4RuOu7"
+        },
+        {
+          "name": "Lagos_ECOWAS",
+          "id": "1xW7TBGo8s0HwMoNVmwIYvZunrwVs6VYY"
+        },
+        {
+          "name": "Ocean Zero response materials",
+          "id": "1rhm5YfQtaPlblB9uPv8YDj59yX7-99g7"
+        },
+        {
+          "name": "Pictures",
+          "id": "1UZR8R3Vu2fIVbTDvHaklkzVQ4qjBnLPy"
+        },
+        {
+          "name": "RFP Responses",
+          "id": "1Kbfs6Bwkj8GzBCcu3mQ_hCCneK_L1hcX"
+        },
+        {
+          "name": "Teaser",
+          "id": "1gD_KaNCwObw6KGGZZk52N9aj82W0_PBS"
+        },
+        {
+          "name": "Valuation",
+          "id": "1FJ95A1Q5rqsW52eb7Xt6LHR0wnlVB7pc"
+        },
+        {
+          "name": "Water Roads - Internal VDR",
+          "id": "1OqdmTpntwO0DVGnFYXWYKRfon2GAQc7j"
+        }
+      ]
+    },
+    {
+      "name": "Investor Relations",
+      "id": "1jn2veFUINgQyYzb3TJv2lFNf4oX0rbq3",
+      "children": [
+        {
+          "name": "Cap Table",
+          "id": "1TWXEAjZa2OIlL0OPTUMBWuvfm97kSXBW"
+        },
+        {
+          "name": "Data Room",
+          "id": "1IokY0fMGRNzl3qHCZcKqzF76RMMGZch2"
+        },
+        {
+          "name": "Updates",
+          "id": "1lxcsloy26LRA4d5u9QoNJgNzS4plI_6b"
+        }
+      ]
+    },
+    {
+      "name": "Items 1 and 2",
+      "id": "1jpBK-ljSUp6Fv77MSyteblwAly3uxYeP",
+      "children": []
+    },
+    {
+      "name": "Operational",
+      "id": "1rAwfp1NOl6tdCg87aSmbrT_ZFYQwD-2V",
+      "children": []
+    },
+    {
+      "name": "PPP",
+      "id": "1zJopnQtFgzNbcRb_QCuRDC6fUzdTda5O",
+      "children": [
+        {
+          "name": "Milestone Tracker",
+          "id": "1NOFZ0C3Nt6bZknRlm2d6mcJF-OhXR5aN"
+        },
+        {
+          "name": "NSW Government Correspondence",
+          "id": "1XSFB6BZ6dyr81n1SXRecNxSSE12p7KJB"
+        },
+        {
+          "name": "Programme Documents",
+          "id": "11PuEiUcMTlF3byx7jV0iDTNi429l5UOz"
+        }
+      ]
+    },
+    {
+      "name": "Reference",
+      "id": "1-yRH-OcpV7lVfKg62um7NezhpuiPtu9q",
+      "children": [
+        {
+          "name": "Industry Standards",
+          "id": "17Lt31LskwjlY7H0UXh8dRYhmqF3SNCzk"
+        },
+        {
+          "name": "Shipley",
+          "id": "1qTYj-sufkJ9x0l8hXgJAwVmmyg5muIDa"
+        }
+      ]
+    },
+    {
+      "name": "Regulatory",
+      "id": "1ak79V8WZFgR5edO7w6aNNTN_isQ6lDXm",
+      "children": [
+        {
+          "name": "AMSA",
+          "id": "1a1QPUEqK1Mv9e-wJM4fa1pUzzGZXFB4M"
+        },
+        {
+          "name": "Environmental",
+          "id": "1sg71yfWwAgXyDC3V7geEAKYzA79Rq8QX"
+        },
+        {
+          "name": "Maritime Safety",
+          "id": "1KVPFUvgcasEt6EXS2ARKD-imWDwi5PKx"
+        }
+      ]
+    },
+    {
+      "name": "Stakeholder Engagement",
+      "id": "1_nKxkDri-v7CCgSZJ2GZnUKOPQn6tKVR",
+      "children": [
+        {
+          "name": "Community",
+          "id": "1bIy8CBt15AiJAnODmZSwhbcijAYFV9BR"
+        },
+        {
+          "name": "Council",
+          "id": "1WxO_RFH73Luuwz3oeIYKjEBO1saXKE4A"
+        },
+        {
+          "name": "TfNSW",
+          "id": "1tt-gUxUkyVjeSebZoU1McQ6Lu6yQNiWc"
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "id": "1mjC33MyUefjtsH1QtFimkH12DDXeBSp8",
+      "children": []
+    }
+  ]
+}

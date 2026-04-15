@@ -809,3 +809,82 @@ Gate verification: PASS — all skills, templates, and docs present.
 - Evaluator and trace ingestion routines not yet registered — run the registration scripts
 
 **Next phase:** P1 (WR Discovery) or P2 (CBS Discovery) — either can run first
+
+---
+
+## S4-P1: WR KB Discovery
+
+**Date:** 15 April 2026
+**Programme:** stage4
+**Status:** COMPLETE — confirmation stop passed by operator ("continue")
+
+### Tasks
+
+| Task | Status |
+|---|---|
+| 1.1 Quantify WR KB (rows, files, entities, categories) | DONE — 19,301 rows / 3,019 files, entity 100% `waterroads` |
+| 1.2 Content-hash duplicate analysis | DONE — 16,799 unique hashes, 2,502 excess rows (13.0%) |
+| 1.3 Source path pattern analysis | DONE — Dropbox 93.8%, SharePoint 6.2%, canonical 0% |
+| 1.4 Cross-source duplicate analysis | DONE — 173 filenames appear in both Dropbox + SharePoint imports |
+| 1.5 List canonical Drive folders | DONE — 14 top-level folders, only 6 match TARGET-KB-STRUCTURE.md |
+| 1.6 Write WR-DISCOVERY-SUMMARY.md | DONE — 196 lines, 9 sections |
+
+### Gate Verification
+
+- PASS: `Stage4/WR-DISCOVERY-SUMMARY.md` exists (196 lines, > 30 threshold)
+- PASS: `Stage4/data/wr-duplicate-report.json` exists
+- PASS: `Stage4/data/wr-path-analysis.json` exists
+- PASS: `Stage4/data/wr-cross-dupes.json` exists
+- PASS: `Stage4/data/wr-canonical-folders.json` exists
+
+### Key Metrics
+
+- **Total WR rows:** 19,301
+- **Unique content hashes:** 16,799
+- **Duplicate rows (byte-identical):** 2,502 (13.0% reduction)
+- **Obvious "copy" / "handoff N" folder rows:** 914 (4.7%)
+- **BluePath statistical CSV rows (recommend re-index exclusion):** 3,769 (19.5%)
+- **Cross-source duplicate filenames:** 173
+- **Canonical folders in Drive:** 14 (6 match TARGET, 6 missing, 8 extra)
+- **Projected post-P3 row count:** ~12,100 (-37%)
+
+### Files Created
+
+| File | Action |
+|---|---|
+| `Stage4/WR-DISCOVERY-SUMMARY.md` | Created — 9-section discovery summary |
+| `Stage4/data/wr-audit-raw.json` | Created — Task 1.1 output |
+| `Stage4/data/wr-duplicate-report.json` | Created — Task 1.2 output |
+| `Stage4/data/wr-path-analysis.json` | Created — Task 1.3 output |
+| `Stage4/data/wr-cross-dupes.json` | Created — Task 1.4 output |
+| `Stage4/data/wr-canonical-folders.json` | Created — Task 1.5 output |
+| `Stage4/scripts/fetch-wr-documents.py` | Created — paginated WR Supabase fetch, hashes content streamingly |
+| `Stage4/scripts/analyse-wr-audit.py` | Created — generates Task 1.1-1.4 JSONs from cache |
+| `Stage4/scripts/list-wr-drive-folders.py` | Created — Drive folder inventory |
+| `.gitignore` | Modified — exclude `Stage4/data/*-cache.jsonl` (6.4MB regenerable cache) |
+
+### Key Findings
+
+- **Three distinct bloat categories:** byte-identical chunks (13%), folder replicas (5%), and single-file over-chunking (19.5% from BluePath CSVs).
+- **Zero canonical adoption:** 100% of rows still reference `Imported from Dropbox/` or `Imported from SharePoint/` staging prefixes; Drive reorg has not begun.
+- **LGG Advisors content is replicated ~6×** across Dropbox copy/copy-2 trees and SharePoint master.
+- **Webflow handoff folder** exists 10× in Dropbox (`water_roads_webflow_handoff` + variants 2–9 + "copy").
+- **TARGET-KB-STRUCTURE.md drift:** Drive has 8 folders not in target (Correspondence, Operational, Regulatory, Stakeholder Engagement, Templates, Items 1 and 2, + two staging trees); target has 6 folders missing from Drive (Commercial, HR, Legal, Marketing, Operations, Technical).
+
+### Operator Decisions (confirmed via "continue")
+
+| # | Decision | Resolution |
+|---|---|---|
+| 1 | BluePath statistical CSVs | Exclude from next RAG re-index (files remain in Drive) |
+| 2 | LGG Advisors canonical copy | SharePoint `00.02 LGG Advisors Master` is master; other 5 replicas to dedup |
+| 3 | `Items 1 and 2` top-level Drive folder | Move to `Archive/` pending triage |
+| 4 | TARGET-KB-STRUCTURE.md drift | Option A — evolve TARGET to match Drive + add missing Commercial/HR/Legal/Marketing/Technical |
+| 5 | Regulatory vs Operational vs Operations | Keep `Regulatory/` and `Operational/` separate; don't collapse into a single `Operations/` |
+
+### Known Issues / Open Work for P3
+
+- Projected dedup uses SHA-256 at chunk level; PDF binaries extracted twice may yield near-identical text with different hashes (missed in Layer 2). Consider a shingling check in P3 for files > 50 chunks.
+- P3 must preserve `drive_file_id` across Drive moves (API does this; Supabase `source_file` must be updated in the same pass).
+- Five top-level Drive folders (`Commercial`, `HR`, `Legal`, `Marketing`, `Technical`) need to be created before reorg moves begin.
+
+**Next phase:** P2 (CBS Discovery) — runs independently of P3 (WR Dedup). Per PLAN.md parallel rules, either P2 or P3 may run next. Bootstrap rule picks the first option listed: **P2**.

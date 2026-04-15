@@ -1,0 +1,57 @@
+{
+  "rows_by_import_source": {
+    "sharepoint": 1195,
+    "dropbox": 18101,
+    "other": 5
+  },
+  "distinct_source_files_by_import_source": {
+    "sharepoint": 376,
+    "dropbox": 2640,
+    "other": 3
+  },
+  "top_level_prefix_counts": {
+    "Imported from Dropbox": 18101,
+    "Imported from SharePoint": 1195,
+    "email-intake": 5
+  },
+  "depth_2_prefix_counts": {
+    "Imported from Dropbox/01 RESEARCH DEVELOPMENT": 12024,
+    "Imported from Dropbox/ZZ Legacy Folders Unfiled": 2775,
+    "Imported from Dropbox/00 EXTERNAL SHARE ZONES": 933,
+    "Imported from Dropbox/07 OPERATIONS, QUALITY AND RISK MANAGEMENT": 847,
+    "Imported from Dropbox/02 PROJECTS": 711,
+    "Imported from Dropbox/04 STRATEGIC PARTNERSHIPS": 554,
+    "Imported from SharePoint/Water Roads - Internal VDR": 332,
+    "Imported from SharePoint/00.02 LGG Advisors Master": 311,
+    "Imported from Dropbox/06 COMPANY ADMINISTRATION": 179,
+    "Imported from SharePoint/IM": 163,
+    "Imported from SharePoint/Diligence Docs": 88,
+    "Imported from SharePoint/RFP Responses": 74,
+    "Imported from SharePoint/Impact (Carbon) Report": 60,
+    "Imported from SharePoint/ESOP Materials": 54,
+    "Imported from Dropbox/05 MARKETING AND COMMUNICATION": 46,
+    "Imported from SharePoint/Valuation": 44,
+    "Imported from Dropbox/03 REGULATORY COMPLIANCE": 29,
+    "Imported from SharePoint/Teaser": 20,
+    "Imported from SharePoint/Ocean Zero response materials": 11,
+    "Imported from SharePoint/Investor Proposal": 10,
+    "email-intake/Items 1 and 2": 5,
+    "Imported from SharePoint/WREI_&_Tokenisation_Building_New_Financial_Rails_for_Climate_Infrastructure (1).pptx": 3,
+    "Imported from SharePoint/WaterRoads_Investor Position_260313.pdf": 3,
+    "Imported from SharePoint/Simanta_Sarah_tokenization.pdf": 3,
+    "Imported from SharePoint/WaterRoads_Investor Position_260313.pptx": 2,
+    "Imported from SharePoint/WaterRoads_Proposal Summary.pptx": 2,
+    "Imported from SharePoint/Export_Credit_Financing_\u2014_Water_Roads_Vessel_Procurement.pptx": 2,
+    "Imported from SharePoint/Water_Roads_\u2014_Revenue_Definition_Clause.docx": 2,
+    "Imported from SharePoint/WaterRoads_Funding requirement_SD_06032026.pptx": 2,
+    "Imported from SharePoint/WR_Board_OwnThePlatform (1).pptx": 2,
+    "Imported from SharePoint/Financial Model": 2,
+    "Imported from Dropbox/Water_Roads_Cap_Table_Scenarios (1).docx": 2,
+    "Imported from SharePoint/A$15M_Series_A_Milestones_and_Artefacts.docx": 1,
+    "Imported from SharePoint/Comprehensive Summary_ Aytas Capital and Simanta Das.md": 1,
+    "Imported from SharePoint/LGG Advisors_Water Roads_Letter of Support_signed.pdf": 1,
+    "Imported from SharePoint/WR_SeriesA_Valuation_Strategy_LGG (1).docx": 1,
+    "Imported from SharePoint/Key Stakeholders_ AU Water Roads": 1,
+    "Imported from Dropbox/08 TECHNICAL LIBRARY": 1
+  }
+}

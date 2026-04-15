@@ -1,0 +1,489 @@
+{
+  "total_rows": 19301,
+  "unique_content_hashes": 16799,
+  "duplicate_hash_groups": 1254,
+  "excess_rows_removable": 2502,
+  "percentage_reduction": 12.96,
+  "top_10_duplicate_groups": [
+    {
+      "hash": "f0771c48ba09c101",
+      "count": 17,
+      "content_len": 8000,
+      "distinct_source_files": 17,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS 2025/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Docs/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/EGIS/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS 2025/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Docs/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy 2/00.02.04 Prospects/EGIS/EGIS Report.pdf",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "b6e58d75d2ae1293",
+      "count": 17,
+      "content_len": 3260,
+      "distinct_source_files": 17,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS 2025/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from SharePoint/00.02 LGG Advisors Master/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Docs/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/EGIS/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Report.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS 2025/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy/00.02.04 Prospects/EGIS/EGIS 2025/EGIS Docs/Comprehensive Report on Egis Group.pdf",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/00 EXTERNAL SHARE ZONES/00.02 LGG Advisory copy 2/00.02.04 Prospects/EGIS/EGIS Report.pdf",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "60e8262099baad17",
+      "count": 10,
+      "content_len": 8000,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/QUICK_REFERENCE.md",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "2316b17593654119",
+      "count": 10,
+      "content_len": 2422,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/QUICK_REFERENCE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/QUICK_REFERENCE.md",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "4ed55845c07a3af7",
+      "count": 10,
+      "content_len": 8000,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "7c26f02f314d5227",
+      "count": 10,
+      "content_len": 8000,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "8bf3545d3f94ed36",
+      "count": 10,
+      "content_len": 8000,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "771fd8ef7b18da4b",
+      "count": 10,
+      "content_len": 8000,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "0b4171b678ba4451",
+      "count": 10,
+      "content_len": 8000,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        }
+      ]
+    },
+    {
+      "hash": "b89693dc918cb033",
+      "count": 10,
+      "content_len": 7333,
+      "distinct_source_files": 10,
+      "sample_source_files": [
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 3/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 2/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 9/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 7/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 5/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 4/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff copy/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 8/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        },
+        {
+          "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/water_roads_webflow_handoff 6/WEBFLOW_IMPLEMENTATION_GUIDE.md",
+          "rows": 1
+        }
+      ]
+    }
+  ]
+}

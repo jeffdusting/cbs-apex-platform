@@ -1,0 +1,156 @@
+{
+  "total_rows": 19301,
+  "distinct_source_files": 3019,
+  "entity_distribution": {
+    "waterroads": 19301
+  },
+  "category_distribution": {
+    "water_roads_internal_vdr": 332,
+    "general": 27,
+    "investor_proposal": 10,
+    "esop_materials": 54,
+    "diligence_docs": 88,
+    "rfp_responses": 74,
+    "ocean_zero_response_materials": 11,
+    "impact_carbon_report": 60,
+    "valuation": 44,
+    "financial_model": 2,
+    "teaser": 20,
+    "im": 163,
+    "02_lgg_advisors_master": 311,
+    "key_stakeholders_au_water_roads": 1,
+    "strategic_partnerships": 554,
+    "operations_quality_and_risk_management": 847,
+    "projects": 711,
+    "zz_legacy_folders_unfiled": 2775,
+    "regulatory_compliance": 29,
+    "marketing_and_communication": 46,
+    "research_development": 12024,
+    "items_1_and_2": 5,
+    "technical_library": 1,
+    "company_administration": 179,
+    "external_share_zones": 933
+  },
+  "top_30_source_files": [
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.02  BluePath/Statistical Data/Sydney/jtw_sa2_od_matrix NSW.csv",
+      "rows": 1564
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.02  BluePath/Statistical Data/Auckland/jtw_sa2_od_matrix Work NZ.csv",
+      "rows": 1447
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.02  BluePath/Statistical Data/statsnz-2023-census-main-means-of-travel-to-education-by-statistical-CSV/2023-census-main-means-of-travel-to-education-by-statistical.csv",
+      "rows": 647
+    },
+    {
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/Mapping/FOAM_20250319.txt",
+      "rows": 211
+    },
+    {
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/Research incl NSW Govt Strategies and Policies/principles-and-guidelines-for-economic-appraisal-of-transport-investment copy.pdf",
+      "rows": 101
+    },
+    {
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/Research incl NSW Govt Strategies and Policies/principles-and-guidelines-for-economic-appraisal-of-transport-investment.pdf",
+      "rows": 101
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.02  BluePath/Statistical Data/Melbourne/jtw_sa2_od_matrix Melb.csv",
+      "rows": 78
+    },
+    {
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/Seed Round/Suite Docs/B plans for ESIC/ESIC Archive/SJT_Tripartite Water Roads Business Case_May 8 2025.docx",
+      "rows": 56
+    },
+    {
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/Seed Round/Suite Docs/B plans for ESIC/ESIC Archive/SJT_Tripartite Water Roads Business Case_May 3 2025.pdf",
+      "rows": 51
+    },
+    {
+      "source_file": "Imported from Dropbox/ZZ Legacy Folders Unfiled/Seed Round/Suite Docs/B plans for ESIC/ESIC Archive/SJT_Tripartite Water Roads Business Case_May 3 2025.docx",
+      "rows": 50
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Maroubra 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Paddington 33_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Kirrawee 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Newcastle CBD 33_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Darlinghurst 33_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Matraville 33_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Berkeley Vale 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Crows Nest 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/City Central 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/North Sydney 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Clovelly 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Double Bay 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Potts Hill 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Gore Hill 33_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Macquarie Park 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Rose Bay 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Bankstown 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Flemington 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Meadowbank 132_11kV FY2023.csv",
+      "rows": 42
+    },
+    {
+      "source_file": "Imported from Dropbox/01 RESEARCH DEVELOPMENT/01.01 DeepPower/01.01.06 Regulatory Approval an Compliance/Ausgrid Network/FY2023/Hunters Hill 66_11kV FY2023.csv",
+      "rows": 42
+    }
+  ]
+}
