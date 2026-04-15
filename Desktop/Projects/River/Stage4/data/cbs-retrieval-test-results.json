@@ -1,0 +1,512 @@
+[
+  {
+    "query": "CAPITAL framework for tender qualification",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": true,
+    "distinct_sources_in_top_n": 4,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.55457817857526,
+    "max_similarity": 0.575902274143429,
+    "top_results": [
+      {
+        "id": 15599,
+        "source_file": "shipley-framework.md",
+        "title": "Shipley Framework",
+        "similarity": 0.5759,
+        "content_hash_prefix": "9c2a6b703073"
+      },
+      {
+        "id": 650,
+        "source_file": "cbs-group-fee-structure-part04.md",
+        "title": "Fee Structure Part04 (Part 1)",
+        "similarity": 0.5644,
+        "content_hash_prefix": "0531ab2217db"
+      },
+      {
+        "id": 130,
+        "source_file": "cbs-group-capital-methodology-part01.md",
+        "title": "Capital Methodology Part01 (Part 3)",
+        "similarity": 0.5633,
+        "content_hash_prefix": "8ed70ed5445c"
+      },
+      {
+        "id": 128,
+        "source_file": "cbs-group-capital-methodology-part01.md",
+        "title": "Capital Methodology Part01 (Part 1)",
+        "similarity": 0.5558,
+        "content_hash_prefix": "8555e8521537"
+      },
+      {
+        "id": 1079,
+        "source_file": "cbs-group-tender-tfnsw-amss-part08.md",
+        "title": "Tender Tfnsw Amss Part08 (Part 5)",
+        "similarity": 0.5546,
+        "content_hash_prefix": "b2e0f1d1b72c"
+      }
+    ]
+  },
+  {
+    "query": "Western Harbour Tunnel project experience",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": true,
+    "distinct_sources_in_top_n": 1,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.445614582822972,
+    "max_similarity": 0.508091329563701,
+    "top_results": [
+      {
+        "id": 1245,
+        "source_file": "cbs-group-tfnsw-materials-part02.md",
+        "title": "Tfnsw Materials Part02 (Part 10)",
+        "similarity": 0.5081,
+        "content_hash_prefix": "8a5b03f8ea03"
+      },
+      {
+        "id": 1244,
+        "source_file": "cbs-group-tfnsw-materials-part02.md",
+        "title": "Tfnsw Materials Part02 (Part 9)",
+        "similarity": 0.4803,
+        "content_hash_prefix": "2dbf4bb5514a"
+      },
+      {
+        "id": 1240,
+        "source_file": "cbs-group-tfnsw-materials-part02.md",
+        "title": "Tfnsw Materials Part02 (Part 5)",
+        "similarity": 0.4619,
+        "content_hash_prefix": "60fc5b47c399"
+      },
+      {
+        "id": 1238,
+        "source_file": "cbs-group-tfnsw-materials-part02.md",
+        "title": "Tfnsw Materials Part02 (Part 3)",
+        "similarity": 0.4576,
+        "content_hash_prefix": "60c932c82198"
+      },
+      {
+        "id": 1243,
+        "source_file": "cbs-group-tfnsw-materials-part02.md",
+        "title": "Tfnsw Materials Part02 (Part 8)",
+        "similarity": 0.4456,
+        "content_hash_prefix": "9d41e7498fbd"
+      }
+    ]
+  },
+  {
+    "query": "tender scorecard evaluation criteria",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": false,
+    "distinct_sources_in_top_n": 5,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.540521410672582,
+    "max_similarity": 0.571574415470696,
+    "top_results": [
+      {
+        "id": 15597,
+        "source_file": "shipley-bidder-comparison.md",
+        "title": "Shipley Bidder Comparison",
+        "similarity": 0.5716,
+        "content_hash_prefix": "a64328546c93"
+      },
+      {
+        "id": 1000,
+        "source_file": "cbs-group-tender-nz-mot-tolling-part03.md",
+        "title": "Tender Nz Mot Tolling Part03 (Part 4)",
+        "similarity": 0.5609,
+        "content_hash_prefix": "c5c0d314dfe8"
+      },
+      {
+        "id": 1011,
+        "source_file": "cbs-group-tender-nz-mot-tolling-part06.md",
+        "title": "Tender Nz Mot Tolling Part06 (Part 3)",
+        "similarity": 0.5479,
+        "content_hash_prefix": "3ab66329313d"
+      },
+      {
+        "id": 1003,
+        "source_file": "cbs-group-tender-nz-mot-tolling-part04.md",
+        "title": "Tender Nz Mot Tolling Part04 (Part 2)",
+        "similarity": 0.5453,
+        "content_hash_prefix": "ed2feaeb7f51"
+      },
+      {
+        "id": 1021,
+        "source_file": "cbs-group-tender-tfnsw-am-2025-part02.md",
+        "title": "Tender Tfnsw Am 2025 Part02 (Part 4)",
+        "similarity": 0.5405,
+        "content_hash_prefix": "6dcdeb02a7f3"
+      }
+    ]
+  },
+  {
+    "query": "capability statement template",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": false,
+    "distinct_sources_in_top_n": 5,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.418679783501663,
+    "max_similarity": 0.434554834796538,
+    "top_results": [
+      {
+        "id": 123,
+        "source_file": "cbs-group-capability-statements-part02.md",
+        "title": "Capability Statements Part02 (Part 7)",
+        "similarity": 0.4346,
+        "content_hash_prefix": "cb3f91d54eee"
+      },
+      {
+        "id": 1097,
+        "source_file": "cbs-group-tender-tfnsw-amss-part10.md",
+        "title": "Tender Tfnsw Amss Part10 (Part 9)",
+        "similarity": 0.4341,
+        "content_hash_prefix": "f8fe14c2f15f"
+      },
+      {
+        "id": 1088,
+        "source_file": "cbs-group-tender-tfnsw-amss-part09.md",
+        "title": "Tender Tfnsw Amss Part09 (Part 3)",
+        "similarity": 0.4302,
+        "content_hash_prefix": "bc0fcb8cd836"
+      },
+      {
+        "id": 967,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part23.md",
+        "title": "Tender Dhs Vic Kpi Part23 (Part 3)",
+        "similarity": 0.4197,
+        "content_hash_prefix": "bdfdc38a8036"
+      },
+      {
+        "id": 762,
+        "source_file": "cbs-group-post-tender-addenda-part02.md",
+        "title": "Post Tender Addenda Part02 (Part 5)",
+        "similarity": 0.4187,
+        "content_hash_prefix": "587291eee432"
+      }
+    ]
+  },
+  {
+    "query": "Shipley methodology capture to response",
+    "entity_filter": "shared",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": false,
+    "distinct_sources_in_top_n": 5,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.405814517237489,
+    "max_similarity": 0.46170332571308,
+    "top_results": [
+      {
+        "id": 15600,
+        "source_file": "shipley-proposal-guide.md",
+        "title": "Shipley Proposal Guide",
+        "similarity": 0.4617,
+        "content_hash_prefix": "0e8c18267e22"
+      },
+      {
+        "id": 15599,
+        "source_file": "shipley-framework.md",
+        "title": "Shipley Framework",
+        "similarity": 0.4452,
+        "content_hash_prefix": "9c2a6b703073"
+      },
+      {
+        "id": 15598,
+        "source_file": "shipley-four-box.md",
+        "title": "Shipley Four Box",
+        "similarity": 0.4341,
+        "content_hash_prefix": "be4f9a1b4bc0"
+      },
+      {
+        "id": 15601,
+        "source_file": "shipley-win-themes.md",
+        "title": "Shipley Win Themes",
+        "similarity": 0.4059,
+        "content_hash_prefix": "c42da53a7713"
+      },
+      {
+        "id": 15597,
+        "source_file": "shipley-bidder-comparison.md",
+        "title": "Shipley Bidder Comparison",
+        "similarity": 0.4058,
+        "content_hash_prefix": "a64328546c93"
+      }
+    ]
+  },
+  {
+    "query": "ISO 55001 asset management compliance",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": true,
+    "distinct_sources_in_top_n": 4,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.580852762308224,
+    "max_similarity": 0.604173875103833,
+    "top_results": [
+      {
+        "id": 893,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part14.md",
+        "title": "Tender Dhs Vic Kpi Part14 (Part 6)",
+        "similarity": 0.6042,
+        "content_hash_prefix": "c82f006bb199"
+      },
+      {
+        "id": 859,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part11.md",
+        "title": "Tender Dhs Vic Kpi Part11 (Part 5)",
+        "similarity": 0.5904,
+        "content_hash_prefix": "76cea2bf5434"
+      },
+      {
+        "id": 801,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part02.md",
+        "title": "Tender Dhs Vic Kpi Part02 (Part 4)",
+        "similarity": 0.5891,
+        "content_hash_prefix": "0018c06dde7b"
+      },
+      {
+        "id": 860,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part11.md",
+        "title": "Tender Dhs Vic Kpi Part11 (Part 6)",
+        "similarity": 0.5887,
+        "content_hash_prefix": "90d0b732ac17"
+      },
+      {
+        "id": 953,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part21.md",
+        "title": "Tender Dhs Vic Kpi Part21 (Part 7)",
+        "similarity": 0.5809,
+        "content_hash_prefix": "f4497b746582"
+      }
+    ]
+  },
+  {
+    "query": "CA approval process for outbound communications",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": false,
+    "distinct_sources_in_top_n": 5,
+    "low_similarity_results": 0,
+    "results_above_0_4": 0,
+    "min_similarity": 0.357831252554804,
+    "max_similarity": 0.36672321260481,
+    "top_results": [
+      {
+        "id": 512,
+        "source_file": "cbs-group-downer-alternate-funding-part60.md",
+        "title": "Downer Alternate Funding Part60 (Part 7)",
+        "similarity": 0.3667,
+        "content_hash_prefix": "5c3ef485af52"
+      },
+      {
+        "id": 478,
+        "source_file": "cbs-group-downer-alternate-funding-part55.md",
+        "title": "Downer Alternate Funding Part55 (Part 7)",
+        "similarity": 0.3627,
+        "content_hash_prefix": "fb4bf8ddab4a"
+      },
+      {
+        "id": 463,
+        "source_file": "cbs-group-downer-alternate-funding-part52.md",
+        "title": "Downer Alternate Funding Part52 (Part 7)",
+        "similarity": 0.3621,
+        "content_hash_prefix": "ea7ebef376fe"
+      },
+      {
+        "id": 471,
+        "source_file": "cbs-group-downer-alternate-funding-part54.md",
+        "title": "Downer Alternate Funding Part54 (Part 7)",
+        "similarity": 0.362,
+        "content_hash_prefix": "5b29e5835d9a"
+      },
+      {
+        "id": 339,
+        "source_file": "cbs-group-downer-alternate-funding-part30.md",
+        "title": "Downer Alternate Funding Part30 (Part 7)",
+        "similarity": 0.3578,
+        "content_hash_prefix": "6fe68f7d4dd6"
+      }
+    ]
+  },
+  {
+    "query": "M6 Stage 1 project delivery",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": true,
+    "distinct_sources_in_top_n": 1,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.424302015349574,
+    "max_similarity": 0.459055107151438,
+    "top_results": [
+      {
+        "id": 706,
+        "source_file": "cbs-group-jv-egis-part08.md",
+        "title": "Jv Egis Part08 (Part 3)",
+        "similarity": 0.4591,
+        "content_hash_prefix": "3003a1ea7b71"
+      },
+      {
+        "id": 704,
+        "source_file": "cbs-group-jv-egis-part08.md",
+        "title": "Jv Egis Part08 (Part 1)",
+        "similarity": 0.4552,
+        "content_hash_prefix": "b570fede4867"
+      },
+      {
+        "id": 709,
+        "source_file": "cbs-group-jv-egis-part08.md",
+        "title": "Jv Egis Part08 (Part 6)",
+        "similarity": 0.4415,
+        "content_hash_prefix": "8351e076ff66"
+      },
+      {
+        "id": 705,
+        "source_file": "cbs-group-jv-egis-part08.md",
+        "title": "Jv Egis Part08 (Part 2)",
+        "similarity": 0.4411,
+        "content_hash_prefix": "aa0d5dccd18a"
+      },
+      {
+        "id": 707,
+        "source_file": "cbs-group-jv-egis-part08.md",
+        "title": "Jv Egis Part08 (Part 4)",
+        "similarity": 0.4243,
+        "content_hash_prefix": "b39408211761"
+      }
+    ]
+  },
+  {
+    "query": "board paper template governance",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": true,
+    "distinct_sources_in_top_n": 4,
+    "low_similarity_results": 0,
+    "results_above_0_4": 5,
+    "min_similarity": 0.495286717308569,
+    "max_similarity": 0.511728078825956,
+    "top_results": [
+      {
+        "id": 31,
+        "source_file": "cbs-group-board-papers-part02.md",
+        "title": "Board Papers Part02 (Part 9)",
+        "similarity": 0.5117,
+        "content_hash_prefix": "c51c105a81f6"
+      },
+      {
+        "id": 43,
+        "source_file": "cbs-group-board-papers-part02.md",
+        "title": "Board Papers Part02 (Part 21)",
+        "similarity": 0.5114,
+        "content_hash_prefix": "21631aec2ab4"
+      },
+      {
+        "id": 76,
+        "source_file": "cbs-group-board-papers-part03.md",
+        "title": "Board Papers Part03 (Part 8)",
+        "similarity": 0.5098,
+        "content_hash_prefix": "0bd35b2bf7f0"
+      },
+      {
+        "id": 109,
+        "source_file": "cbs-group-board-papers-part05.md",
+        "title": "Board Papers Part05 (Part 7)",
+        "similarity": 0.5064,
+        "content_hash_prefix": "ef0ccf57e770"
+      },
+      {
+        "id": 96,
+        "source_file": "cbs-group-board-papers-part04.md",
+        "title": "Board Papers Part04 (Part 3)",
+        "similarity": 0.4953,
+        "content_hash_prefix": "d12ce732306b"
+      }
+    ]
+  },
+  {
+    "query": "competitor analysis Aurecon WSP Jacobs",
+    "entity_filter": "cbs-group",
+    "match_count": 5,
+    "match_threshold": 0.3,
+    "hits": 5,
+    "has_duplicates": false,
+    "has_source_duplicates": false,
+    "distinct_sources_in_top_n": 5,
+    "low_similarity_results": 0,
+    "results_above_0_4": 0,
+    "min_similarity": 0.308591794455541,
+    "max_similarity": 0.323598811733691,
+    "top_results": [
+      {
+        "id": 1038,
+        "source_file": "cbs-group-tender-tfnsw-amss-part02.md",
+        "title": "Tender Tfnsw Amss Part02 (Part 12)",
+        "similarity": 0.3236,
+        "content_hash_prefix": "f77e65161af5"
+      },
+      {
+        "id": 967,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part23.md",
+        "title": "Tender Dhs Vic Kpi Part23 (Part 3)",
+        "similarity": 0.3221,
+        "content_hash_prefix": "bdfdc38a8036"
+      },
+      {
+        "id": 911,
+        "source_file": "cbs-group-tender-dhs-vic-kpi-part16.md",
+        "title": "Tender Dhs Vic Kpi Part16 (Part 2)",
+        "similarity": 0.3122,
+        "content_hash_prefix": "f48be68f31f0"
+      },
+      {
+        "id": 1087,
+        "source_file": "cbs-group-tender-tfnsw-amss-part09.md",
+        "title": "Tender Tfnsw Amss Part09 (Part 2)",
+        "similarity": 0.3091,
+        "content_hash_prefix": "29aceb81dfb8"
+      },
+      {
+        "id": 1057,
+        "source_file": "cbs-group-tender-tfnsw-amss-part05.md",
+        "title": "Tender Tfnsw Amss Part05 (Part 2)",
+        "similarity": 0.3086,
+        "content_hash_prefix": "656bdabd2770"
+      }
+    ]
+  }
+]

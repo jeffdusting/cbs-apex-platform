@@ -55,14 +55,25 @@ The full multi-phase migration of WR content from Dropbox + SharePoint into Goog
 - 🔵 Verify supabase-query skill works against new WR project (entity scoping)
 - 🔵 Add `wr-drive-read` skill (or extend supabase-query) for direct Drive file fetch when KB hit references it
 
-### Phase 3.5 — Re-organise WR Drive content into nominated folder structure
+### Phase 3.5 — Re-organise WR Drive content into nominated folder structure ✅ DONE (S4-P3, S4-P5)
 *Surfaced after the bulk import — content currently sits in `Imported from Dropbox` and `Imported from SharePoint` flat-ish layouts, not in the canonical Phase 1 folder structure (Governance/, PPP/, Financial/, etc.)*
-- 🔵 Define mapping rules from imported folder names → canonical folders (e.g. `Diligence Docs/` → `Investor Relations/Data Room/`, `IM/` → `Investor Relations/Updates/`)
-- 🔵 Build a Drive-move script that takes the mapping and physically relocates files (Drive API supports move via parent change)
-- 🔵 Keep `drive_file_id` stable through moves (Drive preserves IDs on move) so the indexer treats it as unchanged — no re-embedding needed
-- 🔵 Run the re-organisation
-- 🔵 Update `source_file` paths in WR Supabase documents to reflect new locations (the path is just metadata; rewrite via SQL or re-index)
-- 🔵 Verify WR Executive agent KB queries still work after reorganisation
+- ✅ Define mapping rules from imported folder names → canonical folders — `Stage4/data/wr-path-mapping.json` (30 rules, 6 flagged ambiguous)
+- ✅ Build a Drive-move script that takes the mapping and physically relocates files — `scripts/wr-drive-reorg.py` uses `files.update(addParents, removeParents)`
+- ✅ Keep `drive_file_id` stable through moves — confirmed: 4,636 moves, 0 re-embed required
+- ✅ Run the re-organisation — 4,636 files moved (0 errors), 734 empty folders trashed including the three staging roots
+- ✅ Update `source_file` paths in WR Supabase documents — 16,722 rows updated via `scripts/wr-update-source-paths.py`
+- ✅ Verify WR Executive agent KB queries still work after reorganisation — 5/5 retrieval tests pass (S4-P5, `Stage4/data/wr-retrieval-test-results.json`)
+
+**Dedup statistics (S4-P3):**
+- Rows before: 19,301 → rows after: 16,786 (−2,515, 13.0% reduction, matches P1 projection exactly)
+- Layer 1 folder-replica deletes: 914 (LGG Advisory copy/copy 2 = 602, water_roads_webflow_handoff 2–9 + copy = 308, icons_final copy = 4)
+- Layer 2 byte-identical hash collapse: 1,601 (423 hash groups resolved by SharePoint-master preference rule)
+- 20 residual loose-at-root files moved to `Archive/Unclassified/`
+
+**Residual items (tracked for later phases):**
+- 🟡 IVFFlat index rebuild (lists 40 → 130) — SQL prepared at `scripts/wr-ivfflat-rebuild.sql`, requires manual apply in Supabase SQL Editor (no direct `WR_SUPABASE_DB_URL` in local env). Index recall is noticeably degraded at current geometry — some valid queries return 0 hits at `match_threshold=0.3`; apply before P7 to restore recall.
+- 🟡 BluePath statistical data → `Archive/BluePath Statistical Data/` + `exclude_from_index: true` in mapping, but ingest-side enforcement deferred to P7 (add path prefix to indexer ignore list).
+- 🟡 Category labels still reflect source (`water_roads_internal_vdr`, etc.) — P7 to decide whether to normalise to canonical-folder taxonomy.
 
 ### Phase 7 — Incremental Drive change detection + auto-index
 *New requirement — keep WR KB current as Sarah edits/adds Drive docs*
@@ -338,6 +349,36 @@ Audit at `docs/current-state-audit/` produced 5 top architecture implications. S
 - 🔵 Webflow API token + CMS collection structure for resources/blog
 - 🔵 LinkedIn decision: API publishing (needs LinkedIn developer app + OAuth + company page admin) vs manual paste workflow
 - 🔵 SEO keyword strategy / content calendar (optional — agent can propose topics from KB gaps and tender intelligence trends)
+
+---
+
+## J. CBS KB Rationalisation (Stage 4 — S4-P4 + S4-P6)
+
+Stage 4 CBS track reduced CBS Supabase `documents` from 15,655 → 1,273 rows (−91.9%) and verified retrieval quality post-cleanup.
+
+### Dedup & Idempotency (S4-P4)
+- ✅ Root cause identified: non-idempotent re-ingestion of on-disk KB (not email intake as PLAN.md hypothesised) — see `stage4/CBS-DISCOVERY-SUMMARY.md`
+- ✅ Content-hash dedup executed — `scripts/cbs-kb-dedup.py`; 14,382 rows removed; 4 `correction` rows preserved; dry-run and live execution reconciled exactly
+- ✅ Ingest idempotency fix landed — `scripts/ingest-knowledge-base.py` now DELETEs per `source_file` before chunk insert loop
+- ✅ Category auto-normalised: `cbs-group/knowledge` collapsed from 13,143 → 4 because earliest-created properly-categorised rows won the hash tie-break against later mass-reingest rows that hard-coded `category='knowledge'`
+
+### `match_documents` Signature (S4-P4)
+- ✅ Already live with `match_threshold` parameter (discovered in S4-P2 §5) — no upgrade required
+- ✅ Canonical signature captured for traceability — `scripts/cbs-match-documents-upgrade.sql`
+- ✅ Live threshold test (0.3, `filter_entity='cbs-group'`) returns 200 OK
+
+### Retrieval Quality Verification (S4-P6)
+- ✅ 10 tender-domain queries executed (CAPITAL, Western Harbour Tunnel, tender scorecard, capability statement, Shipley, ISO 55001, CA approval, M6 Stage 1, board paper template, competitor analysis)
+- ✅ 0 content-identical duplicates in any top-5 result set
+- ✅ 0 results below `match_threshold=0.3` — threshold enforcement confirmed
+- ✅ 10/10 queries return at least one result above 0.3
+- ⚠️ 2/10 queries return <2 results above 0.4 — content-coverage issue, not retrieval (CA approval is new; only 5 competitor rows exist)
+- Artefacts: `stage4/data/cbs-retrieval-test-results.json`, `stage4/data/cbs-before-after.md`
+
+### Open / Deferred
+- 🟡 Apply `scripts/cbs-ivfflat-rebuild.sql` (lists=36) in Supabase SQL Editor — SQL prepared in S4-P4. Optimisation, not correctness; `lists=100` still returns correct results. Operator action.
+- ⚪ CBS KB Drive migration — DEFERRED per S4-P2 §7.2. Revisit triggers: CBS KB > 500 files, OR WR-CBS tooling unification becomes blocking.
+- ⚪ Empirical `match_threshold` tuning — current default in `skills/supabase-query/SKILL.md` is 0.5. P8 evaluator calibration can revisit if retrieval precision becomes a factor in scoring.
 
 ---
 
