@@ -1,0 +1,228 @@
+<!--
+  Evaluator Dashboard Panel — hyper-agent-v1 P5
+  Embed this inside monitoring/tender-dashboard.html or host as a separate page.
+  Reads from Supabase via the existing Vercel serverless proxy at api/supabase.js.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>River — Evaluator Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #1a1a1a; --paper: #f6f3ed; --cream: #ede8de; --warm: #d4c9b5;
+            --muted: #8c8374; --accent: #c0562b; --green: #3d7a4a; --green-soft: #d4e5d7;
+            --amber: #b8860b; --amber-soft: #f0e4c4; --red: #b33a3a; --red-soft: #f0d4d4;
+            --blue: #3a6b9b; --blue-soft: #d4e0f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .topbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.25rem 2.5rem; border-bottom: 1px solid var(--warm); background: var(--cream);
+        }
+        .topbar h1 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; }
+        .topbar h1 span { color: var(--muted); font-weight: 400; }
+        .nav-link { font-size: 0.8rem; color: var(--muted); text-decoration: none; margin-left: 1.5rem; }
+        .nav-link:hover { color: var(--ink); }
+        .refresh-btn {
+            background: var(--ink); color: var(--paper); border: none;
+            padding: 0.5rem 1.25rem; font-size: 0.8rem; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+        }
+        .refresh-btn:hover { background: var(--accent); }
+
+        .content { padding: 2rem 2.5rem; max-width: 1200px; }
+
+        .summary-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white; border: 1px solid var(--warm); padding: 1.25rem;
+        }
+        .stat-value { font-family: 'DM Serif Display', serif; font-size: 2rem; }
+        .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem; }
+        .stat-card.good .stat-value { color: var(--green); }
+        .stat-card.warn .stat-value { color: var(--amber); }
+        .stat-card.bad .stat-value { color: var(--red); }
+
+        .section-label {
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--muted);
+            margin: 2rem 0 1rem; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--warm); }
+
+        .chart-container { display: flex; align-items: flex-end; gap: 0.5rem; height: 120px; margin-bottom: 2rem; }
+        .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .bar { width: 100%; min-height: 2px; transition: height 0.3s; }
+        .bar-label { font-size: 0.65rem; color: var(--muted); margin-top: 0.4rem; }
+        .bar-count { font-size: 0.7rem; font-weight: 600; margin-bottom: 0.3rem; }
+
+        table { width: 100%; border-collapse: collapse; background: white; border: 1px solid var(--warm); }
+        th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+             padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--warm); background: var(--cream); }
+        td { padding: 0.6rem 1rem; font-size: 0.85rem; border-bottom: 1px solid #f0ece4; }
+        .pass { color: var(--green); font-weight: 600; }
+        .fail { color: var(--red); font-weight: 600; }
+
+        .blocker-card {
+            background: var(--red-soft); border: 1px solid var(--red); padding: 1rem; margin-bottom: 0.5rem;
+        }
+        .blocker-card.none { background: var(--green-soft); border-color: var(--green); }
+        .blocker-type { font-weight: 600; font-size: 0.85rem; }
+        .blocker-detail { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+        #loading { text-align: center; padding: 3rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1>River <span>/ evaluator</span></h1>
+        <div>
+            <a class="nav-link" href="tender-dashboard.html">Tender Pipeline</a>
+            <a class="nav-link" href="manager-dashboard.html">Manager</a>
+            <button class="refresh-btn" onclick="loadAll()">Refresh</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div id="loading">Loading evaluator data...</div>
+        <div id="summary-bar" class="summary-bar" style="display:none"></div>
+        <div id="chart-section" style="display:none">
+            <div class="section-label">Score Distribution (Last 7 Days)</div>
+            <div id="chart" class="chart-container"></div>
+        </div>
+        <div id="table-section" style="display:none">
+            <div class="section-label">Recent Evaluations</div>
+            <div id="eval-table"></div>
+        </div>
+        <div id="blocker-section" style="display:none">
+            <div class="section-label">Blocked Work</div>
+            <div id="blockers"></div>
+        </div>
+    </div>
+
+<script>
+const IS_LOCAL = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+const SUPABASE_DIRECT_URL = "https://eptugqwlgsmwhnubbqsk.supabase.co";
+
+function supaUrl(restPath) {
+    if (IS_LOCAL) return `${SUPABASE_DIRECT_URL}/rest/v1${restPath}`;
+    return `/api/supabase?path=${encodeURIComponent('/rest/v1' + restPath)}`;
+}
+
+function supaHeaders() {
+    if (IS_LOCAL) {
+        const key = localStorage.getItem("SUPABASE_KEY") || "";
+        return { "apikey": key, "Authorization": `Bearer ${key}`, "Content-Type": "application/json" };
+    }
+    return { "Content-Type": "application/json" };
+}
+
+async function supaGet(path) {
+    const r = await fetch(supaUrl(path), { headers: supaHeaders() });
+    return r.ok ? r.json() : [];
+}
+
+async function loadAll() {
+    const sevenDaysAgo = new Date(Date.now() - 7*86400000).toISOString();
+    const oneDayAgo = new Date(Date.now() - 86400000).toISOString();
+
+    const [scores, proposals, blockers] = await Promise.all([
+        supaGet(`/evaluation_scores?created_at=gte.${sevenDaysAgo}&order=created_at.desc&limit=200`),
+        supaGet(`/correction_proposals?status=eq.pending&select=id`),
+        supaGet(`/agent_traces?error=not.is.null&created_at=gte.${oneDayAgo}&select=agent_role,task_type,error&limit=50`),
+    ]);
+
+    document.getElementById("loading").style.display = "none";
+
+    // Summary
+    const total = scores.length;
+    const passing = scores.filter(s => s.score_composite >= 3.5).length;
+    const rate = total > 0 ? Math.round(passing / total * 100) : 0;
+    const avg = total > 0 ? (scores.reduce((a, s) => a + (s.score_composite || 0), 0) / total).toFixed(1) : "—";
+    const pending = proposals.length;
+
+    const bar = document.getElementById("summary-bar");
+    bar.style.display = "grid";
+    bar.innerHTML = `
+        <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">Evaluations (7d)</div></div>
+        <div class="stat-card ${rate >= 70 ? 'good' : rate >= 50 ? 'warn' : 'bad'}"><div class="stat-value">${rate}%</div><div class="stat-label">Pass Rate</div></div>
+        <div class="stat-card"><div class="stat-value">${avg}</div><div class="stat-label">Avg Score</div></div>
+        <div class="stat-card ${pending === 0 ? 'good' : 'warn'}"><div class="stat-value">${pending}</div><div class="stat-label">Pending Corrections</div></div>
+    `;
+
+    // Score distribution chart
+    const bands = { "1-2": 0, "2-3": 0, "3-4": 0, "4-5": 0 };
+    const colours = { "1-2": "var(--red)", "2-3": "var(--amber)", "3-4": "var(--blue)", "4-5": "var(--green)" };
+    for (const s of scores) {
+        const c = s.score_composite || 0;
+        if (c < 2) bands["1-2"]++;
+        else if (c < 3) bands["2-3"]++;
+        else if (c < 4) bands["3-4"]++;
+        else bands["4-5"]++;
+    }
+    const maxCount = Math.max(...Object.values(bands), 1);
+    const chartEl = document.getElementById("chart");
+    document.getElementById("chart-section").style.display = "block";
+    chartEl.innerHTML = Object.entries(bands).map(([label, count]) => `
+        <div class="bar-group">
+            <div class="bar-count">${count}</div>
+            <div class="bar" style="height:${Math.max(count/maxCount*100, 2)}px;background:${colours[label]}"></div>
+            <div class="bar-label">${label}</div>
+        </div>
+    `).join("");
+
+    // Recent evaluations table
+    const tableEl = document.getElementById("eval-table");
+    document.getElementById("table-section").style.display = "block";
+    const recent = scores.slice(0, 20);
+    let tableHtml = `<table><thead><tr><th>Date</th><th>Agent</th><th>Task</th><th>Score</th><th>Result</th><th>Reviewed</th></tr></thead><tbody>`;
+    for (const s of recent) {
+        // Join with traces to get agent info
+        const d = new Date(s.created_at).toLocaleDateString("en-AU", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+        const sc = s.score_composite ? s.score_composite.toFixed(1) : "—";
+        const pass = s.score_composite >= 3.5;
+        tableHtml += `<tr>
+            <td class="mono" style="font-size:0.75rem">${d}</td>
+            <td>${s.evaluation_mode || "—"}</td>
+            <td>—</td>
+            <td class="mono">${sc}</td>
+            <td class="${pass ? 'pass' : 'fail'}">${pass ? 'PASS' : 'FAIL'}</td>
+            <td>${s.human_reviewed ? '✓' : '—'}</td>
+        </tr>`;
+    }
+    tableHtml += "</tbody></table>";
+    tableEl.innerHTML = tableHtml;
+
+    // Blockers
+    const blockerEl = document.getElementById("blockers");
+    document.getElementById("blocker-section").style.display = "block";
+    if (blockers.length === 0) {
+        blockerEl.innerHTML = `<div class="blocker-card none"><div class="blocker-type">No blocked work detected</div></div>`;
+    } else {
+        const grouped = {};
+        for (const b of blockers) {
+            const key = b.error.substring(0, 60);
+            if (!grouped[key]) grouped[key] = [];
+            grouped[key].push(b);
+        }
+        blockerEl.innerHTML = Object.entries(grouped).map(([err, items]) => `
+            <div class="blocker-card">
+                <div class="blocker-type">${err}</div>
+                <div class="blocker-detail">${items.length} trace(s) — agents: ${[...new Set(items.map(i => i.agent_role))].join(", ")}</div>
+            </div>
+        `).join("");
+    }
+}
+
+loadAll();
+</script>
+</body>
+</html>

@@ -109,9 +109,28 @@
 
 ---
 
+## Hyper-Agent v1 Programme (15 April 2026)
+
+Programme complete. Output quality evaluator, trajectory capture, governance gates, and monitoring built across 6 phases (P0–P5). E2E smoke test: 8/8 PASS.
+
+**New Supabase tables:** agent_traces, evaluation_scores, rubric_versions, correction_proposals
+**New skills:** self-check, trace-capture
+**New agent (pending creation):** River Monitor (Haiku 4.5, 1h heartbeat, $2/mo)
+**New routines (pending registration):** Output evaluation pipeline (2h), Agent trace ingestion (2h)
+
+**Activation steps remaining:**
+1. `python3 scripts/prepare-trace-skill-sync.py --execute` — assign skills to 12 agents
+2. `python3 scripts/deploy-heartbeat-extensions.py --execute` — deploy trace capture to agents
+3. `python3 scripts/create-monitoring-agent.py --execute` — create River Monitor
+4. `python3 scripts/create-evaluator-routine.py --execute` — register evaluator routine
+5. `python3 scripts/create-trace-ingestion-routine.py --execute` — register trace ingestion routine
+6. Integrate CA approval toggle + evaluator panel into Vercel dashboard
+
+---
+
 ## Known Issues
 
-1. **CBS Executive 2 (duplicate)** — duplicate agent (id=117c536c) consuming budget at 1h intervals. DELETE returns 500. Recommend disabling.
+1. **CBS Executive 2 (duplicate)** — terminated 14 April 2026 (soft-delete, won't run heartbeat).
 2. **CBS Group duplicate** — second "CBS Group" company (f353f31a) with 1 "CEO" agent, archived but not deletable.
 
 ---

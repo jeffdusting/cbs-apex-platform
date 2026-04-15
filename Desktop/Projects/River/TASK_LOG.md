@@ -1,5 +1,112 @@
 # Project River — Task Log
 
+## P0: Discovery (hyper-agent-v1)
+
+**Date:** 15 April 2026
+**Status:** COMPLETE
+**Git Tag:** hyper-agent-v1-P0-discovery
+
+**Findings:**
+- CBS Supabase `documents` table has 15,655 rows (vs. PLAN.md's "1,422+") — growth from KB email intake routines, Shipley docs, competitor profiles, corrections
+- All 4 evaluator tables (`evaluation_scores`, `agent_traces`, `rubric_versions`, `correction_proposals`) do not exist — clean slate for P1
+- CBS `match_documents` function lacks `match_threshold` parameter (WR has it) — needs update or client-side filtering
+- 7 active Paperclip routines confirmed (RIVER-STATUS.md shows only 3 — stale)
+- 14 skills, 49 agent instruction files, ~35 scripts, 10 governance templates
+
+**Conflicts with plan:** None — all PLAN.md architecture decisions consistent with codebase
+
+**Missing credentials:**
+- `ANTHROPIC_API_KEY` — not checked (needed for P2 evaluator scoring)
+- `PAPERCLIP_SESSION_COOKIE` — refreshed by operator (needed for P3/P4)
+
+**Next phase:** P1 (Evaluator Schema)
+
+---
+
+## P1: Evaluator Schema (hyper-agent-v1)
+
+**Date:** 15 April 2026
+**Status:** COMPLETE
+**Git Tag:** hyper-agent-v1-P1-evaluator-schema
+
+**Created:**
+- `scripts/evaluator-schema.sql` — 4 tables, 13 indexes
+- `scripts/apply-evaluator-schema.py` — helper script with psycopg2 fallback
+- `config/evaluator-rubric-v1.json` — 6 dimensions, weights sum to 1.0, threshold 3.5
+- `config/evaluation-events.json` — sync/async/self_check_only event routing
+
+**Applied to Supabase:** YES — via Supabase CLI Management API (`supabase db query --linked`)
+**Rubric seeded:** YES — id `d4a83737-4ff9-480d-9684-e2f967093b5b`
+
+**Known issues:**
+- Direct PostgreSQL connection unavailable (IPv6 only, no route from dev machine). Supabase CLI `--linked` flag (Management API) used as workaround. Future schema changes should use the same approach.
+- `exec_sql` RPC not available in this Supabase project.
+
+**Next phase:** P2 (Evaluation Pipeline)
+
+---
+
+## P2: Evaluation Pipeline (hyper-agent-v1)
+
+**Date:** 15 April 2026
+**Status:** COMPLETE
+**Git Tag:** hyper-agent-v1-P2-evaluation-pipeline
+
+**Created:**
+- `scripts/lib/evaluator.py` — shared evaluation logic (6 public functions)
+- `scripts/evaluate-outputs.py` — async batch evaluator with --dry-run, --batch-size, stale handling
+- `scripts/sync-evaluate.py` — sync review gate with Teams notification and --override
+- `scripts/review-correction-proposals.py` — interactive correction proposal review tool
+- `skills/self-check/SKILL.md` — Layer B pre-submission quality checklist
+
+**Dry run result:** Exit 0 — rubric loaded, no unscored traces (expected — no traces exist yet)
+**Known issues:** None
+**Next phase:** P3 (Agent Traces)
+
+---
+
+## P3: Agent Trace Instrumentation (hyper-agent-v1)
+
+**Date:** 15 April 2026
+**Status:** COMPLETE
+**Git Tag:** hyper-agent-v1-P3-agent-traces
+
+**Created:**
+- `skills/trace-capture/SKILL.md` — structured trace format with TRACE-START/END markers
+- `scripts/ingest-traces.py` — parses traces from Paperclip issue comments → agent_traces table
+- `scripts/prepare-trace-skill-sync.py` — generates skill sync API calls for all 12 agents
+- `scripts/deploy-heartbeat-extensions.py` — merges trace extension into live agent promptTemplates
+- `docs/hyper-agent-v1/heartbeat-extension-templates/` — 3 tier templates
+
+**Skill sync prepared:** YES — commands generated, run with --execute to apply
+**Heartbeat deployment prepared:** YES — diffs generated, run with --execute (test one agent first)
+**Dry run:** ingest-traces.py exit 0 — 0 traces found (expected, no traces emitted yet)
+**Known issues:** None
+**Next phase:** P4 (Governance + Monitoring)
+
+---
+
+## P4: Governance + Monitoring (hyper-agent-v1)
+
+**Date:** 15 April 2026
+**Status:** COMPLETE
+**Git Tag:** hyper-agent-v1-P4-governance-monitoring
+
+**Created:**
+- `scripts/ca-approval-gate-schema.sql` — ca_send_approved column
+- `scripts/ca-sender-preflight.py` — architectural guard before CA send
+- `scripts/ca-approval-dashboard-patch.js` — approve CA send button for dashboard
+- `agent-instructions/monitoring/AGENTS.md` — River Monitor agent instructions
+- `scripts/create-monitoring-agent.py` — Paperclip API agent creation (--execute to run)
+- `scripts/check-blocked-work.py` — standalone blocked-work detection
+
+**Schema applied:** YES — ca_send_approved column live on tender_register
+**Monitoring agent created:** NO — commands generated only (run with --execute)
+**Known issues:** None
+**Next phase:** P5 (Integration + Verification)
+
+---
+
 ## Email Task Intake — Google Apps Script
 
 **Date:** 13 April 2026
