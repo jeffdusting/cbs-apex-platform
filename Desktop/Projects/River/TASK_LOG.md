@@ -1397,3 +1397,74 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 - **Register hyper-agent-v1 skills on both CBS and WR companies.** `feedback-loop`, `trace-capture`, and `self-check` exist only as local files; neither company has them registered at the Paperclip level. Until this is resolved, agents referencing these skills produce outputs that skip the skills' behaviour (self-check scoring, trace emission, feedback retrieval).
 
 **Next phase:** P9 (Verification + Critique) — all prior phases are now complete and deployed. P7's Paperclip-side adapterConfig + skill registration + desiredSkills all landed successfully (see follow-up commit `92729a5`). P9 should still independently re-check the live `SUPABASE_URL`, `promptTemplate`, and skill assignments for each WR agent before trusting retrieval-quality numbers, and should run against the v1.0 evaluator (v1.1 is inserted but inactive pending post-calibration approval).
+
+---
+
+## S4-P9: Verification + Critique
+
+**Date:** 16 April 2026
+**Status:** COMPLETE
+**Git Tag:** stage4-P9-verification-critique
+
+### Summary
+
+| Metric | Value |
+|---|---|
+| Verification verdict | **PASS WITH CAVEATS** |
+| Issues found (numbered) | 10 |
+| Critique points across 3 perspectives | 30 (IB: 9, CE: 10, RA: 11) |
+| Top 5 remediation priorities | identified |
+| E2E smoke test re-run | 8 PASS / 0 FAIL / 0 SKIP |
+| CBS retrieval spot check (10 queries) | content_dupes=0, src_dupes=5 (informational), low_sim=0, empty=0 |
+| WR retrieval spot check (5 queries) | dupes=0, empty=0, below_threshold=0, imported_paths=0 |
+| Entity isolation verification | PASS at WR-facing layer (98 legacy waterroads on CBS noted) |
+| CA preflight live test | PASS (correctly BLOCKED on lifecycle_stage for tender id 11) |
+| Rubric weights sum | v1.0=1.00, v1.1=1.00 (PASS) |
+| All 9 CBS tables + 4 WR tables | exist with correct schemas |
+| `Imported from` rows on WR | 0 / 16,786 |
+| `drive_file_id` NULL on WR | 0 / 16,786 |
+| Active rubric in `rubric_versions` | v1.0 (threshold 3.5); v1.1 inactive (threshold 3.8) — matches P8 deferral |
+| Production `agent_traces` rows | **0** (raised as Issue #3 / IV#9 — pipeline never ingested a real trace) |
+
+### Files Created
+
+| File | Action |
+|---|---|
+| `Stage4/INDEPENDENT_VERIFICATION.md` | Created — structural + data + cross-file + behavioural verification with 10 numbered issues and verdict |
+| `Stage4/ADVERSARIAL_CRITIQUE.md` | Created — three hostile perspectives (IB, CE, RA), critique-to-advancement mapping table, top 5 remediation priorities |
+
+### Files Modified
+
+| File | Action |
+|---|---|
+| `TASK_LOG.md` | Appended this S4-P9 entry |
+
+### Top 5 Remediation Priorities (selected from 30+ critique points)
+
+1. **Fix the task_type vocabulary mismatch** (IV#7 / RA.11) — `config/evaluation-events.json` (snake_case) vs `skills/trace-capture/SKILL.md` (kebab-case). Today the bug is masked by 0 production traces; the moment ingestion goes live every sync-evaluation routing decision silently fails. **Effort: S.**
+2. **Apply WR IVFFlat rebuild + activate trace ingestion routine in production** (IV#5 + IV#3 + IV#9) — moves the platform from "built" to "operating". Both blocked on the operator (one SQL run; one cookie refresh + script execution). **Effort: M.**
+3. **Move secrets off plaintext + tighten access** (RA.2 + RA.3 + IB.6) — `scripts/env-setup.sh` plaintext service-role key is the single largest compromise risk. Migrate to Vault / 1Password CLI; define a limited Supabase role with RLS for read paths. **Effort: M.**
+4. **Replace trace-in-comment parser with a structured channel** (CE.1) — markdown-marker JSON is the load-bearing weakness in the evaluation layer; one model regression away from a silent quality-data outage. **Effort: XL.**
+5. **Establish DR posture: backups, drill, second-operator handoff** (IB.1 + IB.2) — bus factor of one; no documented RTO/RPO; no rehearsed recovery. **Effort: L.**
+
+### Gate Verification
+
+- PASS: `Stage4/INDEPENDENT_VERIFICATION.md` exists
+- PASS: `Stage4/ADVERSARIAL_CRITIQUE.md` exists
+- PASS: Verdict present in verification report (`PASS WITH CAVEATS`)
+- PASS: Top 5 priorities present in critique report
+
+### Surprising / Non-Obvious Findings
+
+- **The evaluation pipeline has produced 0 rows in production.** `agent_traces`, `evaluation_scores`, and `correction_proposals` are all empty. The smoke test exercises the synthetic-trace path; the real Paperclip-comment ingestion has never run. P8 calibration was performed against output text manually pasted into `EVALUATOR_CALIBRATION.md`, not against traces flowing through the pipeline. The evaluator works in lab conditions; it is unproven in production.
+- **The task_type vocabulary mismatch** between `config/evaluation-events.json` (snake_case) and `skills/trace-capture/SKILL.md` (kebab-case) is a latent silent-failure bug. Every sync-evaluation routing rule will fall through. This is the single highest-priority pre-production fix.
+- **WR `prompt_templates` is empty** — the four WR governance templates were ingested into CBS Supabase before WR had its own project, and never migrated. Any WR governance routine that pulls from `prompt_templates` will hit an empty table.
+- **Six empty " 2" placeholder skill directories** — macOS-Finder copy artefacts in `skills/`. Cosmetic, but removable in one git rm.
+- **No tender has progressed past `interest_passed`** in production (15 interest_failed, 14 interest_passed, 1 discovered, 0 in any later stage). The CA approval gate, ca-fill, sync-evaluation on `go-no-go`, and the entire downstream tender lifecycle have not been exercised end-to-end with a real tender opportunity.
+- **`scripts/env-setup.sh` contains plaintext** Supabase service-role JWT, Anthropic API key, Voyage API key, Microsoft client secret, Xero client secret, GitHub PAT, and Teams webhook URL. The file is gitignored (so does not leak via commit) but offers no protection beyond that — no Vault, no SOPS, no rotation log. An attacker who lands on the laptop walks away with full DB write access on both projects.
+
+### Programme Status
+
+**STAGE 4 COMPLETE.** All 10 phases (P0–P9) executed and tagged. The cross-programme deliverable set is intact: hyper-agent-v1 (P0–P5) + stage4 (P0–P9) = 16 phase tags spanning evaluator schema, evaluation pipeline, agent traces, governance + monitoring, integration verification, dashboard + calibration completion, both KB discoveries + dedups + verifications, WR agent reconfiguration, evaluator calibration, and now independent verification + adversarial critique.
+
+**Next step:** Return to Claude chat with `Stage4/ADVERSARIAL_CRITIQUE.md` for advancement-programme planning. The top 5 priorities listed above should be the spine of that programme; the remaining 25+ items in the mapping table form the backlog beneath it.
