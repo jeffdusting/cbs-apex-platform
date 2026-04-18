@@ -1496,3 +1496,27 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 **Conflicts with PLAN.md:** None material. Noted: env-setup.sh was world-readable (755); 1Password CLI already installed unblocks P3; WR has no evaluator tables (CBS-only quality layer by design).
 
 **Next phase:** P1 (Critical Fixes + Repo Hygiene) — mandatory gate before P2. Closes IV#7 (task_type vocab) plus IV#1, IV#2, IV#4, IV#6, IV#8, CE.7, CE.9.
+
+---
+
+## S5-P1: Critical Fixes
+
+**Date:** 19 April 2026
+**Status:** COMPLETE
+**Git Tag:** stage5-P1-critical-fixes
+
+- **task_type vocabulary:** rewritten to kebab-case (13 entries). `resolve_evaluation_mode()` added to `scripts/lib/evaluator.py` — emits `logging.warning` on unknown task_types and defaults to async (so drift is visible, not silent). Wired into both `sync-evaluate.py` (replaces inline sync_types check) and `evaluate-outputs.py` (skips self_check traces).
+- **`skills/trace-capture/SKILL.md`:** added `white-paper` and `heartbeat-idle` to the canonical task_type table (previously undocumented even though routed).
+- **Placeholder dirs removed:** 6 (`cbs-capital-framework 2`, `teams-notify 2`, `sharepoint-write 2`, `xero-read 2`, `tender-portal-query 2`, `supabase-query 2`)
+- **WR templates ingested:** 4 (waterroads-board-agenda, waterroads-board-minutes, waterroads-board-paper, waterroads-resolution). WR `prompt_templates`: 0 → 4.
+- **Legacy WR rows deleted from CBS:** 98 → 0. Verified WR Supabase has 16,786 documents (content preserved at canonical location).
+- **ADRs created:** ADR-001 (duplicate routine accepted — idempotent), ADR-002 (CBS/WR schema divergence intentional).
+- **Phase spec fixes:** Stage4/10-P9 row-count range 1,500–5,000 → 1,000–5,000 (actual 1,273); WR_SUPABASE_URL wording rewritten to describe runtime resolution.
+
+**Gate results:** 9/9 PASS (vocab, resolver, placeholders, WR templates, CBS rows, ADR-001, ADR-002, IV#2, IV#8).
+
+**Files modified:** `config/evaluation-events.json`, `scripts/lib/evaluator.py`, `scripts/sync-evaluate.py`, `scripts/evaluate-outputs.py`, `skills/trace-capture/SKILL.md`, `Stage4/10-P9-VERIFICATION-CRITIQUE.md`.
+
+**Files created:** `docs/architecture-decisions/ADR-001-duplicate-routine.md`, `docs/architecture-decisions/ADR-002-schema-divergence.md`.
+
+**Next phase:** P2 (Operational Activation) — IV#3 (activate trace ingestion), IV#5 (WR IVFFlat rebuild), IV#9 (first production eval), IV#10 (drive a tender through full lifecycle). P2 is the unblock for P6 observability; P3, P4, P5, P8 are parallel after P2.
