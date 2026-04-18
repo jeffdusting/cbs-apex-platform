@@ -1545,3 +1545,27 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 **Operator unblock for IV#3/IV#9:** (1) Refresh `PAPERCLIP_SESSION_COOKIE` from DevTools → Application → Cookies → `org.cbslab.app` → `__Secure-better-auth.session_token`. (2) `export PAPERCLIP_SESSION_COOKIE="<value>"`. (3) `python3 scripts/ingest-traces.py --since 48`. (4) `python3 scripts/evaluate-outputs.py --batch-size 10`. This should be logged back in TASK_LOG under a brief S5-P2-followup entry when run.
 
 **Next phase:** P3 (Secrets), P4 (Governance), P5 (CI), or P8 (Deferred Designs) — any can run next per PLAN.md parallel rules. Bootstrap rule picks the first option listed: **P3**.
+
+---
+
+## S5-P3: Secrets + Access Control
+
+**Date:** 19 April 2026
+**Status:** COMPLETE (staged — live migration is operator-gated)
+**Git Tag:** stage5-P3-secrets
+
+- **1Password CLI:** available (v2.33.1, installed). No 1Password account signed in during this session, so op-setup.sh was produced but not executed. Operator signs in (`op signin`), creates vault `River`, then runs `bash scripts/op-setup.sh` — populates 12 items and generates the `river_agent_read` password.
+- **Secrets audit:** full inventory at `docs/secrets-audit.md` — 25 secrets across 9 subsystems (CBS + WR Supabase, Voyage, Anthropic, Paperclip, Microsoft Graph, Xero, GitHub PAT, Teams webhook, CA Sender, WR GCP). Each secret mapped to the scripts that read it and the rotation path.
+- **1Password vault spec:** 12 items — `River CBS Supabase`, `River WR Supabase`, `River Voyage AI`, `River Anthropic`, `River Paperclip`, `River Microsoft Graph`, `River Xero`, `River GitHub PAT`, `River Teams Webhook`, `River CA Sender`, `River WR GCP` (with service account JSON as attached document), `River Agent Read`.
+- **op run wrapper:** `scripts/env-op.env` — `op://` references only, safe to commit. Usage: `op run --env-file=scripts/env-op.env -- python3 scripts/<script>.py` or `eval $(op inject -i scripts/env-op.env)`.
+- **Limited Supabase role:** SQL at `scripts/supabase-limited-role.sql`. `river_agent_read` has `NOSUPERUSER NOBYPASSRLS`, SELECT on documents/prompt_templates/rubric_versions/evaluation_scores/correction_proposals, SELECT + INSERT on agent_traces (never UPDATE/DELETE). UPDATE on tender_register is column-level allowlist that excludes `ca_send_approved`, `ca_send_approved_by`, `ca_send_approved_at`, `decision`, `decision_date`, `decision_by`, `decision_notes` — the Stage 4 CA approval gate is enforced at the role level. RLS enabled on documents with permissive read policy so future changes go through SQL review. Apply via Supabase SQL Editor (operator) with `SET app.agent_read_password` in place first.
+- **pgcrypto design (IB.6):** `scripts/pgcrypto-sensitive-docs.sql` — `insert_sensitive_document()` and `document_plaintext()` helpers for `correction`, `competitor_profile`, `board_paper` categories. Key lives at `op://River/River Pgcrypto/key`, delivered per-session via `SET app.pgcrypto_key`. Execution deferred — requires coordinated rewrite of ~15 scripts' read/write paths; scoped as P8 follow-up.
+- **Credential rotation:** sequence documented in `docs/secrets-audit.md §5` with reversibility checkpoints. Not executed — depends on live 1Password vault. `scripts/env-setup.sh.op-stub` produced as drop-in replacement once operator has run op-setup.sh and verified `op run` end-to-end.
+
+**Gate results:** 5 PASS + 1 expected WARN (env-setup.sh still plaintext — WARN is documented in the phase spec as the correct state when 1Password migration is pending operator action).
+
+**Files created:** `docs/secrets-audit.md`, `scripts/op-setup.sh`, `scripts/env-op.env`, `scripts/supabase-limited-role.sql`, `scripts/pgcrypto-sensitive-docs.sql`, `scripts/env-setup.sh.op-stub`.
+
+**Operator unblock for live migration:** (1) `op signin`. (2) `op vault create River` (if not existing). (3) Source the three plaintext env files, then `bash scripts/op-setup.sh` — creates the 12 items and emits a fresh password for `river_agent_read`. (4) `op read 'op://River/River Agent Read/password'` → paste into Supabase SQL Editor session as `SET app.agent_read_password` → run `scripts/supabase-limited-role.sql` against CBS project, then against WR project. (5) Verify `op run --env-file=scripts/env-op.env -- python3 scripts/paperclip-validate.py`. (6) Rotate CBS + WR service-role keys per `docs/secrets-audit.md §5`. (7) `cp scripts/env-setup.sh.op-stub scripts/env-setup.sh` to activate the stub.
+
+**Next phase:** P4 (Governance), P5 (CI), or P8 (Deferred Designs) — any can run next. P7 (DR + resilience) unblocks once the live operator migration above is complete. Per bootstrap rule (first option listed): **P4**.
