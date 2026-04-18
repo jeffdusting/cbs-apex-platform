@@ -22,6 +22,63 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "lib"))
 
 import evaluator
+import httpx
+
+
+def send_critical_alert(webhook_url: str, trace: dict, composite: float, rationale: str, prop_id: str) -> None:
+    """Immediate Teams alert for severity=critical correction proposals (RA.7)."""
+    payload = {
+        "type": "message",
+        "attachments": [
+            {
+                "contentType": "application/vnd.microsoft.card.adaptive",
+                "content": {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.4",
+                    "body": [
+                        {
+                            "type": "TextBlock",
+                            "text": "CRITICAL CORRECTION PROPOSAL",
+                            "weight": "Bolder",
+                            "size": "Medium",
+                            "color": "Attention",
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": (
+                                f"{trace.get('agent_role', 'unknown')} / {trace.get('task_type', 'unknown')} "
+                                "— review required before agent produces more outputs of this type."
+                            ),
+                            "wrap": True,
+                        },
+                        {
+                            "type": "FactSet",
+                            "facts": [
+                                {"title": "Score", "value": f"{composite:.1f}/5.0"},
+                                {"title": "Proposal", "value": prop_id[:8] if prop_id else "n/a"},
+                                {"title": "Trace", "value": trace["id"][:8]},
+                            ],
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": (rationale or "")[:500],
+                            "wrap": True,
+                            "size": "Small",
+                        },
+                    ],
+                },
+            }
+        ],
+    }
+    try:
+        r = httpx.post(webhook_url, json=payload, timeout=10)
+        if r.status_code in (200, 202):
+            print("    Teams critical alert sent")
+        else:
+            print(f"    Teams critical alert failed: {r.status_code}")
+    except Exception as e:
+        print(f"    Teams critical alert error: {e}")
 
 
 def main():
@@ -45,6 +102,7 @@ def main():
     supabase_url = os.environ.get("SUPABASE_URL", "")
     supabase_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    teams_webhook = os.environ.get("TEAMS_WEBHOOK_URL", "")
 
     if not supabase_url or not supabase_key:
         print("ERROR: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set")
@@ -149,6 +207,16 @@ def main():
                 if prop_id:
                     proposals += 1
                     print(f"    → Correction proposal generated: {prop_id[:8]}")
+
+                # RA.7: immediate Teams alert for severity=critical (composite < 2.0)
+                if result["composite"] < 2.0 and teams_webhook:
+                    send_critical_alert(
+                        teams_webhook,
+                        trace,
+                        result["composite"],
+                        result.get("rationale", ""),
+                        prop_id or "",
+                    )
 
             successes += 1
 

@@ -1569,3 +1569,31 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 **Operator unblock for live migration:** (1) `op signin`. (2) `op vault create River` (if not existing). (3) Source the three plaintext env files, then `bash scripts/op-setup.sh` — creates the 12 items and emits a fresh password for `river_agent_read`. (4) `op read 'op://River/River Agent Read/password'` → paste into Supabase SQL Editor session as `SET app.agent_read_password` → run `scripts/supabase-limited-role.sql` against CBS project, then against WR project. (5) Verify `op run --env-file=scripts/env-op.env -- python3 scripts/paperclip-validate.py`. (6) Rotate CBS + WR service-role keys per `docs/secrets-audit.md §5`. (7) `cp scripts/env-setup.sh.op-stub scripts/env-setup.sh` to activate the stub.
 
 **Next phase:** P4 (Governance), P5 (CI), or P8 (Deferred Designs) — any can run next. P7 (DR + resilience) unblocks once the live operator migration above is complete. Per bootstrap rule (first option listed): **P4**.
+
+---
+
+## S5-P4: Governance Hardening
+
+**Date:** 19 April 2026
+**Status:** COMPLETE (SQL is staged; policy docs and purge script are live in the repo)
+**Git Tag:** stage5-P4-governance
+
+- **CA DB constraint (RA.6):** SQL produced at `scripts/ca-approval-constraint.sql`. Installs a `BEFORE UPDATE` trigger on `tender_register` that rejects any attempt to set `ca_sent_at` unless `ca_send_approved=TRUE` and `ca_send_approved_by` is non-null. Idempotent (`CREATE OR REPLACE` + `DROP TRIGGER IF EXISTS`). Applied via Supabase SQL editor — operator task, not executed in-session.
+- **Retention policy (RA.1):** `docs/policies/data-retention-policy.md` — 90 d for `agent_traces` and `correction_proposals` (ingested/rejected only); 365 d for `evaluation_scores`; no auto-purge for `documents`, `tender_register`, `tender_lifecycle_log`, or pending correction proposals. Legal-hold exception defined.
+- **Purge script:** `scripts/retention-purge.py` — defaults to `--dry-run`; `--execute` required for deletion. Supports `--table` and `--supabase cbs|wr`. Uses PostgREST `count=exact` headers to count rows per table pre-delete.
+- **Critical correction alerting (RA.7):** `scripts/evaluate-outputs.py` updated to send an immediate Teams adaptive-card notification whenever a correction proposal is generated with composite score `< 2.0` (severity=critical per existing severity logic in `evaluator.generate_correction_proposal`). Respects `TEAMS_WEBHOOK_URL` env var; silent if unset. Hold mechanism deferred — Teams alert is the minimum viable fix.
+- **Incident response plan (RA.10):** `docs/policies/incident-response-plan.md` — 4 scenarios (leaked service-role key, unauthorised external action, evaluator drift, unauthorised CA send), each with detect/contain/investigate/recover + lessons-learned stub. Incident log section added for future entries.
+- **Policy docs (IB.8):** 3 new documents under `docs/policies/`:
+  - `data-handling-policy.md` — data classes, stores, collection paths, retention pointer.
+  - `access-control-policy.md` — role matrix (`operator`, `agent-read`/`river_operator`, `service-role`, `dashboard-user`, `paperclip-operator`), grant/revoke flow, rotation cadence.
+  - `change-management-policy.md` — 6 change categories (agent instructions, schema, rubrics, routines, skills, secrets), each with propose/review/apply/audit steps.
+
+**Gate results:** 7 PASS. Live CA-constraint test against Supabase not executed in-session (requires SQL applied via operator); the gate check tolerates a 404 response against a non-existent row.
+
+**Files created:** `scripts/ca-approval-constraint.sql`, `scripts/retention-purge.py`, `docs/policies/data-retention-policy.md`, `docs/policies/incident-response-plan.md`, `docs/policies/data-handling-policy.md`, `docs/policies/access-control-policy.md`, `docs/policies/change-management-policy.md`.
+
+**Files modified:** `scripts/evaluate-outputs.py` (added `send_critical_alert` helper and critical-severity branch).
+
+**Operator follow-up:** (1) Apply `scripts/ca-approval-constraint.sql` via Supabase SQL Editor on the CBS project. Verify by attempting `UPDATE tender_register SET ca_sent_at = now() WHERE id = '<test>'` on a row with `ca_send_approved=FALSE` — expect an exception. (2) Register `scripts/retention-purge.py --execute` as a monthly Paperclip routine on the River Monitor agent (or manual cron). (3) Ensure `TEAMS_WEBHOOK_URL` is loaded in the evaluator routine env so critical alerts fire.
+
+**Next phase:** P5 (CI/CD + Code Quality), P6 (Observability + Cost — depends on P2, which is complete), P7 (DR + Resilience — blocked on completion of the live P3 operator migration), or P8 (Deferred Designs) — any can run next. Per bootstrap rule (first option listed): **P5**.
