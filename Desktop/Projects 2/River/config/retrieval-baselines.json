@@ -1,0 +1,83 @@
+{
+  "version": "stage4-v1",
+  "threshold_drop": 0.05,
+  "cbs": [
+    {
+      "query_id": "cbs_01",
+      "query": "CAPITAL framework for tender qualification",
+      "baseline_top_similarity": 0.575902
+    },
+    {
+      "query_id": "cbs_02",
+      "query": "Western Harbour Tunnel project experience",
+      "baseline_top_similarity": 0.508091
+    },
+    {
+      "query_id": "cbs_03",
+      "query": "tender scorecard evaluation criteria",
+      "baseline_top_similarity": 0.571574
+    },
+    {
+      "query_id": "cbs_04",
+      "query": "capability statement template",
+      "baseline_top_similarity": 0.434555
+    },
+    {
+      "query_id": "cbs_05",
+      "query": "Shipley methodology capture to response",
+      "baseline_top_similarity": 0.461703
+    },
+    {
+      "query_id": "cbs_06",
+      "query": "ISO 55001 asset management compliance",
+      "baseline_top_similarity": 0.604174
+    },
+    {
+      "query_id": "cbs_07",
+      "query": "CA approval process for outbound communications",
+      "baseline_top_similarity": 0.366723
+    },
+    {
+      "query_id": "cbs_08",
+      "query": "M6 Stage 1 project delivery",
+      "baseline_top_similarity": 0.459055
+    },
+    {
+      "query_id": "cbs_09",
+      "query": "board paper template governance",
+      "baseline_top_similarity": 0.511728
+    },
+    {
+      "query_id": "cbs_10",
+      "query": "competitor analysis Aurecon WSP Jacobs",
+      "baseline_top_similarity": 0.323599
+    }
+  ],
+  "wr": [
+    {
+      "query_id": "ppp_financial_model",
+      "query": "Water Roads PPP financial model assumptions and revenue projections",
+      "baseline_top_similarity": 0.583215
+    },
+    {
+      "query_id": "zero_emission_regulatory",
+      "query": "zero-emission ferry regulatory approval AMSA maritime safety",
+      "baseline_top_similarity": 0.583161
+    },
+    {
+      "query_id": "board_resolution",
+      "query": "board resolution",
+      "baseline_top_similarity": 0.441143
+    },
+    {
+      "query_id": "ferry_route_demand",
+      "query": "ferry route demand forecasting origin destination Sydney",
+      "baseline_top_similarity": 0.529082
+    },
+    {
+      "query_id": "esop",
+      "query": "Water Roads ESOP employee share option plan vesting schedule",
+      "baseline_top_similarity": 0.377628
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+name: River CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Nightly retrieval-regression sweep (03:17 UTC = ~13:17 AET)
+    - cron: '17 3 * * *'
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.lock ]; then
+            pip install -r requirements.lock
+          else
+            pip install -r scripts/requirements.txt
+          fi
+          pip install ruff mypy httpx pyyaml
+
+      - name: Lint
+        run: ruff check scripts/ skills/ --select E,F,W
+
+      - name: Type check (non-strict)
+        run: mypy scripts/lib/ --ignore-missing-imports --no-error-summary || true
+
+      - name: Syntax check all Python
+        run: find scripts/ -name "*.py" -exec python -m py_compile {} +
+
+      - name: Config consistency
+        run: |
+          python - <<'PY'
+          import json
+
+          # Rubric weights sum to 1.0
+          with open('config/evaluator-rubric-v1.json') as f:
+              r = json.load(f)
+          w = sum(d['weight'] for d in r['dimensions'])
+          assert abs(w - 1.0) < 0.01, f'Rubric weights: {w}'
+
+          # task_type vocabulary consistency — kebab-case only
+          with open('config/evaluation-events.json') as f:
+              e = json.load(f)
+          for mode in e.values():
+              for tc in mode.get('trigger_conditions', []):
+                  tt = tc['task_type']
+                  assert '_' not in tt, f'Snake-case task_type: {tt}'
+          print('Config consistency: PASS')
+          PY
+
+  # Nightly retrieval-regression — requires repo secrets:
+  #   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
+  #   WR_SUPABASE_URL, WR_SUPABASE_SERVICE_ROLE_KEY,
+  #   VOYAGE_API_KEY
+  retrieval-regression:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    needs: lint-and-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.lock ]; then
+            pip install -r requirements.lock
+          else
+            pip install -r scripts/requirements.txt
+          fi
+          pip install httpx
+
+      - name: Run retrieval regression
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          WR_SUPABASE_URL: ${{ secrets.WR_SUPABASE_URL }}
+          WR_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.WR_SUPABASE_SERVICE_ROLE_KEY }}
+          VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
+        run: python3 scripts/retrieval-regression.py
