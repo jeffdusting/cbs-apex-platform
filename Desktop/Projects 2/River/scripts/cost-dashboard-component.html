@@ -1,0 +1,137 @@
+<!--
+  Cost Dashboard Panel — S5-P6 (IB.5)
+  Embed inside monitoring/tender-dashboard.html or the existing evaluator-dashboard-component.html.
+  Reads from Supabase via the existing Vercel serverless proxy at api/supabase.js.
+
+  Data source: agent_traces aggregation (tokens_input + tokens_output per agent_role),
+  compared against AGENT_BUDGETS (mirrored from scripts/agent-cost-report.py).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>River — Cost Panel</title>
+    <style>
+        :root {
+            --ink: #1a1a1a; --paper: #f6f3ed; --cream: #ede8de; --warm: #d4c9b5;
+            --muted: #8c8374; --accent: #c0562b; --green: #3d7a4a; --green-soft: #d4e5d7;
+            --amber: #b8860b; --amber-soft: #f0e4c4; --red: #b33a3a; --red-soft: #f0d4d4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); padding: 1.5rem; }
+        h2 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .muted { color: var(--muted); font-size: 0.8rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; background: var(--cream); }
+        th, td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid var(--warm); font-size: 0.85rem; }
+        th { background: var(--warm); font-weight: 600; }
+        td.num { text-align: right; font-family: 'JetBrains Mono', monospace; }
+        .bar { display: inline-block; height: 0.5rem; border-radius: 0.25rem; vertical-align: middle; }
+        .ok { background: var(--green); }
+        .warn { background: var(--amber); }
+        .anomaly { background: var(--red); }
+        .chip { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 0.25rem; font-size: 0.7rem; font-weight: 600; }
+        .chip.ok { background: var(--green-soft); color: var(--green); }
+        .chip.warn { background: var(--amber-soft); color: var(--amber); }
+        .chip.anomaly { background: var(--red-soft); color: var(--red); }
+    </style>
+</head>
+<body>
+
+<section id="cost-panel">
+    <h2>Monthly Token Cost</h2>
+    <div class="muted" id="cost-period">Loading…</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Agent</th>
+                <th class="num">Runs</th>
+                <th class="num">Tokens in</th>
+                <th class="num">Tokens out</th>
+                <th class="num">USD (est)</th>
+                <th class="num">Budget</th>
+                <th>Utilisation</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="cost-rows">
+            <tr><td colspan="8" class="muted">Fetching…</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<script>
+// Keep in sync with scripts/agent-cost-report.py
+const AGENT_BUDGETS = {
+    "cbs-executive": 125.00,
+    "tender-intelligence": 50.00,
+    "tender-coordination": 20.00,
+    "technical-writing": 25.00,
+    "compliance": 5.00,
+    "pricing-and-commercial": 10.00,
+    "governance-cbs": 15.00,
+    "office-management-cbs": 4.00,
+    "research-cbs": 10.00,
+    "wr-executive": 15.00,
+    "governance-wr": 15.00,
+    "office-management-wr": 4.00,
+    "monitoring": 10.00,
+};
+const USD_PER_IN = 3.00 / 1e6;
+const USD_PER_OUT = 15.00 / 1e6;
+const WARN = 0.80;
+const ANOMALY = 1.20;
+
+async function loadCost() {
+    const now = new Date();
+    const month = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, '0')}`;
+    document.getElementById('cost-period').textContent = `Month: ${month}`;
+
+    // Relies on the existing api/supabase.js proxy to run the aggregation.
+    // GET /api/supabase?table=agent_traces&select=agent_role,tokens_input,tokens_output&created_at=gte.<month-start>
+    const monthStart = `${month}-01T00:00:00Z`;
+    const resp = await fetch(`/api/supabase?table=agent_traces&select=agent_role,tokens_input,tokens_output&created_at=gte.${monthStart}`);
+    if (!resp.ok) {
+        document.getElementById('cost-rows').innerHTML = `<tr><td colspan="8" class="muted">Error: ${resp.status}</td></tr>`;
+        return;
+    }
+    const rows = await resp.json();
+
+    const agg = {};
+    for (const r of rows) {
+        const role = r.agent_role || 'unknown';
+        if (!agg[role]) agg[role] = { runs: 0, tin: 0, tout: 0 };
+        agg[role].runs += 1;
+        agg[role].tin += Number(r.tokens_input || 0);
+        agg[role].tout += Number(r.tokens_output || 0);
+    }
+
+    const roles = [...new Set([...Object.keys(AGENT_BUDGETS), ...Object.keys(agg)])].sort();
+    const tbody = document.getElementById('cost-rows');
+    tbody.innerHTML = '';
+    for (const role of roles) {
+        const a = agg[role] || { runs: 0, tin: 0, tout: 0 };
+        const cost = a.tin * USD_PER_IN + a.tout * USD_PER_OUT;
+        const budget = AGENT_BUDGETS[role] || 0;
+        const util = budget ? cost / budget : 0;
+        const cls = !budget ? '' : util >= ANOMALY ? 'anomaly' : util >= WARN ? 'warn' : 'ok';
+        const chip = !budget ? '' : util >= ANOMALY ? 'ANOMALY' : util >= WARN ? 'WARN' : 'OK';
+        tbody.insertAdjacentHTML('beforeend', `
+            <tr>
+                <td>${role}</td>
+                <td class="num">${a.runs}</td>
+                <td class="num">${a.tin.toLocaleString()}</td>
+                <td class="num">${a.tout.toLocaleString()}</td>
+                <td class="num">$${cost.toFixed(2)}</td>
+                <td class="num">${budget ? '$' + budget.toFixed(2) : '—'}</td>
+                <td><span class="bar ${cls}" style="width:${Math.min(util * 100, 100)}%"></span> ${budget ? (util * 100).toFixed(0) + '%' : '—'}</td>
+                <td>${chip ? `<span class="chip ${cls}">${chip}</span>` : ''}</td>
+            </tr>
+        `);
+    }
+}
+
+loadCost();
+</script>
+
+</body>
+</html>

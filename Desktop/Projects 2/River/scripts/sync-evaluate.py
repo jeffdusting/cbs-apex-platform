@@ -186,6 +186,24 @@ def main():
         print(f"  Score: {composite:.1f}/{threshold} — {status}")
         print(f"  Rationale: {result.get('rationale', 'N/A')}")
 
+        # S5-P6 (CE.5/RA.4): independent-evaluator vs self-check divergence.
+        # If the agent's self-reported score differs from the evaluator's by more
+        # than 1.0 composite points, log a warning. This catches agents that
+        # systematically over-rate their own work — the self-check (Layer B) has
+        # a structural conflict because the agent that produced the output also
+        # scores it.
+        self_check = trace.get("self_check_score")
+        if self_check is not None:
+            try:
+                divergence = abs(float(self_check) - float(composite))
+            except (TypeError, ValueError):
+                divergence = 0.0
+            if divergence > 1.0:
+                print(
+                    f"  WARN: self-check divergence — agent reported {self_check}, "
+                    f"evaluator scored {composite:.1f} (gap {divergence:.1f})"
+                )
+
         if not passed:
             # Generate correction proposal
             prop_id = evaluator.generate_correction_proposal(

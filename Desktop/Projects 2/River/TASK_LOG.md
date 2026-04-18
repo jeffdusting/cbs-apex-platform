@@ -1622,3 +1622,27 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 **Operator follow-up:** (1) Add repo secrets `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `WR_SUPABASE_URL`, `WR_SUPABASE_SERVICE_ROLE_KEY`, `VOYAGE_API_KEY` to the GitHub repository so the nightly retrieval-regression job can run. (2) Trigger the workflow manually once (push to main or re-run the scheduled job) to confirm CI passes on a clean checkout. (3) If backfilling `embedding_model` metadata on existing rows is desired, run a one-off `UPDATE documents SET metadata = metadata || jsonb_build_object('embedding_model','voyage-3.5') WHERE metadata->>'embedding_model' IS NULL;` after confirming no rows are still on voyage-3.
 
 **Next phase:** P6 (Observability + Cost) — now unblocked (depends on P2, complete). P7 (DR + Resilience) remains blocked on the live P3 operator migration. P8 (Deferred Designs) is also available. Per bootstrap rule (first option listed): **P6**.
+
+---
+
+## S5-P6: Observability + Cost
+
+**Date:** 19 April 2026
+**Status:** COMPLETE
+**Git Tag:** stage5-P6-observability
+
+- **Agent cost report (IB.5):** `scripts/agent-cost-report.py` — paginates `agent_traces` for the target month (default current) via PostgREST, aggregates `tokens_input + tokens_output` per `agent_role`, converts to a USD estimate using a Sonnet-rate blended model ($3/$15 per M tokens), and compares against a per-agent budget table mirrored from `agent-config/token-budgets.md`. Flags >80% utilisation as `WARN` and >120% as `ANOMALY`. `--alert` pushes an adaptive-card summary to the Teams webhook for any anomaly. Exit code 1 when anomalies detected.
+- **Trace reconciliation (RA.5):** `scripts/trace-reconciliation.py` — counts traces per agent_role over a configurable window (default 24h). Primary path queries the Paperclip API for each company's agent roster and computes expected-vs-actual using each agent's `runtimeConfig.heartbeat.intervalSec`; fallback path (`--fallback` or missing cookie) reports the trace counts alone. Divergence threshold 5%; exit code 1 on any agent exceeding it. Companies wired in: CBS (`fafce870-…`) and WR (`95a248d4-…`).
+- **Monitoring agent updated:** `agent-instructions/monitoring/AGENTS.md` renumbered — reconciliation inserted as **Step 7** (calls the new script; notes the "self-check divergence" metric); Daily Digest is now Step 8 and Trace Capture is Step 9. Digest template extended with divergence count and reconciliation status lines.
+- **Sync-evaluator divergence (CE.5/RA.4):** `scripts/sync-evaluate.py` — after the evaluator returns its composite score, the trace's `self_check_score` is compared to `composite`. Gap > 1.0 prints a `WARN: self-check divergence` line. The independent-evaluator pass itself already existed in `evaluator.call_evaluator` — this is the structural complement that surfaces agents systematically over-rating themselves. Non-blocking: does not affect pass/fail gating.
+- **Dashboard cost panel:** `scripts/cost-dashboard-component.html` produced for future integration with the Vercel manager dashboard (Vercel CORS path is still the open blocker noted in monitoring AGENTS.md). HTML panel aggregates trace rows via `/api/supabase` proxy and renders per-agent utilisation bars using the same budgets / thresholds as the Python report.
+
+**Gate results:** 4 PASS (cost report compiles, reconciliation compiles, sync-evaluate has divergence check, monitoring AGENTS.md mentions reconciliation + divergence).
+
+**Files created:** `scripts/agent-cost-report.py`, `scripts/trace-reconciliation.py`, `scripts/cost-dashboard-component.html`.
+
+**Files modified:** `scripts/sync-evaluate.py` (divergence branch), `agent-instructions/monitoring/AGENTS.md` (step 7 insertion, digest additions, step numbering).
+
+**Operator follow-up:** (1) Run `python3 scripts/agent-cost-report.py --month 2026-04 --alert` end-of-month to validate the Teams card renders. (2) Push the updated monitoring `AGENTS.md` to the agent via the Paperclip API (`scripts/create-monitoring-agent.py` or equivalent PATCH) so the next heartbeat picks up the new step ordering. (3) Integrate `scripts/cost-dashboard-component.html` into the evaluator dashboard tab once the Vercel → Paperclip CORS issue is resolved.
+
+**Next phase:** P7 (DR + Resilience) — depends on completion of the live P3 operator migration (1Password vault populated, `river_agent_read` applied on both Supabase instances, CBS + WR service-role keys rotated). P8 (Deferred Designs) is independent and can run in parallel. P9 (Verification) requires all of P0–P8 first.
