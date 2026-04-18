@@ -1,0 +1,33 @@
+#!/bin/bash
+# Project River — env-setup.sh (post-1Password-migration stub)
+#
+# Do not source this file. All secrets are resolved at runtime via
+# 1Password CLI.
+#
+# Usage:
+#   # Inject secrets into the current shell for an interactive session:
+#   eval $(op inject -i scripts/env-op.env)
+#
+#   # Or run a single command with secrets in env (preferred):
+#   op run --env-file=scripts/env-op.env -- python3 scripts/<script>.py
+#
+# How to activate this stub:
+#   1. Run scripts/op-setup.sh to populate the "River" 1Password vault.
+#   2. Rotate CBS and WR Supabase service-role keys; update the 1Password
+#      items; confirm `op run --env-file=scripts/env-op.env -- \
+#        python3 scripts/paperclip-validate.py` works end-to-end.
+#   3. Replace scripts/env-setup.sh with this file:
+#        cp scripts/env-setup.sh.op-stub scripts/env-setup.sh
+#        chmod 755 scripts/env-setup.sh
+#   4. Shred the `.secrets/*.sh` originals from the operator's machine
+#      (they are no longer the source of truth):
+#        shred -u .secrets/wr-env.sh .secrets/river-ca-sender-env.sh 2>/dev/null
+#
+# Rollback: the originals live in 1Password. If needed, re-export into a
+# temp file using `op read 'op://River/...'` per variable. Do not restore
+# the plaintext env files as a long-term workaround.
+
+echo "ERROR: scripts/env-setup.sh no longer holds secrets." >&2
+echo "       Use: op run --env-file=scripts/env-op.env -- <command>" >&2
+echo "       Or:  eval \$(op inject -i scripts/env-op.env)" >&2
+return 1 2>/dev/null || exit 1
