@@ -1520,3 +1520,28 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 **Files created:** `docs/architecture-decisions/ADR-001-duplicate-routine.md`, `docs/architecture-decisions/ADR-002-schema-divergence.md`.
 
 **Next phase:** P2 (Operational Activation) — IV#3 (activate trace ingestion), IV#5 (WR IVFFlat rebuild), IV#9 (first production eval), IV#10 (drive a tender through full lifecycle). P2 is the unblock for P6 observability; P3, P4, P5, P8 are parallel after P2.
+
+---
+
+## S5-P2: Operational Activation
+
+**Date:** 19 April 2026
+**Status:** COMPLETE (with 1 WARN — operator unblock documented)
+**Git Tag:** stage5-P2-activation
+
+- **Cookie valid:** NO — `PAPERCLIP_SESSION_COOKIE` is empty in the operator shell. Both IV#3 (live ingestion) and IV#9 (first eval) are therefore deferred to an operator-driven one-shot: refresh cookie → `python3 scripts/ingest-traces.py --since 48` → `python3 scripts/evaluate-outputs.py --batch-size 10`. This is a two-command unblock, not a re-open of the phase.
+- **Traces ingested:** 0 (cookie-blocked). Ingestion script exits cleanly with `ERROR: PAPERCLIP_SESSION_COOKIE must be set` so no state is mutated when the cookie is missing.
+- **Evaluations run:** 0. `evaluate-outputs.py` ran end-to-end: loaded rubric v1.0 (threshold 3.5), found 0 unscored traces — confirms the scoring loop is wired, waiting only on trace data.
+- **WR IVFFlat rebuilt:** SQL ready at `scripts/wr-ivfflat-rebuild.sql`, `lists=130` (matches optimal 129 for 16,786 rows). Supabase CLI apply requires `SUPABASE_ACCESS_TOKEN` which is not in env; manual apply via Supabase SQL Editor is the documented path. CBS IVFFlat already at lists=36 (optimal 34 for 1,175 rows) — no change required.
+- **Sync routing verified:** 8/8 PASS. 5 sync types (`go-no-go`, `board-paper`, `ca-fill`, `executive-brief`, `white-paper`) + 3 async (`tender-scan`, `email-triage`, `interest-test`) all resolve correctly via `resolve_evaluation_mode()`. Confirms the P1 kebab-case rewrite is load-bearing.
+- **Tender exercise guide:** created at `docs/tender-lifecycle-exercise.md` — 6 pre-flight checks, 6 lifecycle stages (Pursue → CA fill → CA approval/send → docs received → Go/No-Go → Go/No-Go decision), per-stage rollback guidance, exit criteria tied to IV#10 closure.
+
+**Gate results:** 3 PASS + 1 WARN. WR IVFFlat SQL present, sync routing PASS, tender exercise guide present. `agent_traces` still 0 rows — acknowledged as cookie-blocked, not a phase failure.
+
+**Files created:** `docs/tender-lifecycle-exercise.md`.
+
+**Files modified:** none (WR IVFFlat SQL was already staged at `lists=130` from Stage 4 — re-verified still correct against current row count).
+
+**Operator unblock for IV#3/IV#9:** (1) Refresh `PAPERCLIP_SESSION_COOKIE` from DevTools → Application → Cookies → `org.cbslab.app` → `__Secure-better-auth.session_token`. (2) `export PAPERCLIP_SESSION_COOKIE="<value>"`. (3) `python3 scripts/ingest-traces.py --since 48`. (4) `python3 scripts/evaluate-outputs.py --batch-size 10`. This should be logged back in TASK_LOG under a brief S5-P2-followup entry when run.
+
+**Next phase:** P3 (Secrets), P4 (Governance), P5 (CI), or P8 (Deferred Designs) — any can run next per PLAN.md parallel rules. Bootstrap rule picks the first option listed: **P3**.
