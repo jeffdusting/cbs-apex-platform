@@ -1694,3 +1694,26 @@ Both are tracked under BACKLOG §J "Open / Deferred".
 **Operator follow-up:** (1) Update `.secrets/wr-env.sh` so `WR_SERVICE_ACCOUNT_FILE` points at the Projects 2 path, or delete the legacy `Projects/River/` directory if no longer needed. (2) Apply `scripts/supabase-limited-role.sql` on CBS and WR Supabase (deferred — the SQL enables RLS on `documents`; confirm no dashboard/anon path reads that table before applying). Read the password for the SQL with `op read 'op://River/River Agent Read/password'`. (3) Service-role key rotation (CBS + WR) is still pending — per `docs/secrets-audit.md §5`, schedule outside the Stage 5 verification window. After rotation, update `River CBS Supabase` and `River WR Supabase` in 1Password, then run `op run --env-file=scripts/env-op.env -- python3 scripts/paperclip-validate.py` to confirm. (4) Add the backup script and health check to cron — cron lines documented in each script's header. (5) First DR drill target: Q2 2026 per the quarterly schedule in `docs/dr-drill-plan.md §7`.
 
 **Next phase:** P9 (Verification) — all of P0–P8 are now complete. P9 is the final Stage 5 phase.
+
+## S5-P9: Independent Verification
+**Date:** 19 April 2026
+**Status:** COMPLETE
+**Verdict:** PASS WITH CAVEATS
+**Git Tag:** stage5-P9-verification
+
+- **Issue traceability matrix:** 40 of 40 critique items accounted for — 28 RESOLVED, 4 DESIGNED (full scope doc, deferred execution), 3 ACCEPTED via ADR, 5 PARTIAL, 0 UNRESOLVED. Severity distribution of PARTIAL items: one HIGH (RA.3) and four MED (IV#3, IV#9, IV#10, IB.6). Every PARTIAL item has a complete technical artefact in-tree — remaining work is scheduled operator activation, not remediation debt.
+- **Structural integrity:** 40 expected Stage 5 artefacts present (0 MISS). All 15 Python scripts touched in Stage 5 compile. Four shell scripts (`backup-supabase.sh`, `railway-health-check.sh`, `op-setup.sh`, `run-op-setup.sh`) pass `bash -n`.
+- **Data integrity:** CBS Supabase live counts — documents 1,175; tender_register 69; agent_traces 0; evaluation_scores 0; correction_proposals 0; prompt_templates 10; active rubric v1.0 threshold 3.5. WR Supabase live counts — documents 16,786; prompt_templates 4 (IV#4 fix confirmed); agent_traces table not present (expected — evaluator schema is CBS-only per ADR-002). 1Password vault `River`: 13 items verified via `op item list --vault River`.
+- **Operational state:** KB reads work on both instances; vault secrets resolve; cost + reconciliation scripts callable. Dark paths (known, documented): live `agent_traces` rows pending cookie refresh + heartbeat cycle; tender past `interest_passed` pending live tender; limited Supabase role pending application to live DB; credential rotation explicitly deferred per `docs/secrets-audit.md §5`.
+- **New issues found during audit:** None. Two minor non-defect observations recorded in the report: (1) `.secrets/wr-env.sh` `WR_SERVICE_ACCOUNT_FILE` points at the legacy `Projects/River/...` path (workaround applied manually during op-setup); (2) four `api_credential` → `API Credential` category fixes patched into `scripts/op-setup.sh` during P7.
+- **Acceptance gate for Stage 6:** Four operator-scheduled steps close the five PARTIAL items — (a) Paperclip cookie refresh + heartbeat to populate traces; (b) drive one tender to `decision_made`; (c) apply `supabase-limited-role.sql` after confirming no anon reads on `documents`; (d) rotate CBS + WR service-role keys per the audit sequence. Each step is individually reversible; none require code changes.
+
+**Gate results:** 3 PASS (report exists, verdict present, traceability matrix present).
+
+**Files created:** `Stage 5/VERIFICATION_REPORT.md`.
+
+**Files modified:** none (audit is read-only outside the report).
+
+**Programme status:** **STAGE 5 COMPLETE.**
+
+**Next step:** Return to Claude chat with `Stage 5/VERIFICATION_REPORT.md` for advancement planning. Before Stage 6 starts, close the four operator gate steps in the order listed above.
