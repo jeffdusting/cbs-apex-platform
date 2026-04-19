@@ -36,28 +36,51 @@ BEGIN
 END
 $$;
 
--- Ensure the role is not a superuser and cannot bypass RLS.
-ALTER ROLE river_agent_read NOSUPERUSER NOBYPASSRLS;
+-- CREATE ROLE above defaults to NOSUPERUSER and NOBYPASSRLS, which is what
+-- we want. A belt-and-braces `ALTER ROLE ... NOSUPERUSER NOBYPASSRLS` is NOT
+-- used here because Supabase cloud does not grant the calling `postgres` role
+-- permission to run ALTER ROLE against other roles (the cloud `postgres` is
+-- not a true superuser). The CREATE ROLE defaults give us the desired scope.
 
 -- ---------- 2. Read-path grants ----------
+--
+-- The CBS and WR Supabase projects are intentionally schema-divergent
+-- (see docs/architecture-decisions/ADR-002-schema-divergence.md). CBS
+-- has the full evaluator schema (agent_traces, evaluation_scores,
+-- rubric_versions, correction_proposals); WR has only the knowledge
+-- base + governance + tender tables. The grant blocks below are wrapped
+-- in table-existence checks so the same file can be applied to either
+-- project without error.
 
 GRANT USAGE ON SCHEMA public TO river_agent_read;
 
--- Knowledge reads: documents, prompt_templates, rubric_versions.
-GRANT SELECT ON public.documents           TO river_agent_read;
-GRANT SELECT ON public.prompt_templates    TO river_agent_read;
-GRANT SELECT ON public.rubric_versions     TO river_agent_read;
-
--- Agents write their own traces (INSERT only; never UPDATE or DELETE).
-GRANT SELECT, INSERT ON public.agent_traces TO river_agent_read;
-
--- Agents read their own evaluation scores; the evaluator writes them via
--- service-role.
-GRANT SELECT ON public.evaluation_scores TO river_agent_read;
-
--- Correction proposals: agents can read their own ingested corrections
--- (read path only).
-GRANT SELECT ON public.correction_proposals TO river_agent_read;
+DO $$
+BEGIN
+    -- Always present (KB)
+    IF to_regclass('public.documents') IS NOT NULL THEN
+        EXECUTE 'GRANT SELECT ON public.documents TO river_agent_read';
+    END IF;
+    IF to_regclass('public.prompt_templates') IS NOT NULL THEN
+        EXECUTE 'GRANT SELECT ON public.prompt_templates TO river_agent_read';
+    END IF;
+    IF to_regclass('public.governance_register') IS NOT NULL THEN
+        EXECUTE 'GRANT SELECT ON public.governance_register TO river_agent_read';
+    END IF;
+    -- CBS-only (evaluator schema)
+    IF to_regclass('public.rubric_versions') IS NOT NULL THEN
+        EXECUTE 'GRANT SELECT ON public.rubric_versions TO river_agent_read';
+    END IF;
+    IF to_regclass('public.agent_traces') IS NOT NULL THEN
+        EXECUTE 'GRANT SELECT, INSERT ON public.agent_traces TO river_agent_read';
+    END IF;
+    IF to_regclass('public.evaluation_scores') IS NOT NULL THEN
+        EXECUTE 'GRANT SELECT ON public.evaluation_scores TO river_agent_read';
+    END IF;
+    IF to_regclass('public.correction_proposals') IS NOT NULL THEN
+        EXECUTE 'GRANT SELECT ON public.correction_proposals TO river_agent_read';
+    END IF;
+END
+$$;
 
 -- Sequence access for any tables that use SERIAL / BIGSERIAL and are
 -- insertable by the role.
@@ -70,29 +93,37 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 -- The approval flag is only flippable via the service-role/dashboard path,
 -- preserving the Stage 4 CA approval gate at the role level.
 
-REVOKE ALL ON public.tender_register FROM river_agent_read;
-GRANT SELECT ON public.tender_register TO river_agent_read;
-GRANT UPDATE (
-    lifecycle_stage,
-    interest_score,
-    interest_reasons,
-    interest_assessed_at,
-    tender_contact_name,
-    tender_contact_email,
-    ca_template_drive_id,
-    ca_filled_drive_id,
-    ca_drafted_at,
-    ca_sent_at,
-    ca_sent_via,
-    ca_sent_message_id,
-    docs_received_at,
-    drive_folder_id,
-    drive_folder_url,
-    doc_count,
-    go_no_go_scorecard,
-    go_no_go_recommendation,
-    go_no_go_assessed_at
-) ON public.tender_register TO river_agent_read;
+DO $$
+BEGIN
+    IF to_regclass('public.tender_register') IS NOT NULL THEN
+        EXECUTE 'REVOKE ALL ON public.tender_register FROM river_agent_read';
+        EXECUTE 'GRANT SELECT ON public.tender_register TO river_agent_read';
+        EXECUTE $grant$
+            GRANT UPDATE (
+                lifecycle_stage,
+                interest_score,
+                interest_reasons,
+                interest_assessed_at,
+                tender_contact_name,
+                tender_contact_email,
+                ca_template_drive_id,
+                ca_filled_drive_id,
+                ca_drafted_at,
+                ca_sent_at,
+                ca_sent_via,
+                ca_sent_message_id,
+                docs_received_at,
+                drive_folder_id,
+                drive_folder_url,
+                doc_count,
+                go_no_go_scorecard,
+                go_no_go_recommendation,
+                go_no_go_assessed_at
+            ) ON public.tender_register TO river_agent_read
+        $grant$;
+    END IF;
+END
+$$;
 
 -- Explicitly: ca_send_approved, ca_send_approved_by, ca_send_approved_at,
 -- decision, decision_date, decision_by, decision_notes are NOT granted.
@@ -125,12 +156,22 @@ CREATE POLICY agent_read_documents ON public.documents
 -- Explicit REVOKEs so the intent is discoverable. Postgres defaults already
 -- block these, but we want the statements to survive schema migrations.
 
-REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON public.documents FROM river_agent_read;
-REVOKE UPDATE, DELETE ON public.agent_traces FROM river_agent_read;
-REVOKE ALL ON public.rubric_versions FROM river_agent_read;
-GRANT SELECT ON public.rubric_versions TO river_agent_read;
-REVOKE ALL ON public.correction_proposals FROM river_agent_read;
-GRANT SELECT ON public.correction_proposals TO river_agent_read;
+DO $$
+BEGIN
+    EXECUTE 'REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON public.documents FROM river_agent_read';
+    IF to_regclass('public.agent_traces') IS NOT NULL THEN
+        EXECUTE 'REVOKE UPDATE, DELETE ON public.agent_traces FROM river_agent_read';
+    END IF;
+    IF to_regclass('public.rubric_versions') IS NOT NULL THEN
+        EXECUTE 'REVOKE ALL ON public.rubric_versions FROM river_agent_read';
+        EXECUTE 'GRANT SELECT ON public.rubric_versions TO river_agent_read';
+    END IF;
+    IF to_regclass('public.correction_proposals') IS NOT NULL THEN
+        EXECUTE 'REVOKE ALL ON public.correction_proposals FROM river_agent_read';
+        EXECUTE 'GRANT SELECT ON public.correction_proposals TO river_agent_read';
+    END IF;
+END
+$$;
 
 COMMIT;
 
