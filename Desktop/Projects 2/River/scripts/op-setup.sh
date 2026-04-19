@@ -120,11 +120,11 @@ op item create --category=login --title="River WR Supabase" --vault="$VAULT" \
     "DB Password=$WR_SUPABASE_DB_PASSWORD" >/dev/null
 echo "  [2/12] River WR Supabase"
 
-op item create --category=api_credential --title="River Voyage AI" --vault="$VAULT" \
+op item create --category="API Credential" --title="River Voyage AI" --vault="$VAULT" \
     "credential=$VOYAGE_API_KEY" >/dev/null
 echo "  [3/12] River Voyage AI"
 
-op item create --category=api_credential --title="River Anthropic" --vault="$VAULT" \
+op item create --category="API Credential" --title="River Anthropic" --vault="$VAULT" \
     "credential=$ANTHROPIC_API_KEY" >/dev/null
 echo "  [4/12] River Anthropic"
 
@@ -145,11 +145,11 @@ op item create --category=login --title="River Xero" --vault="$VAULT" \
     "Client Secret=$XERO_CLIENT_SECRET" >/dev/null
 echo "  [7/12] River Xero"
 
-op item create --category=api_credential --title="River GitHub PAT" --vault="$VAULT" \
+op item create --category="API Credential" --title="River GitHub PAT" --vault="$VAULT" \
     "credential=$GITHUB_PAT" >/dev/null
 echo "  [8/12] River GitHub PAT"
 
-op item create --category=api_credential --title="River Teams Webhook" --vault="$VAULT" \
+op item create --category="API Credential" --title="River Teams Webhook" --vault="$VAULT" \
     "credential=$TEAMS_WEBHOOK_URL" >/dev/null
 echo "  [9/12] River Teams Webhook"
 
